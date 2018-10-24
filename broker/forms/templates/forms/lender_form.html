@@ -1,0 +1,536 @@
+{% load static %}
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="{% static 'forms/css/form.css' %}" />
+  </head>
+  <body>
+    <h1>Lender Form</h1>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <form name="form" action="{% url 'forms:lender_form' %}" method="POST">
+    {% csrf_token %}
+
+    <!-- Name Table -->
+    <div class="formContainer">
+      <div class="grid3c">
+        <h1 class="formHeader">Lender Information</h1>
+        <label>First Name:</label>
+        {{ form.lender_first_name }}
+        <label>Last Name:</label>
+        {{ form.lender_last_name }}
+        <label>Company:</label>
+        {{ form.lender_company }}
+        <label>Address:</label>
+        {{ form.lender_street_address }}
+        <label>City:</label>
+        {{ form.lender_city }}
+        <label>State:</label>
+        {{ form.lender_state }}
+        <label>Zip:</label>
+        {{ form.lender_zip_code }}
+        <label>Email:</label>
+        {{ form.lender_personal_email }}
+        <label>Work Email:</label>
+        {{ form.lender_work_email }}
+        <label>Cell Phone:</label>
+        {{ form.lender_cell_phone }}
+        <label>Work Phone:</label>
+        {{ form.lender_work_phone }}
+        <label>Solicitation:</label>
+        <label>
+        {% for choice in form.lender_solicitation %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+      </div>
+    </div>
+
+    <!-- Owner Occupied Table -->
+    <div class="formContainer">
+      <div class="grid3c">
+        <h1 class="formHeader">Owner Occupied Real Estate Parameters</h1>
+        <label>Office:</label>
+        <label>
+        {% for choice in form.oo_office %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Warehouse:</label>
+        <label>
+        {% for choice in form.oo_warehouse %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Manufacturing:</label>
+        <label>
+        {% for choice in form.oo_manufacturing %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Medical:</label>
+        <label>
+        {% for choice in form.oo_medical %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Mixed Use:</label>
+        <label>
+        {% for choice in form.oo_mixed_use %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Other:</label>
+        <label>
+        {% for choice in form.oo_other %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+      </div>
+    </div>
+
+    <!-- Investment Table -->
+    <div class="formContainer">
+      <div class="grid3c">
+        <h1 class="formHeader">Investment Real Estate Parameters</h1>
+        <label>Office:</label>
+        <label>
+        {% for choice in form.inv_office %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Warehouse:</label>
+        <label>
+        {% for choice in form.inv_warehouse %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Manufacturing:</label>
+        <label>
+        {% for choice in form.inv_manufacturing %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Medical:</label>
+        <label>
+        {% for choice in form.inv_medical %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Mixed Use:</label>
+        <label>
+        {% for choice in form.inv_mixed_use %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Other:</label>
+        <label>
+        {% for choice in form.inv_other %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+      </div>
+    </div>
+
+    <!-- Multifamily Table -->
+    <div class="formContainer">
+      <div class="grid2c">
+        <h1 class="formHeader">Multifamily Loan Parameters</h1>
+        <label>2 to 4 Units:</label>
+        <label>
+        {% for choice in form.mf_2to4 %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>More than 4 Units:</label>
+        <label>
+        {% for choice in form.mf_gt4 %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+      </div>
+    </div>
+
+    <!-- Construction Table -->
+    <div class="formContainer">
+      <div class="grid3c">
+        <h1 class="formHeader">Construction Loan Parameters</h1>
+        <label>Renovation:</label>
+        <label>
+        {% for choice in form.constr_renovation %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Ground Up Spec:</label>
+        <label>
+        {% for choice in form.constr_ground_up_spec %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Commercial:</label>
+        <label>
+        {% for choice in form.constr_commercial %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Residential:</label>
+        <label>
+        {% for choice in form.constr_residential %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Investment with Land:</label>
+        <label>
+        {% for choice in form.constr_inv_with_land %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Owner Occ with Land:</label>
+        <label>
+        {% for choice in form.constr_oo_with_land %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+      </div>
+    </div>
+
+    <!-- SBA Table -->
+    <div class="formContainer">
+      <div class="grid3c">
+        <h1 class="formHeader">SBA Loan Parameters</h1>
+        <label>7a:</label>
+        <label>
+        {% for choice in form.sba_7a %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>504:</label>
+        <label>
+        {% for choice in form.sba_504 %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>CAPline:</label>
+        <label>
+        {% for choice in form.sba_CAPline %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Microloan:</label>
+        <label>
+        {% for choice in form.sba_micro %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Other:</label>
+        <label>
+        {% for choice in form.sba_other %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+      </div>
+    </div>
+
+    <!-- Miscellaneious Table -->
+    <div class="formContainer">
+      <div class="grid3c">
+        <h1 class="formHeader">Miscellaneous Loans</h1>
+        <label>HELOC:</label>
+        <label>
+        {% for choice in form.misc_HELOC %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>BLOC:</label>
+        <label>
+        {% for choice in form.misc_BLOC %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Bridge:</label>
+        <label>
+        {% for choice in form.misc_bridge %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+      </div>
+    </div>
+
+    <!-- Qualifiers -->
+    <div class="formContainer">
+      <div class="grid3c">
+        <h1 class="formHeader">Qualifiers</h1>
+        <label>Pays Brokers Fees:</label>
+        <label>
+        {{ form.qual_pays_fees }}
+        </label>
+        <label>Outside CA:</label>
+        <label>
+        {% for choice in form.qual_outside_ca %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>1031 Exchange:</label>
+        <label>
+        {% for choice in form.qual_1031_exchange %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Less than 500K:</label>
+        <label>
+        {% for choice in form.qual_lt_500K %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Less than 1M:</label>
+        <label>
+        {% for choice in form.qual_lt_1M %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Equipment:</label>
+        <label>
+        {% for choice in form.qual_equip %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Non-Conforming Property:</label>
+        <label>
+        {% for choice in form.qual_non_conform %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Ground Lease:</label>
+        <label>
+        {% for choice in form.qual_ground_lease %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Relationship:</label>
+        <label>
+        {% for choice in form.qual_relationship %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Cannabis:</label>
+        <label>
+        {% for choice in form.qual_cannabis %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Interest Only:</label>
+        <label>
+        {% for choice in form.qual_io %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Revocable Trust:</label>
+        <label>
+        {% for choice in form.qual_rev_trust %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Irrevocable Trust:</label>
+        <label>
+        {% for choice in form.qual_irrev_trust %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Foreclosure:</label>
+        <label>
+        {% for choice in form.qual_foreclosure %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Single Tenant:</label>
+        <label>
+        {% for choice in form.qual_single_tenant %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Bankruptcy:</label>
+        <label>
+        {% for choice in form.qual_bk %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Entitlements:</label>
+        <label>
+        {% for choice in form.qual_entitlements %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Non Profit:</label>
+        <label>
+        {% for choice in form.qual_non_profit %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Cash Out Refi:</label>
+        <label>
+        {% for choice in form.qual_cashout_refi %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Non Recourse:</label>
+        <label>
+        {% for choice in form.qual_non_recourse %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Real Estate Collateral:</label>
+        <label>
+        {% for choice in form.qual_re_collateral %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Cross Collateral:</label>
+        <label>
+        {% for choice in form.qual_cross_collateral %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Business Acquisitions:</label>
+        <label>
+        {% for choice in form.qual_biz_acq %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+      </div>
+    </div>
+
+    <div class="formContainer">
+      <div class="grid3c">
+        <h1 class="formHeader">Property Types</h1>
+        <label>Automotive:</label>
+        <label>
+        {% for choice in form.prop_automotive %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Car Wash:</label>
+        <label>
+        {% for choice in form.prop_carwash %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Entertainment:</label>
+        <label>
+        {% for choice in form.prop_entertainment %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Farm:</label>
+        <label>
+        {% for choice in form.prop_farm %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Gas Station:</label>
+        <label>
+        {% for choice in form.prop_gas_station %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Hospital:</label>
+        <label>
+        {% for choice in form.prop_hospital %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Hotel (Flag):</label>
+        <label>
+        {% for choice in form.prop_hotel_flag %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Hotel (Non-Flag):</label>
+        <label>
+        {% for choice in form.prop_hotel_nonflag %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Industrial:</label>
+        <label>
+        {% for choice in form.prop_industrial %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Marina:</label>
+        <label>
+        {% for choice in form.prop_marina %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Medical:</label>
+        <label>
+        {% for choice in form.prop_medical %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Mobile Home:</label>
+        <label>
+        {% for choice in form.prop_mobile_home %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Motel (Flag):</label>
+        <label>
+        {% for choice in form.prop_motel_flag %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Motel (Non-Flag):</label>
+        <label>
+        {% for choice in form.prop_motel_nonflag %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Multifamily:</label>
+        <label>
+        {% for choice in form.prop_multifamily %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Office:</label>
+        <label>
+        {% for choice in form.prop_office %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Restaurant:</label>
+        <label>
+        {% for choice in form.prop_restaurant %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Retail:</label>
+        <label>
+        {% for choice in form.prop_retail %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Senior Housing:</label>
+        <label>
+        {% for choice in form.prop_senior_housing %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Storage:</label>
+        <label>
+        {% for choice in form.prop_storage %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+        <label>Student Housing:</label>
+        <label>
+        {% for choice in form.prop_student_housing %}
+          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        {% endfor %}
+        </label>
+      </div>
+    </div>
+    <center>
+      <button>Submit</button>
+    </center>
+    </form>
+  </body>
+</html>

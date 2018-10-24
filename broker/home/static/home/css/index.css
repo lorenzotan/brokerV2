@@ -1,0 +1,28 @@
+body {
+    color: #000;
+    font-family: Arial;
+    font-size: 10pt;
+}
+
+.dropdown:hover .dropdown-menu {
+    display:block;
+}
+
+/* https://www.w3schools.com/howto/howto_css_full_page.asp */
+.bg {
+    background-image: url("../images/handshake.jpg");
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+a:link, a:visited, a:active {
+    color: #fff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+    text-decoration: none;
+}
