@@ -15,7 +15,9 @@ class Qualifiers(models.Model):
 
 
 class LoanTypes(models.Model):
-    name = models.CharField(max_length=50, default=None, null=True, blank=True)
+    name  = models.CharField(max_length=50, default=None, null=True, blank=True)
+    model = models.CharField(max_length=50, default=None, null=True, blank=True)
+    form  = models.CharField(max_length=50, default=None, null=True, blank=True)
 
     def __str__(self):
         return self.name

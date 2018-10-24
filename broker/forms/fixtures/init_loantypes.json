@@ -3,35 +3,45 @@
         "model": "forms.LoanTypes",
         "pk": 1,
         "fields": {
-            "name": "Bloc"
+            "name": "Bloc",
+            "model": "BlocLoan",
+            "form": "BlocLoanForm"
         }
     },
     {
         "model": "forms.LoanTypes",
         "pk": 2,
         "fields": {
-            "name": "Construction"
+            "name": "Construction",
+            "model": "ConstructionLoan",
+            "form": "ConstructionLoanForm"
         }
     },
     {
         "model": "forms.LoanTypes",
         "pk": 3,
         "fields": {
-            "name": "Mixed Use"
+            "name": "Mixed Use",
+            "model": "MixedUseLoan",
+            "form": "MixedUseLoanForm"
         }
     },
     {
         "model": "forms.LoanTypes",
         "pk": 4,
         "fields": {
-            "name": "Multi Family"
+            "name": "Multi Family",
+            "model": "MultiFamilyLoan",
+            "form": "MultiFamilyLoanForm"
         }
     },
     {
         "model": "forms.LoanTypes",
         "pk": 5,
         "fields": {
-            "name": "Retail"
+            "name": "Retail",
+            "model": "RetailLoan",
+            "form": "RetailLoanForm"
         }
     }
 ]
