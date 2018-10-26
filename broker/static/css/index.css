@@ -1,0 +1,28 @@
+body {
+    color: #000;
+    font-family: Arial;
+    font-size: 10pt;
+}
+
+.dropdown:hover .dropdown-menu {
+    display:block;
+}
+
+/* https://css-tricks.com/perfect-full-page-background-image/ */
+.bg {
+    background: url("../images/handshake.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+a:link, a:visited, a:active {
+    color: #fff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+    text-decoration: none;
+}
