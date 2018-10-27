@@ -1,16 +1,37 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
+from .forms import *
 
 # Create your views here.
 def lender_form(req):
-    if req.method == 'POST':
-        form = LenderForm(req.POST)
-        form.save()
-    else:
-        form = LenderForm()
+    tmpl = loader.get_template('forms/lender_form.html')
+    submit = 'Submit'
+    qualifiers = Qualifiers.objects.order_by('name')
 
-    return render(req, 'forms/lender_form.html', {'form': form})
+    if req.method == 'POST':
+        lenderForm = LenderForm(req.POST)
+        lenderForm.save()
+
+        qualiferForm = QualifierForm(req.POST)
+        qualiferForm.save()
+    else:
+        lenderForm = LenderForm()
+        qualifierForm = QualifierForm()
+
+    print ()
+    print ("DEBUG: {}".format(qualifierForm))
+    print ("DEBUG: {}".format(type(qualifierForm)))
+    print ()
+
+    context = {
+        'lenderForm': lenderForm,
+        #'qualifiers': qualifiers,
+        'qualifiers': qualifierForm,
+        'submit': submit,
+    }
+    #return render(req, 'forms/lender_form.html', context)
+    return HttpResponse(tmpl.render(context, req))
 
 
 

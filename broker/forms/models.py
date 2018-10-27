@@ -122,6 +122,7 @@ class Lenders(models.Model):
     w_email       = models.EmailField(max_length=100, default=None, null=True, blank=True)
     h_phone       = models.CharField(max_length=10, blank=True)
     w_phone       = models.CharField(max_length=10, blank=True)
+    solicitation  = models.BooleanField()
     qualifers     = models.ManyToManyField(Qualifiers)
     propertytypes = models.ManyToManyField(PropertyTypes)
 

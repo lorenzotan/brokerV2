@@ -1,0 +1,9 @@
+    <div class="formContainer">
+      <div class="grid3c">
+        <h1 class="formHeader">{{ loantype }}</h1>
+        {% for field in loantype_fields %}
+            {{ field.label_tag }}
+            {{ field }}
+        {% endfor %}
+      </div>
+    </div>

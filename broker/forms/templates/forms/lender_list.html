@@ -1,210 +1,38 @@
-<html>
-  <body>
-    <table border="1" width="50%" align="center">
-      <tr>
-        <th>Lender First Name</th>
-        <th>Lender Last Name</th>
-        <th>Lender Company</th>
-        <th>Lender Street Address</th>
-        <th>Lender City</th>
-        <th>Lender State</th>
-        <th>Lender Zip Code</th>
-        <th>Lender Work Email</th>
-        <th>Lender Personal Email</th>
-        <th>Lender Work Phone</th>
-        <th>Lender Cell Phone</th>
-        <th>Lender Solicitation</th>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <section class="container">
+      <header>
+        Lender Information
+        <button type="button" class="btn btn-broker btn-xs pull-right">
+          <a href="{% url 'forms:lender_form' %}">
+            <span class="glyphicon glyphicon-plus-sign"></span> Add Lender
+          </a>
+        </button>
+      </header>
+      <section class="content">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Company</th>
+            </tr>
+          </thead>
+          {% for lender in lenders %}
+          <tr class="row-link" data-href="/forms/lender_form/{{ lender.id }}">
+            <td>{{ lender.lender_first_name }}</td>
+            <td>{{ lender.lender_last_name }}</td>
+            <td>{{ lender.lender_company }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td align="center" colspan="3">No Lenders to display</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </section>
+    </section>
 
-        <th>O.O. Office</th>
-        <th>O.O. Warehouse</th>
-        <th>O.O. Manufacturing</th>
-        <th>O.O. Medical</th>
-        <th>O.O. Mixed Use</th>
-        <th>O.O. Other</th>
-
-        <th>Inv. Office</th>
-        <th>Inv. Warehouse</th>
-        <th>Inv. Manufacturing</th>
-        <th>Inv. Medical</th>
-        <th>Inv. Mixed Use</th>
-        <th>Inv. Other</th>
-
-        <th>MF 2 to 4</th>
-        <th>MF More than 4</th>
-
-        <th>CONSTR Renovation</th>
-        <th>CONSTR Ground Up Spec</th>
-        <th>CONSTR Commercial</th>
-        <th>CONSTR Residential</th>
-        <th>CONSTR Investment with Land</th>
-        <th>CONSTR Owner Occ with Land</th>
-        
-        <th>SBA 7A</th>
-        <th>SBA 504</th>
-        <th>SBA CAPline</th>
-        <th>SBA Microloan</th>
-        <th>SBA Other</th>
-
-        <th>HELOC</th>
-        <th>BLOC</th>
-        <th>Bridge</th>
-
-        <th>Pays Fees</th>
-        <th>Outside CA</th>
-        <th>1031 Exchange</th>
-        <th>Less than 500K</th>
-        <th>Less than 1M</th>
-        <th>Equipment</th>
-        <th>Non conforming property</th>
-        <th>Ground Lease</th>
-        <th>Relationship</th>
-        <th>Cannabis</th>
-        <th>Interest Only</th>
-        <th>Revocable Trust</th>
-        <th>Irrevocable Trust</th>
-        <th>Foreclosure</th>
-        <th>Single Tenant</th>
-        <th>Bankruptcy</th>
-        <th>Entitlements</th>
-        <th>Non Profit</th>
-        <th>Cash out Refi</th>
-        <th>Nonrecourse</th>
-        <th>Cross Collateral</th>
-        <th>Business Acquisition</th>
-
-        <th>Automotive</th>
-        <th>Car wash</th>
-        <th>Entertainment</th>
-        <th>Farm / Agr.</th>
-        <th>Gas Station</th>
-        <th>Hospital</th>
-        <th>Hotel (Flag)</th>
-        <th>Hotel (Non-flag)</th>
-        <th>Industrial</th>
-        <th>Marina</th>
-        <th>Medical</th>
-        <th>Mobile Home</th>
-        <th>Motel (Flag)</th>
-        <th>Motel (Non-flag)</th>
-        <th>Multifamily</th>
-        <th>Office</th>
-        <th>Restaurant</th>
-        <th>Retail</th>
-        <th>Senior Housing</th>
-        <th>Storage</th>
-        <th>Student Housing</th>
-      </tr>
-
-      {% for lender in lenders %}
-      <tr>
-        <td>{{ lender.lender_first_name }}</td>
-        <td>{{ lender.lender_last_name }}</td>
-        <td>{{ lender.lender_company }}</td>
-        <td>{{ lender.lender_street_address }}</td>
-        <td>{{ lender.lender_city }}</td>
-        <td>{{ lender.lender_state }}</td>
-        <td>{{ lender.lender_zip_code }}</td>
-        <td>{{ lender.lender_work_email }}</td>
-        <td>{{ lender.lender_personal_email }}</td>
-        <td>{{ lender.lender_work_phone }}</td>
-        <td>{{ lender.lender_cell_phone }}</td>
-        <td>{{ lender.lender_solicitation }}</td>
-
-        <td>{{ lender.oo_office }}</td>
-        <td>{{ lender.oo_warehouse }}</td>
-        <td>{{ lender.oo_manufacturing }}</td>
-        <td>{{ lender.oo_medical }}</td>
-        <td>{{ lender.oo_mixed_use }}</td>
-        <td>{{ lender.oo_other }}</td>
-
-        <td>{{ lender.inv_office }}</td>
-        <td>{{ lender.inv_warehouse }}</td>
-        <td>{{ lender.inv_manufacturing }}</td>
-        <td>{{ lender.inv_medical }}</td>
-        <td>{{ lender.inv_mixed_use }}</td>
-        <td>{{ lender.inv_other }}</td>
-        
-        <td>{{ lender.sba_7a }}</td>
-        <td>{{ lender.sba_504 }}</td>
-        <td>{{ lender.sba_CAPline }}</td>
-        <td>{{ lender.sba_micro }}</td>
-        <td>{{ lender.sba_other }}</td>
-
-        <td>{{ lender.mf_2to4 }}</td>
-        <td>{{ lender.mf_gt4 }}</td>
-
-        <td>{{ lender.constr_renovation }}</td>
-        <td>{{ lender.constr_ground_up_spec }}</td>
-        <td>{{ lender.constr_commercial }}</td>
-        <td>{{ lender.constr_residential }}</td>
-        <td>{{ lender.constr_inv_with_land }}</td>
-        <td>{{ lender.constr_oo_with_land }}</td>
-
-        <td>{{ lender.misc_HELOC }}</td>
-        <td>{{ lender.misc_BLOC }}</td>
-        <td>{{ lender.misc_bridge }}</td>
-                  
-        <td>{{ lender.qual_pays_fees }}</td>
-        <td>{{ lender.qual_outside_ca }}</td>
-        <td>{{ lender.qual_1031_exchange }}</td>
-        <td>{{ lender.qual_lt_500K }}</td>
-        <td>{{ lender.qual_lt_1M }}</td>
-        <td>{{ lender.qual_equip }}</td>
-        <td>{{ lender.qual_non_conform }}</td>
-        <td>{{ lender.qual_ground_lease }}</td>
-        <td>{{ lender.qual_relationship }}</td>
-        <td>{{ lender.qual_cannabis }}</td>
-        <td>{{ lender.qual_io }}</td>
-        <td>{{ lender.qual_rev_trust }}</td>
-        <td>{{ lender.qual_irrev_trust }}</td>
-        <td>{{ lender.qual_foreclosure }}</td>
-        <td>{{ lender.qual_single_tennant }}</td>
-        <td>{{ lender.qual_bk }}</td>
-        <td>{{ lender.qual_entitlements }}</td>
-        <td>{{ lender.qual_non_profit }}</td>
-        <td>{{ lender.qual_cashout_refi }}</td>
-        <td>{{ lender.qual_non_recourse }}</td>
-        <td>{{ lender.qual_cross_collateral }}</td>
-        <td>{{ lender.qual_biz_acq }}</td>
-                  
-        <td>{{ lender.prop_automotive }}</td>
-        <td>{{ lender.prop_carwash }}</td>
-        <td>{{ lender.prop_entertainment }}</td>
-        <td>{{ lender.prop_farm }}</td>
-        <td>{{ lender.prop_gas_station }}</td>
-        <td>{{ lender.prop_hospital }}</td>
-        <td>{{ lender.prop_hotel_flag }}</td>
-        <td>{{ lender.prop_hotel_nonflag }}</td>
-        <td>{{ lender.prop_industrial }}</td>
-        <td>{{ lender.prop_marina }}</td>
-        <td>{{ lender.prop_medical }}</td>
-        <td>{{ lender.prop_mobile_home }}</td>
-        <td>{{ lender.prop_motel_flag }}</td>
-        <td>{{ lender.prop_motel_nonflag }}</td>
-        <td>{{ lender.prop_multifamily }}</td>
-        <td>{{ lender.prop_office }}</td>
-        <td>{{ lender.prop_restaurant }}</td>
-        <td>{{ lender.prop_retail }}</td>
-        <td>{{ lender.prop_senior_housing }}</td>
-        <td>{{ lender.prop_storage }}</td>
-        <td>{{ lender.prop_student_housing }}</td>
-
-      </tr>
-      {% empty %}
-      <tr>
-        <td align="center" colspan="4">No lenders to display</td>
-      </tr>
-      {% endfor %}
-    </table>
-    
-        <!-- Links -->
-    <br/>
-   <a href="{%url 'forms:lender_form'%}">Lender Form</a><br/>
-   <a href="{%url 'forms:lender_list'%}">Lender List</a><br/>
-   <a href="{%url 'forms:lender_nav'%}">Lender Nav</a><br/>
-   <a href="{%url 'forms:loan_form'%}">Loan Form</a><br/>
-   <a href="{%url 'forms:loan_list'%}">Loan List</a><br/>
-   <a href="{%url 'forms:loan_nav'%}">Loan Nav</a><br/><br/>
-
-  </body>
-</html>
+    <script type="text/javascript" src="{% static 'js/list.js' %}"></script>
+{% endblock %}

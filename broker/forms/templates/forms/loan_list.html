@@ -1,150 +1,40 @@
-<html>
-  <body>
-    <table border="1" width="50%" align="center">
-      <tr>
-        <th>Client First Name</th>
-        <th>Client Last Name</th>
-        <th>Client Street Address</th>
-        <th>Client City</th>
-        <th>Client State</th>
-        <th>Client Zip Code</th>
-        <th>Client Work Email</th>
-        <th>Client Personal Email</th>
-        <th>Client Work Phone</th>
-        <th>Client Cell Phone</th>
-        <th>Client Using POC</th>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <section class="container">
+      <header>
+        Client Information
+        <button type="button" class="btn btn-broker btn-xs pull-right">
+          <a href="{% url 'forms:loan_form' %}">
+            <span class="glyphicon glyphicon-plus-sign"></span> Add Client
+          </a>
+        </button>
+      </header>
+      <section class="content">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Loan Type</th>
+              <th>Loan Amount</th>
+            </tr>
+          </thead>
+          {% for client in clients %}
+          <tr class="row-link" data-href="/forms/loan_form/{{ client.id }}/">
+            <td>{{ client.client_first_name }}</td>
+            <td>{{ client.client_last_name }}</td>
+            <td>{{ client.client_loan_type }}</td>
+            <td>{{ client.loan_amount }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td align="center" colspan="4">No Clients to display</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </section>
+    </section>
 
-        <th>POC Name</th>
-        <th>POC Company</th>
-        <th>POC Work Phone</th>
-        <th>POC Cell Phone</th>
-        <th>POC Email</th>
-
-        <th>Occupation</th>
-        <th>ompany Name</th>
-        <th>Company Street Address</th>
-        <th>Company City</th>
-        <th>Company State</th>
-        <th>Company Zip</th>
-
-        <th>Loan Amount</th>
-        <th>Loan To Value</th>
-        <th>Loan DSCR</th>
-        <th>Loan Description</th>
-
-        <th>Salary</th>
-        <th>Years in business</th>
-        <th>Total Debt</th>
-        <th>Total Monthly Payments</th>
-        <th>FICO</th>
-        <th>Owns home</th>
-        <th>Bankruptcy?</th>
-        <th>Short Sale?</th>
-
-        <th>Property Address</th>
-        <th>Property Value</th>
-    
-        <th>Executive Summary</th>
-        <th>Credit Report</th>
-        <th>Personal Taxes</th>
-        <th>Business Taxes</th>
-        <th>P and L</th>
-        <th>Expense Report</th>
-        <th>Broker's Opinion</th>
-        <th>Appraisal</th>
-        <th>Environmental</th>
-        <th>Rent Roll</th>
-        <th>Lease Agreements</th>
-
-        <th>Business Name</th>
-        <th>Business Main Phone</th>
-        <th>Business Website</th>
-        <th>Business Type</th>
-        <th>Year Business Established</th>
-
-      </tr>
-
-
-      {% for loan in loans %}
-      <tr>
-        <td>{{ loan.client_first_name }}</td>
-        <td>{{ loan.client_last_name }}</td>
-        <td>{{ loan.client_street_address }}</td>
-        <td>{{ loan.client_city }}</td>
-        <td>{{ loan.client_state }}</td>
-        <td>{{ loan.client_zip_code }}</td>
-        <td>{{ loan.client_work_email }}</td>
-        <td>{{ loan.client_personal_email }}</td>
-        <td>{{ loan.client_work_phone }}</td>
-        <td>{{ loan.client_cell_phone }}</td>
-        <td>{{ loan.client_using_poc }}</td>
-
-        <td>{{ loan.POC_name }}</td>
-        <td>{{ loan.POC_business }}</td>
-        <td>{{ loan.POC_work_phone }}</td>
-        <td>{{ loan.POC_cell_phone }}</td>
-        <td>{{ loan.POC_email }}</td>        
-        
-        <td>{{ loan.client_occupation }}</td>        
-        <td>{{ loan.client_company_name }}</td>        
-        <td>{{ loan.client_company_street_address }}</td>        
-        <td>{{ loan.client_company_city }}</td>        
-        <td>{{ loan.client_company_state }}</td>        
-        <td>{{ loan.client_company_zip }}</td>        
-
-        <td>{{ loan.loan_amount }}</td>        
-        <td>{{ loan.loan_to_value }}</td>        
-        <td>{{ loan.loan_dcsr }}</td>        
-        <td>{{ loan.loan_desc }}</td>        
-
-        <td>{{ loan.fin_salary }}</td>        
-        <td>{{ loan.fin_years_in_business }}</td>        
-        <td>{{ loan.fin_total_debt }}</td>        
-        <td>{{ loan.fin_monthly_payments }}</td>        
-        <td>{{ loan.fin_fico }}</td>        
-        <td>{{ loan.fin_owns_home }}</td>        
-        <td>{{ loan.fin_bankruptcy }}</td>        
-        <td>{{ loan.fin_short_sale }}</td>        
-
-        <td>{{ loan.property_address }}</td>        
-        <td>{{ loan.property_value }}</td>        
-
-        <td>{{ loan.docs_executive_summary }}</td>        
-        <td>{{ loan.docs_credit_report }}</td>        
-        <td>{{ loan.docs_personal_taxes }}</td>        
-        <td>{{ loan.docs_business_taxes }}</td>        
-        <td>{{ loan.docs_P_and_L }}</td>        
-        <td>{{ loan.docs_expense_report }}</td>        
-        <td>{{ loan.docs_brokers_opinion }}</td>        
-        <td>{{ loan.docs_appraisal }}</td>        
-        <td>{{ loan.docs_environmental }}</td>        
-        <td>{{ loan.docs_rent_roll }}</td>        
-        <td>{{ loan.docs_lease_agreements }}</td>        
-
-        <td>{{ loan.business_name }}</td>        
-        <td>{{ loan.business_main_phone }}</td>        
-        <td>{{ loan.business_website }}</td>        
-        <td>{{ loan.business_type }}</td>        
-        <td>{{ loan.business_year_established }}</td>        
-
-      </tr>
-      {% empty %}
-      <tr>
-        <td align="center" colspan="4">No loans to display</td>
-      </tr>
-      {% endfor %}
-    </table>
-    
-        <!-- Links -->
-    <br/>
-   <a href="{%url 'forms:lender_form'%}">Lender Form</a><br/>
-   <a href="{%url 'forms:lender_list'%}">Lender List</a><br/>
-   <a href="{%url 'forms:lender_nav'%}">Lender Nav</a><br/>
-   <a href="{%url 'forms:loan_form'%}">Loan Form</a><br/>
-   <a href="{%url 'forms:loan_list'%}">Loan List</a><br/>
-   <a href="{%url 'forms:loan_nav'%}">Loan Nav</a><br/><br/>
-
-  </body>
-</html>
-
-
+    <script type="text/javascript" src="{% static 'forms/js/list.js' %}"></script>
+{% endblock %}

@@ -1,12 +1,12 @@
-{% load static %}
-<html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="{% static 'forms/css/form.css' %}" />
-  </head>
-  <body>
+{% extends 'base.html' %}
+{% block content %}
     <h1>Loan Form</h1>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% if loan_id %}
+    <form name="form" action="{% url 'forms:edit_loan_form' pk=loan_id %}" method="POST">
+    {% else %}
     <form name="form" action="{% url 'forms:loan_form' %}" method="POST">
+    {% endif %}
     {% csrf_token %}
 
     <!-- Personal Information Table -->
@@ -39,8 +39,28 @@
           <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
         {% endfor %}
         </label>
+        <label>Loan Type:</label>
+        {{ form.client_loan_type }}
       </div>
     </div>
+
+    <!-- space reserved for selected loan type -->
+    {% if loantype is not None and loantype != 'None' %}
+    <div id="loanTypeForm">
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">{{ loantype }}</h1>
+          {% for field in loantype_fields %}
+              {{ field.label_tag }}
+              {{ field }}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div id="loanTypeForm" style="display: none;">
+    </div>
+    {% endif %}
 
 <!-- POC Information Table -->
     <div class="formContainer">
@@ -230,8 +250,29 @@
     </div>
 
     <center>
-      <button>Submit</button>
+      <button>{{ submit }}</button>
     </center>
     </form>
-  </body>
-</html>
+    <script>
+    // TODO: put jquery in separate file
+    $('#id_client_loan_type').change(function() {
+        var choice = $('#id_client_loan_type').val();
+        if (choice == 'None') {
+            $("#loanTypeForm").slideUp();
+            $("#loanTypeForm").empty();
+        } else {
+            var url = "/inputs/ajax/load_loantype_form/";
+            $.ajax({
+                url: url,
+                data: {
+                    'loantype': choice
+                },
+                success: function (data) {
+                    $("#loanTypeForm").html(data);
+                    $("#loanTypeForm").slideDown();
+                }
+            });
+        }
+    });
+    </script>
+{% endblock %}
