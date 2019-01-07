@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser
@@ -117,7 +118,6 @@ class Broker(models.Model):
 
 # NOTE: https://docs.djangoproject.com/en/2.0/topics/auth/customizing/#extending-the-existing-user-model
 class User(AbstractUser):
-    user     = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     address  = models.CharField(max_length=50, default=None, null=True, blank=True)
     city     = models.CharField(max_length=50, default=None, null=True, blank=True)
     state    = models.CharField(max_length=2, default=None, null=True, blank=True)
