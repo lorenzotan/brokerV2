@@ -33,5 +33,5 @@ class QualifierForm(forms.Form):
     #    )
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['qualifiers'].queryset = Qualifiers.objects.order_by('name')
+        self.fields['qualifiers'].queryset = Qualifier.objects.order_by('name')
 

@@ -1,9 +1,5 @@
-{% load static %}
-<html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="{% static 'loans/css/form.css' %}" />
-  </head>
-  <body>
+{% extends 'base.html' %}
+{% block content %}
     <h1>Lender Form</h1>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
     <form name="form" action="{% url 'loans:lender_form' %}" method="POST">

@@ -7,7 +7,7 @@ from .forms import *
 def lender_form(req):
     tmpl = loader.get_template('loans/lender_form.html')
     submit = 'Submit'
-    qualifiers = Qualifiers.objects.order_by('name')
+    qualifiers = Qualifier.objects.order_by('name')
 
     if req.method == 'POST':
         lenderForm = LenderForm(req.POST)
@@ -38,7 +38,7 @@ def lender_form(req):
 
 def lender_list(req):
     template = loader.get_template('loans/lender_list.html')
-    lender_list = Lenders.objects.all()
+    lender_list = Lender.objects.all()
     context = {
         'lenders': lender_list,
     }
@@ -58,7 +58,7 @@ def loan_form(req):
 
 def loan_list(req):
     template = loader.get_template('loans/loan_list.html')
-    loan_list = Lenders.objects.all()
+    loan_list = Lender.objects.all()
     context = {
         'loans': loan_list,
     }
