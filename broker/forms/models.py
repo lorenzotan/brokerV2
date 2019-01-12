@@ -167,7 +167,7 @@ class ClientMixedUseLoan(models.Model):
     business_list  = models.CharField(max_length=50, default='', blank=True, null=True)
     annual_rent    = models.IntegerField(blank=True, null=True)
     annual_expense = models.IntegerField(blank=True, null=True)
-    purpose        = models.CharField(max_length=15, choices=LOAN_PURPOSE)
+    purpose        = models.OneToOneField(LoanPurpose, on_delete=models.CASCADE, null=True)
     cash_out       = models.NullBooleanField(default=None)
 
 
@@ -177,7 +177,7 @@ class ClientMultiFamilyLoan(models.Model):
     year_built      = models.IntegerField()
     annual_rent     = models.IntegerField(blank=True, null=True)
     annual_expense  = models.IntegerField(blank=True, null=True)
-    purpose         = models.CharField(max_length=15, choices=LOAN_PURPOSE)
+    purpose         = models.OneToOneField(LoanPurpose, on_delete=models.CASCADE, null=True)
     cash_out        = models.NullBooleanField(default=None)
 
 
@@ -188,7 +188,7 @@ class ClientRetailLoan(models.Model):
     address        = models.CharField(max_length=25, default='', blank=True, null=True)
     annual_rent    = models.IntegerField(blank=True, null=True)
     annual_expense = models.IntegerField(blank=True, null=True)
-    purpose        = models.CharField(max_length=15, choices=LOAN_PURPOSE)
+    purpose        = models.OneToOneField(LoanPurpose, on_delete=models.CASCADE, null=True)
     cash_out       = models.NullBooleanField(default=None)
 
 
