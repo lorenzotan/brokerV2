@@ -18,8 +18,10 @@ class Qualifier(models.Model):
 
 class LoanType(models.Model):
     name  = models.CharField(max_length=50, default=None, null=True, blank=True)
-    model = models.CharField(max_length=50, default=None, null=True, blank=True)
-    form  = models.CharField(max_length=50, default=None, null=True, blank=True)
+    client_model = models.CharField(max_length=50, default=None, null=True, blank=True)
+    client_form  = models.CharField(max_length=50, default=None, null=True, blank=True)
+    lender_model = models.CharField(max_length=50, default=None, null=True, blank=True)
+    lender_form  = models.CharField(max_length=50, default=None, null=True, blank=True)
 
     def __str__(self):
         return self.name

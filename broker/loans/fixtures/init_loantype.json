@@ -4,8 +4,10 @@
         "pk": 1,
         "fields": {
             "name": "Bloc",
-            "model": "BlocLoan",
-            "form": "BlocLoanForm"
+            "client_model": "ClientBlocLoan",
+            "client_form":  "ClientBlocLoanForm",
+            "lender_model": "LenderBlocLoan",
+            "lender_form":  "LenderBlocLoanForm"
         }
     },
     {
@@ -13,8 +15,10 @@
         "pk": 2,
         "fields": {
             "name": "Construction",
-            "model": "ConstructionLoan",
-            "form": "ConstructionLoanForm"
+            "client_model": "ClientConstructionLoan",
+            "client_form":  "ClientConstructionLoanForm",
+            "lender_model": "LenderConstructionLoan",
+            "lender_form":  "LenderConstructionLoanForm"
         }
     },
     {
@@ -22,8 +26,10 @@
         "pk": 3,
         "fields": {
             "name": "Mixed Use",
-            "model": "MixedUseLoan",
-            "form": "MixedUseLoanForm"
+            "client_model": "ClientMixedUseLoan",
+            "client_form":  "ClientMixedUseLoanForm",
+            "lender_model": "LenderMixedUseLoan",
+            "lender_form":  "LenderMixedUseLoanForm"
         }
     },
     {
@@ -31,8 +37,10 @@
         "pk": 4,
         "fields": {
             "name": "Multi Family",
-            "model": "MultiFamilyLoan",
-            "form": "MultiFamilyLoanForm"
+            "client_model": "ClientMultiFamilyLoan",
+            "client_form":  "ClientMultiFamilyLoanForm",
+            "lender_model": "LenderMultiFamilyLoan",
+            "lender_form":  "LenderMultiFamilyLoanForm"
         }
     },
     {
@@ -40,8 +48,10 @@
         "pk": 5,
         "fields": {
             "name": "Retail",
-            "model": "RetailLoan",
-            "form": "RetailLoanForm"
+            "client_model": "ClientRetailLoan",
+            "client_form":  "ClientRetailLoanForm",
+            "lender_model": "LenderRetailLoan",
+            "lender_form":  "LenderRetailLoanForm"
         }
     }
 ]
