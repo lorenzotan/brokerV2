@@ -1,146 +1,146 @@
 [
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 1,
         "fields": {
             "name": "Automotive"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 2,
         "fields": {
             "name": "Car Wash"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 3,
         "fields": {
             "name": "Entertainment"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 4,
         "fields": {
             "name": "Farm"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 5,
         "fields": {
             "name": "Gas Station"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 6,
         "fields": {
             "name": "Hospital"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 7,
         "fields": {
             "name": "Hotel (Flag)"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 8,
         "fields": {
             "name": "Hotel (Non-Flag)"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 9,
         "fields": {
             "name": "Industrial"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 10,
         "fields": {
             "name": "Marina"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 11,
         "fields": {
             "name": "Medical"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 12,
         "fields": {
             "name": "Mobile Home"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 13,
         "fields": {
             "name": "Motel (Flag)"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 14,
         "fields": {
             "name": "Motel (Non-Flag)"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 15,
         "fields": {
             "name": "Multifamily"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 16,
         "fields": {
             "name": "Office"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 17,
         "fields": {
             "name": "Restaurant"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 18,
         "fields": {
             "name": "Retail"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 19,
         "fields": {
             "name": "Senior Housing"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 20,
         "fields": {
             "name": "Storage"
         }
     },
     {
-        "model": "loans.PropertyTypes",
+        "model": "loans.PropertyType",
         "pk": 21,
         "fields": {
             "name": "Student Housing"

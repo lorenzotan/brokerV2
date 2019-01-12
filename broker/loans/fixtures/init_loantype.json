@@ -1,6 +1,6 @@
 [
     {
-        "model": "loans.LoanTypes",
+        "model": "loans.LoanType",
         "pk": 1,
         "fields": {
             "name": "Bloc",
@@ -9,7 +9,7 @@
         }
     },
     {
-        "model": "loans.LoanTypes",
+        "model": "loans.LoanType",
         "pk": 2,
         "fields": {
             "name": "Construction",
@@ -18,7 +18,7 @@
         }
     },
     {
-        "model": "loans.LoanTypes",
+        "model": "loans.LoanType",
         "pk": 3,
         "fields": {
             "name": "Mixed Use",
@@ -27,7 +27,7 @@
         }
     },
     {
-        "model": "loans.LoanTypes",
+        "model": "loans.LoanType",
         "pk": 4,
         "fields": {
             "name": "Multi Family",
@@ -36,7 +36,7 @@
         }
     },
     {
-        "model": "loans.LoanTypes",
+        "model": "loans.LoanType",
         "pk": 5,
         "fields": {
             "name": "Retail",
