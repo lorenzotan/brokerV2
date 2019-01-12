@@ -1,0 +1,23 @@
+[
+    {
+        "model": "forms.LoanPurpose",
+        "pk": 1,
+        "fields": {
+            "name": "Purchase"
+        }
+    },
+    {
+        "model": "forms.LoanPurpose",
+        "pk": 2,
+        "fields": {
+            "name": "Refinance"
+        }
+    },
+    {
+        "model": "forms.LoanPurpose",
+        "pk": 3,
+        "fields": {
+            "name": "Refurbish"
+        }
+    }
+]
