@@ -1,160 +1,160 @@
 [
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 1,
         "fields": {
             "name": "Pays Broker Fees"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 2,
         "fields": {
             "name": "Outside CA"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 3,
         "fields": {
             "name": "1031 Exchange"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 4,
         "fields": {
             "name": "Less than 500k"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 5,
         "fields": {
             "name": "Less than 1M"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 6,
         "fields": {
             "name": "Equipment"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 7,
         "fields": {
             "name": "Non-Conforming Property"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 8,
         "fields": {
             "name": "Ground Lease"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 9,
         "fields": {
             "name": "Relationship"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 10,
         "fields": {
             "name": "Cannabis"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 11,
         "fields": {
             "name": "Interest Only"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 12,
         "fields": {
             "name": "Revocable Trust"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 13,
         "fields": {
             "name": "Irrevocable Trust"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 14,
         "fields": {
             "name": "Foreclosure"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 15,
         "fields": {
             "name": "Single Tenant"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 16,
         "fields": {
             "name": "Bankruptcy"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 17,
         "fields": {
             "name": "Entitlements"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 18,
         "fields": {
             "name": "Non Profit"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 19,
         "fields": {
             "name": "Cash Out Refi"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 20,
         "fields": {
             "name": "Non Recourse"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 21,
         "fields": {
             "name": "Real Estate Collateral"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 22,
         "fields": {
             "name": "Cross Collateral"
         }
     },
     {
-        "model": "forms.Qualifiers",
+        "model": "forms.Qualifier",
         "pk": 23,
         "fields": {
             "name": "Business Acquisitions"

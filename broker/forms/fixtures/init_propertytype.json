@@ -1,146 +1,146 @@
 [
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 1,
         "fields": {
             "name": "Automotive"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 2,
         "fields": {
             "name": "Car Wash"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 3,
         "fields": {
             "name": "Entertainment"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 4,
         "fields": {
             "name": "Farm"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 5,
         "fields": {
             "name": "Gas Station"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 6,
         "fields": {
             "name": "Hospital"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 7,
         "fields": {
             "name": "Hotel (Flag)"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 8,
         "fields": {
             "name": "Hotel (Non-Flag)"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 9,
         "fields": {
             "name": "Industrial"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 10,
         "fields": {
             "name": "Marina"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 11,
         "fields": {
             "name": "Medical"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 12,
         "fields": {
             "name": "Mobile Home"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 13,
         "fields": {
             "name": "Motel (Flag)"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 14,
         "fields": {
             "name": "Motel (Non-Flag)"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 15,
         "fields": {
             "name": "Multifamily"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 16,
         "fields": {
             "name": "Office"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 17,
         "fields": {
             "name": "Restaurant"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 18,
         "fields": {
             "name": "Retail"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 19,
         "fields": {
             "name": "Senior Housing"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 20,
         "fields": {
             "name": "Storage"
         }
     },
     {
-        "model": "forms.PropertyTypes",
+        "model": "forms.PropertyType",
         "pk": 21,
         "fields": {
             "name": "Student Housing"

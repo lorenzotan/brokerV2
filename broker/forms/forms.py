@@ -4,35 +4,20 @@ from .models import *
 
 class LenderForm(forms.ModelForm):
     class Meta:
-        model = Lenders
+        model = Lender
 
         fields = (
-            'first_name',
-            'last_name',
             'company',
-            'address',
-            'city',
-            'state',
-            'zip_code',
-            'h_email',
-            'w_email',
-            'h_phone',
-            'w_phone',
-            'solicitation',
+            'solicit',
         )
-        labels = {
-            'first_name': gettext('First Name'),
-            'last_name': gettext('Last Name'),
-            'zip_code': gettext('Zip'),
-            'h_email': gettext('Email (H)'),
-            'w_email': gettext('Email (W)'),
-            'h_phone': gettext('Phone (H)'),
-            'w_phone': gettext('Phone (W)'),
-        }
-
-        widgets = {
-            
-        }
+            #'first_name',
+            #'last_name',
+            #'address',
+            #'city',
+            #'state',
+            #'zip_code',
+            #'email',
+            #'phone',
 
 
 class QualifierForm(forms.Form):
