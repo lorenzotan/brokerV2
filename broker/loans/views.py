@@ -10,12 +10,12 @@ def lender_form(req):
     else:
         form = LenderForm()
 
-    return render(req, 'forms/lender_form.html', {'form': form})
+    return render(req, 'loans/lender_form.html', {'form': form})
 
 
 
 def lender_list(req):
-    template = loader.get_template('forms/lender_list.html')
+    template = loader.get_template('loans/lender_list.html')
     lender_list = Lenders.objects.all()
     context = {
         'lenders': lender_list,
@@ -31,11 +31,11 @@ def loan_form(req):
     else:
         form = LoanForm()
 
-    return render(req, 'forms/loan_form.html', {'form': form})
+    return render(req, 'loans/loan_form.html', {'form': form})
 
 
 def loan_list(req):
-    template = loader.get_template('forms/loan_list.html')
+    template = loader.get_template('loans/loan_list.html')
     loan_list = Lenders.objects.all()
     context = {
         'loans': loan_list,

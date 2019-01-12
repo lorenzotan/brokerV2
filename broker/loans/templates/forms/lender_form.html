@@ -1,12 +1,12 @@
 {% load static %}
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="{% static 'forms/css/form.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'loans/css/form.css' %}" />
   </head>
   <body>
     <h1>Lender Form</h1>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    <form name="form" action="{% url 'forms:lender_form' %}" method="POST">
+    <form name="form" action="{% url 'loans:lender_form' %}" method="POST">
     {% csrf_token %}
 
     <!-- Name Table -->

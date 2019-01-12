@@ -1,76 +1,76 @@
 [
     {
-        "model": "forms.NeedsList",
+        "model": "loans.NeedsList",
         "pk": 1,
         "fields": {
             "name": "Executive Summary"
         }
     },
     {
-        "model": "forms.NeedsList",
+        "model": "loans.NeedsList",
         "pk": 2,
         "fields": {
             "name": "Credit Report"
         }
     },
     {
-        "model": "forms.NeedsList",
+        "model": "loans.NeedsList",
         "pk": 3,
         "fields": {
             "name": "Personal Taxes"
         }
     },
     {
-        "model": "forms.NeedsList",
+        "model": "loans.NeedsList",
         "pk": 4,
         "fields": {
             "name": "Business Taxes"
         }
     },
     {
-        "model": "forms.NeedsList",
+        "model": "loans.NeedsList",
         "pk": 5,
         "fields": {
             "name": "P & L"
         }
     },
     {
-        "model": "forms.NeedsList",
+        "model": "loans.NeedsList",
         "pk": 6,
         "fields": {
             "name": "Expense Report"
         }
     },
     {
-        "model": "forms.NeedsList",
+        "model": "loans.NeedsList",
         "pk": 7,
         "fields": {
             "name": "Broker's Opinion"
         }
     },
     {
-        "model": "forms.NeedsList",
+        "model": "loans.NeedsList",
         "pk": 8,
         "fields": {
             "name": "Appraisal"
         }
     },
     {
-        "model": "forms.NeedsList",
+        "model": "loans.NeedsList",
         "pk": 9,
         "fields": {
             "name": "Environmental"
         }
     },
     {
-        "model": "forms.NeedsList",
+        "model": "loans.NeedsList",
         "pk": 10,
         "fields": {
             "name": "Rent Roll"
         }
     },
     {
-        "model": "forms.NeedsList",
+        "model": "loans.NeedsList",
         "pk": 11,
         "fields": {
             "name": "Lease Agreements"
