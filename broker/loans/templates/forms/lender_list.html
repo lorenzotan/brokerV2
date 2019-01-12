@@ -5,7 +5,7 @@
       <header>
         Lender Information
         <button type="button" class="btn btn-broker btn-xs pull-right">
-          <a href="{% url 'forms:lender_form' %}">
+          <a href="{% url 'loans:lender_form' %}">
             <span class="glyphicon glyphicon-plus-sign"></span> Add Lender
           </a>
         </button>
@@ -20,7 +20,7 @@
             </tr>
           </thead>
           {% for lender in lenders %}
-          <tr class="row-link" data-href="/forms/lender_form/{{ lender.id }}">
+          <tr class="row-link" data-href="/loans/lender_form/{{ lender.id }}">
             <td>{{ lender.lender_first_name }}</td>
             <td>{{ lender.lender_last_name }}</td>
             <td>{{ lender.lender_company }}</td>

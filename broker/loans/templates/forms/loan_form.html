@@ -3,9 +3,9 @@
     <h1>Loan Form</h1>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
     {% if loan_id %}
-    <form name="form" action="{% url 'forms:edit_loan_form' pk=loan_id %}" method="POST">
+    <form name="form" action="{% url 'loans:edit_loan_form' pk=loan_id %}" method="POST">
     {% else %}
-    <form name="form" action="{% url 'forms:loan_form' %}" method="POST">
+    <form name="form" action="{% url 'loans:loan_form' %}" method="POST">
     {% endif %}
     {% csrf_token %}
 

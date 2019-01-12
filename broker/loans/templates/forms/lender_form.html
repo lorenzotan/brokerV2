@@ -1,13 +1,13 @@
-{% extends 'base.html' %}
-{% block content %}
+{% load static %}
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="{% static 'loans/css/form.css' %}" />
+  </head>
+  <body>
     <h1>Lender Form</h1>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    {% if lender.id %}
-    <form name="form" action="{% url 'forms:edit_lender_form' pk=lender.id %}" method="POST">
-    {% else %}
-    <form name="form" action="{% url 'forms:lender_form' %}" method="POST">
-    {% endif %}
-      {% csrf_token %}
+    <form name="form" action="{% url 'loans:lender_form' %}" method="POST">
+    {% csrf_token %}
 
       <!-- Name Table -->
       <div class="formContainer">
