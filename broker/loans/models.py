@@ -130,20 +130,6 @@ class Broker(models.Model):
     user     = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
-# NOTE: https://docs.djangoproject.com/en/2.0/topics/auth/customizing/#extending-the-existing-user-model
-class User(AbstractUser):
-    address  = models.CharField(max_length=50, default=None, null=True, blank=True)
-    city     = models.CharField(max_length=50, default=None, null=True, blank=True)
-    state    = models.CharField(max_length=2, default=None, null=True, blank=True)
-    zip_code = models.CharField(max_length=10, default=None, null=True, blank=True)
-    # NOTE https://github.com/VeryApt/django-phone-field
-    # https://stackoverflow.com/questions/19130942/whats-the-best-way-to-store-phone-number-in-django-models
-    phone    = models.CharField(max_length=10, blank=True)
-
-    def __str__(self):
-        return self.email
-
-
 class ClientBlocLoan(models.Model):
     client         = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
     name           = models.CharField(max_length=50, default='', blank=True, null=True)
