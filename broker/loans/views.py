@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import *
 
 # Create your views here.
+@login_required
+@user_passes_test(lambda u: u.groups.filter(name='client').count() == 0, login_url='/denied/')
 def lender_form(req):
     tmpl = loader.get_template('lender/form.html')
     submit = 'Submit'
@@ -37,6 +39,8 @@ def lender_form(req):
 
 
 
+@login_required
+@user_passes_test(lambda u: u.groups.filter(name='client').count() == 0, login_url='/denied/')
 def lender_list(req):
     template = loader.get_template('lender/list.html')
     lender_list = Lender.objects.all()
@@ -47,6 +51,8 @@ def lender_list(req):
     return HttpResponse(template.render(context, req))
 
 
+@login_required
+@user_passes_test(lambda u: u.groups.filter(name='lender').count() == 0, login_url='/denied/')
 def loan_form(req):
     if req.method == 'POST':
         form = LoanForm(req.POST)
@@ -57,6 +63,8 @@ def loan_form(req):
     return render(req, 'client/form.html', {'form': form})
 
 
+@login_required
+@user_passes_test(lambda u: u.groups.filter(name='lender').count() == 0, login_url='/denied/')
 def loan_list(req):
     template = loader.get_template('client/list.html')
     loan_list = Lender.objects.all()

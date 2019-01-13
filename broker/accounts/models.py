@@ -12,6 +12,3 @@ class User(AbstractUser):
     # NOTE https://github.com/VeryApt/django-phone-field
     # https://stackoverflow.com/questions/19130942/whats-the-best-way-to-store-phone-number-in-django-models
     phone    = models.CharField(max_length=10, blank=True)
-
-    def __str__(self):
-        self.email

@@ -6,3 +6,7 @@ def index(req):
     #template = loader.get_template('home/index.html')
     return render_to_response('home/index.html')
 
+def denied(req):
+    #template = loader.get_template('home/index.html')
+    return render_to_response('home/denied.html')
+
