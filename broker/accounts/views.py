@@ -1,14 +1,14 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.template import loader
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views import generic
 
 # Create your views here.
 
-def register(req):
-    tmpl = loader.get_template('accounts/register.html')
-    return HttpResponse(tmpl.render())
+class Register(generic.CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy('login')
+    template_name = 'registration/register.html'
 
 
-def login(req):
-    tmpl = loader.get_template('accounts/login.html')
-    return HttpResponse(tmpl.render())
+
+# validate login/username

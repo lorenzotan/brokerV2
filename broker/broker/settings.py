@@ -129,3 +129,6 @@ STATICFILES_DIRS = [
 ]
 
 AUTH_USER_MODEL = 'loans.User'
+
+LOGIN_REDIRECT_URL = 'home/'
+#LOGOUT_REDIRECT_URL = 'home/'

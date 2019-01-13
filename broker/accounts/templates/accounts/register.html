@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block base %}
+{% block content %}
 {% load static %}
   {% if registered %}
   <div>
@@ -11,7 +11,7 @@
   <br/>
   <h4>Sign Up Here</h4>
   <br/>
-  <form action="{% url 'accounts:signup'%}" method="POST">
+  <form action="{% url 'accounts:register'%}" method="POST">
       {% csrf_token %}
       {% for field in signup_form %}
       {% if field.name == 'password'%}
