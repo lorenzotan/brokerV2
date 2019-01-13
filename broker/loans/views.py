@@ -5,7 +5,7 @@ from .forms import *
 
 # Create your views here.
 def lender_form(req):
-    tmpl = loader.get_template('loans/lender_form.html')
+    tmpl = loader.get_template('lender/form.html')
     submit = 'Submit'
     qualifiers = Qualifier.objects.order_by('name')
 
@@ -37,7 +37,7 @@ def lender_form(req):
 
 
 def lender_list(req):
-    template = loader.get_template('loans/lender_list.html')
+    template = loader.get_template('lender/list.html')
     lender_list = Lender.objects.all()
     context = {
         'lenders': lender_list,
@@ -53,11 +53,11 @@ def loan_form(req):
     else:
         form = LoanForm()
 
-    return render(req, 'loans/loan_form.html', {'form': form})
+    return render(req, 'client/form.html', {'form': form})
 
 
 def loan_list(req):
-    template = loader.get_template('loans/loan_list.html')
+    template = loader.get_template('client/list.html')
     loan_list = Lender.objects.all()
     context = {
         'loans': loan_list,
