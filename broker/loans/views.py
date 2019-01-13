@@ -11,26 +11,45 @@ def lender_form(req):
     tmpl = loader.get_template('lender/form.html')
     submit = 'Submit'
     qualifiers = Qualifier.objects.order_by('name')
+    property_types = PropertyType.objects.order_by('name')
 
     if req.method == 'POST':
         lenderForm = LenderForm(req.POST)
-        lenderForm.save()
+        #lenderForm.save()
 
-        qualiferForm = QualifierForm(req.POST)
-        qualiferForm.save()
+        qualifierForm = QualifierForm(req.POST)
+        #qualifierForm.save()
     else:
+        userForm = UserForm()
         lenderForm = LenderForm()
-        qualifierForm = QualifierForm()
+        lenderOwnerOccupiedREForm = LenderOwnerOccupiedREForm()
+        lenderInvestmentREForm = LenderInvestmentREForm()
+        lenderMultiFamilyLoanForm = LenderMultiFamilyLoanForm()
+        lenderConstructionLoanForm = LenderConstructionLoanForm()
+        lenderSBALoanForm = LenderSBALoanForm()
+        lenderHELOCLoanForm = LenderHELOCLoanForm()
+        lenderBLOCLoanForm = LenderBLOCLoanForm()
+        lenderBridgeLoanForm = LenderBridgeLoanForm()
+        #qualifierForm = QualifierForm()
 
-    print ()
-    print ("DEBUG: {}".format(qualifierForm))
-    print ("DEBUG: {}".format(type(qualifierForm)))
-    print ()
+    #print ()
+    #print ("DEBUG: {}".format(qualifierForm))
+    #print ("DEBUG: {}".format(type(qualifierForm)))
+    #print ()
 
     context = {
+        'userForm': userForm,
         'lenderForm': lenderForm,
-        #'qualifiers': qualifiers,
-        'qualifiers': qualifierForm,
+        'lenderOwnerOccupiedREForm': lenderOwnerOccupiedREForm,
+        'lenderInvestmentREForm': lenderInvestmentREForm,
+        'lenderMultiFamilyLoanForm': lenderMultiFamilyLoanForm,
+        'lenderConstructionLoanForm': lenderConstructionLoanForm,
+        'lenderSBALoanForm': lenderSBALoanForm,
+        'lenderHELOCLoanForm': lenderHELOCLoanForm,
+        'lenderBLOCLoanForm': lenderBLOCLoanForm,
+        'lenderBridgeLoanForm': lenderBridgeLoanForm,
+        'qualifiers': qualifiers,
+        'property_types': property_types,
         'submit': submit,
     }
     #return render(req, 'loans/lender_form.html', context)

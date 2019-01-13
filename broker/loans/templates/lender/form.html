@@ -9,6 +9,10 @@
       <div class="formContainer">
         <div class="grid3c">
           <h1 class="formHeader">Lender Information</h1>
+          {% for field in userForm %}
+            {{ field.label_tag }}
+            {{ field }}
+          {% endfor %}
           {% for field in lenderForm %}
             {{ field.label_tag }}
             {{ field }}
@@ -19,210 +23,88 @@
       <!-- Owner Occupied Table -->
       <div class="formContainer">
         <div class="grid3c">
-          <h1 class="formHeader">Owner Occupied Real Estate Parameters</h1>
-          <label>Office:</label>
-          <label>
-          {% for choice in form.oo_office %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          <h1 class="formHeader">Owner Occupied Real Estate</h1>
+          {% for field in lenderOwnerOccupiedREForm %}
+            {{ field.label_tag }}
+            {{ field }}
           {% endfor %}
-          </label>
-          <label>Warehouse:</label>
-          <label>
-          {% for choice in form.oo_warehouse %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Manufacturing:</label>
-          <label>
-          {% for choice in form.oo_manufacturing %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Medical:</label>
-          <label>
-          {% for choice in form.oo_medical %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Mixed Use:</label>
-          <label>
-          {% for choice in form.oo_mixed_use %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Other:</label>
-          <label>
-          {% for choice in form.oo_other %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
         </div>
       </div>
 
       <!-- Investment Table -->
       <div class="formContainer">
         <div class="grid3c">
-          <h1 class="formHeader">Investment Real Estate Parameters</h1>
-          <label>Office:</label>
-          <label>
-          {% for choice in form.inv_office %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          <h1 class="formHeader">Investment Real Estate</h1>
+          {% for field in lenderInvestmentREForm %}
+            {{ field.label_tag }}
+            {{ field }}
           {% endfor %}
-          </label>
-          <label>Warehouse:</label>
-          <label>
-          {% for choice in form.inv_warehouse %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Manufacturing:</label>
-          <label>
-          {% for choice in form.inv_manufacturing %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Medical:</label>
-          <label>
-          {% for choice in form.inv_medical %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Mixed Use:</label>
-          <label>
-          {% for choice in form.inv_mixed_use %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Other:</label>
-          <label>
-          {% for choice in form.inv_other %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
         </div>
       </div>
 
       <!-- Multifamily Table -->
       <div class="formContainer">
         <div class="grid2c">
-          <h1 class="formHeader">Multifamily Loan Parameters</h1>
-          <label>2 to 4 Units:</label>
-          <label>
-          {% for choice in form.mf_2to4 %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          <h1 class="formHeader">Multifamily Loan</h1>
+          {% for field in lenderMultiFamilyLoanForm %}
+            {{ field.label_tag }}
+            {{ field }}
           {% endfor %}
-          </label>
-          <label>More than 4 Units:</label>
-          <label>
-          {% for choice in form.mf_gt4 %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
         </div>
       </div>
 
-      <!-- Construction Table -->
+      <!-- Construction Loan -->
       <div class="formContainer">
-        <div class="grid3c">
-          <h1 class="formHeader">Construction Loan Parameters</h1>
-          <label>Renovation:</label>
-          <label>
-          {% for choice in form.constr_renovation %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <div class="grid2c">
+          <h1 class="formHeader">Construction Loan</h1>
+          {% for field in lenderConstructionLoanForm %}
+            {{ field.label_tag }}
+            {{ field }}
           {% endfor %}
-          </label>
-          <label>Ground Up Spec:</label>
-          <label>
-          {% for choice in form.constr_ground_up_spec %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Commercial:</label>
-          <label>
-          {% for choice in form.constr_commercial %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Residential:</label>
-          <label>
-          {% for choice in form.constr_residential %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Investment with Land:</label>
-          <label>
-          {% for choice in form.constr_inv_with_land %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Owner Occ with Land:</label>
-          <label>
-          {% for choice in form.constr_oo_with_land %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
         </div>
       </div>
 
       <!-- SBA Table -->
       <div class="formContainer">
-        <div class="grid3c">
-          <h1 class="formHeader">SBA Loan Parameters</h1>
-          <label>7a:</label>
-          <label>
-          {% for choice in form.sba_7a %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <div class="grid2c">
+          <h1 class="formHeader">SBA Loan</h1>
+          {% for field in lenderSBALoanForm %}
+            {{ field.label_tag }}
+            {{ field }}
           {% endfor %}
-          </label>
-          <label>504:</label>
-          <label>
-          {% for choice in form.sba_504 %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>CAPline:</label>
-          <label>
-          {% for choice in form.sba_CAPline %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Microloan:</label>
-          <label>
-          {% for choice in form.sba_micro %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Other:</label>
-          <label>
-          {% for choice in form.sba_other %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
         </div>
       </div>
 
-      <!-- Miscellaneious Table -->
+      <!-- HELOC Table -->
       <div class="formContainer">
-        <div class="grid3c">
-          <h1 class="formHeader">Miscellaneous Loans</h1>
-          <label>HELOC:</label>
-          <label>
-          {% for choice in form.misc_HELOC %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <div class="grid2c">
+          <h1 class="formHeader">HELOC Loan</h1>
+          {% for field in lenderHELOCLoanForm %}
+            {{ field.label_tag }}
+            {{ field }}
           {% endfor %}
-          </label>
-          <label>BLOC:</label>
-          <label>
-          {% for choice in form.misc_BLOC %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        </div>
+      </div>
+
+      <!-- BLOC Table -->
+      <div class="formContainer">
+        <div class="grid2c">
+          <h1 class="formHeader">BLOC Loan</h1>
+          {% for field in lenderBLOCLoanForm %}
+            {{ field.label_tag }}
+            {{ field }}
           {% endfor %}
-          </label>
-          <label>Bridge:</label>
-          <label>
-          {% for choice in form.misc_bridge %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        </div>
+      </div>
+
+      <!-- Bridge Table -->
+      <div class="formContainer">
+        <div class="grid2c">
+          <h1 class="formHeader">Bridge Loan</h1>
+          {% for field in lenderBridgeLoanForm %}
+            {{ field.label_tag }}
+            {{ field }}
           {% endfor %}
-          </label>
         </div>
       </div>
 
@@ -237,137 +119,17 @@
         </div>
       </div>
 
+      <!-- Property Types -->
       <div class="formContainer">
         <div class="grid3c">
           <h1 class="formHeader">Property Types</h1>
-          <label>Automotive:</label>
-          <label>
-          {% for choice in form.prop_automotive %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          {% for p in property_types %}
+            <label>{{ p }}</label>
+            <label><input type="checkbox" value="{{ p.id | striptags }}" name="property_type"></label>
           {% endfor %}
-          </label>
-          <label>Car Wash:</label>
-          <label>
-          {% for choice in form.prop_carwash %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Entertainment:</label>
-          <label>
-          {% for choice in form.prop_entertainment %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Farm:</label>
-          <label>
-          {% for choice in form.prop_farm %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Gas Station:</label>
-          <label>
-          {% for choice in form.prop_gas_station %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Hospital:</label>
-          <label>
-          {% for choice in form.prop_hospital %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Hotel (Flag):</label>
-          <label>
-          {% for choice in form.prop_hotel_flag %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Hotel (Non-Flag):</label>
-          <label>
-          {% for choice in form.prop_hotel_nonflag %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Industrial:</label>
-          <label>
-          {% for choice in form.prop_industrial %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Marina:</label>
-          <label>
-          {% for choice in form.prop_marina %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Medical:</label>
-          <label>
-          {% for choice in form.prop_medical %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Mobile Home:</label>
-          <label>
-          {% for choice in form.prop_mobile_home %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Motel (Flag):</label>
-          <label>
-          {% for choice in form.prop_motel_flag %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Motel (Non-Flag):</label>
-          <label>
-          {% for choice in form.prop_motel_nonflag %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Multifamily:</label>
-          <label>
-          {% for choice in form.prop_multifamily %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Office:</label>
-          <label>
-          {% for choice in form.prop_office %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Restaurant:</label>
-          <label>
-          {% for choice in form.prop_restaurant %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Retail:</label>
-          <label>
-          {% for choice in form.prop_retail %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Senior Housing:</label>
-          <label>
-          {% for choice in form.prop_senior_housing %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Storage:</label>
-          <label>
-          {% for choice in form.prop_storage %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
-          <label>Student Housing:</label>
-          <label>
-          {% for choice in form.prop_student_housing %}
-            <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          {% endfor %}
-          </label>
         </div>
       </div>
+
       <center>
         <button>{{ submit }}</button>
       </center>
