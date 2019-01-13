@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block base%}
+<div id="loginform">
+  <br/>
+  <p>{{error}}</p>
+  <h4>Login Here</h4><br/>
+  <form action="{% url 'accounts:login'%}" method="POST">
+      {% csrf_token %}
+      <div>
+        Username:
+        <input type="text" name="username" size=20 required />
+      </div>
+      <br/>
+      <div>
+        Password:&nbsp;
+        <input type="password" name="password"  size=20 required />
+      </div>
+      <br/>
+      <div>
+        <input type="submit" value="Login" />
+      </div>
+  </form>
+</div>
+{%endblock%}

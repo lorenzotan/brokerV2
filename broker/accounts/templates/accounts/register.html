@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block base %}
+{% load static %}
+  {% if registered %}
+  <div>
+    <a href="{% url 'accounts:login' %}"> Click Here to Login </a>
+  </div>
+
+  {% else %}
+  <br/>
+  <h4>Sign Up Here</h4>
+  <br/>
+  <form action="{% url 'accounts:signup'%}" method="POST">
+      {% csrf_token %}
+      {% for field in signup_form %}
+      {% if field.name == 'password'%}
+
+      <input type="password" name="{{field.name}}"  size="30">&nbsp;&nbsp;<~~&nbsp;&nbsp;{{field.label}}<br>
+      <span class="text-danger">{{field.errors}}</span>
+      {% else%}
+        <input id="{{field.name}}" name="{{field.name}}" size="30">&nbsp;&nbsp;<~~&nbsp;&nbsp;{{field.label}}<br><br>
+        <span class="text-danger">{{field.errors}}</span>
+      {% endif %}
+      {% endfor %}
+      <br>
+      <input size="25" type="submit" name="" value="Sign Up">
+    </form>
+
+    {%endif%}
+    <script src="{% static 'ajax.js' %}"></script>
+{% endblock %}
