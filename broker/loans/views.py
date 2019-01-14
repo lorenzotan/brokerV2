@@ -82,7 +82,8 @@ def lender_form(req):
             return redirect('loans:lenders')
 
     else:
-        userForm                   = UserForm()
+        user = { 'first_name': req.user.first_name, 'last_name': req.user.last_name }
+        userForm                   = UserForm(user)
         lenderForm                 = LenderForm()
         lenderOwnerOccupiedREForm  = LenderOwnerOccupiedREForm()
         lenderInvestmentREForm     = LenderInvestmentREForm()
