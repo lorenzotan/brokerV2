@@ -3,7 +3,7 @@
 {% block content %}
     <section class="container">
       <header>
-        Lender Information
+        <h2>Lender Information</h2>
         <button type="button" class="btn btn-broker btn-xs pull-right">
           <a href="{% url 'loans:lender_form' %}">
             <span class="glyphicon glyphicon-plus-sign"></span> Add Lender
@@ -17,14 +17,18 @@
               <th>First Name</th>
               <th>Last Name</th>
               <th>Company</th>
+              <th>Email</th>
+              <th>Phone</th>
             </tr>
           </thead>
           {% for lender in lenders %}
-          <tr class="row-link" data-href="/loans/lender_form/{{ lender.id }}">
+          <tr class="row-link" data-href="/loans/lender/{{ lender.id }}">
             <!-- https://codereview.stackexchange.com/questions/194906/cleanest-way-to-get-list-of-django-objects-that-have-same-foreign-key-and-displa -->
             <td>{{ lender.user.first_name }}</td>
             <td>{{ lender.user.last_name }}</td>
             <td>{{ lender.company }}</td>
+            <td>{{ lender.user.email }}</td>
+            <td>{{ lender.user.phone }}</td>
           </tr>
           {% empty %}
           <tr>
