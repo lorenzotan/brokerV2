@@ -47,6 +47,14 @@ def lender_form(req):
             lender.user = user
             lender_id = lender.save()
 
+            for q in req.POST.getlist('qualifier'):
+                lender.qualifiers.add(q)
+
+            for p in req.POST.getlist('property_type'):
+                lender.propertytypes.add(p)
+
+            lenderForm.save_m2m()
+
             oo = lenderOwnerOccupiedREForm.save(commit=False)
             oo.lender = lender_id
             oo.save()
@@ -139,9 +147,7 @@ def lender_list(req):
 def lender_detail(req, pk):
     templ = loader.get_template('lender/detail.html')
     lender = get_object_or_404(Lender.objects.select_related('user'), id=pk)
-    qs = LenderOwnerOccupiedRE.objects.select_related('lender')
-    print (qs.query)
-    oo     = get_object_or_404(qs, lender=pk)
+    oo     = get_object_or_404(LenderOwnerOccupiedRE.objects.select_related('lender'), lender=pk)
     inv    = get_object_or_404(LenderInvestmentRE.objects.select_related('lender'), lender=pk)
     multi  = get_object_or_404(LenderMultiFamilyLoan.objects.select_related('lender'), lender=pk)
     const  = get_object_or_404(LenderConstructionLoan.objects.select_related('lender'), lender=pk)
