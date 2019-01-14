@@ -147,14 +147,46 @@ def lender_list(req):
 def lender_detail(req, pk):
     templ = loader.get_template('lender/detail.html')
     lender = get_object_or_404(Lender.objects.select_related('user'), id=pk)
-    oo     = get_object_or_404(LenderOwnerOccupiedRE.objects.select_related('lender'), lender=pk)
-    inv    = get_object_or_404(LenderInvestmentRE.objects.select_related('lender'), lender=pk)
-    multi  = get_object_or_404(LenderMultiFamilyLoan.objects.select_related('lender'), lender=pk)
-    const  = get_object_or_404(LenderConstructionLoan.objects.select_related('lender'), lender=pk)
-    sba    = get_object_or_404(LenderSBALoan.objects.select_related('lender'), lender=pk)
-    heloc  = get_object_or_404(LenderHELOCLoan.objects.select_related('lender'), lender=pk)
-    bloc   = get_object_or_404(LenderBLOCLoan.objects.select_related('lender'), lender=pk)
-    bridge = get_object_or_404(LenderBridgeLoan.objects.select_related('lender'), lender=pk)
+    # https://stackoverflow.com/questions/4353147/whats-the-best-way-to-handle-djangos-objects-get
+    try:
+        oo = LenderOwnerOccupiedRE.objects.get(lender=pk)
+    except LenderOwnerOccupiedRE.DoesNotExist:
+        oo = None
+
+    try:
+        inv = LenderInvestmentRE.objects.get(lender=pk)
+    except LenderInvestmentRE.DoesNotExist:
+        inv = None
+
+    try:
+        multi = LenderMultiFamilyLoan.objects.get(lender=pk)
+    except LenderMultiFamilyLoan.DoesNotExist:
+        multi = None
+
+    try:
+        const = LenderConstructionLoan.objects.get(lender=pk)
+    except LenderConstructionLoan.DoesNotExist:
+        const = None
+
+    try:
+        sba = LenderSBALoan.objects.get(lender=pk)
+    except LenderSBALoan.DoesNotExist:
+        sba = None
+
+    try:
+        heloc = LenderHELOCLoan.objects.get(lender=pk)
+    except LenderHELOCLoan.DoesNotExist:
+        heloc = None
+
+    try:
+        bloc = LenderBLOCLoan.objects.get(lender=pk)
+    except LenderBLOCLoan.DoesNotExist:
+        bloc = None
+
+    try:
+        bridge = LenderBridgeLoan.objects.get(lender=pk)
+    except LenderBridgeLoan.DoesNotExist:
+        bridge = None
 
     context = {
         'lender_data': lender,
