@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Lender Form</h1>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <form name="form" action="" method="GET">
+    {% csrf_token %}
+
+      <!-- Name Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Lender Information</h1>
+          <label>First Name:</label>
+          {{ lender_data.user.first_name }}
+          <label>Last Name:</label>
+          {{ lender_data.user.last_name }}
+          <label>Company:</label>
+          {{ lender_data.company }}
+          <label>Address:</label>
+          {{ lender_data.user.address }}
+          <label>City:</label>
+          {{ lender_data.user.city }}
+          <label>State:</label>
+          {{ lender_data.user.state }}
+          <label>Zip:</label>
+          {{ lender_data.user.zip_code }}
+          <label>Email:</label>
+          {{ lender_data.user.email }}
+          <label>Phone:</label>
+          {{ lender_data.user.phone }}
+          <label>Solicitation:</label>
+          {{ lender_data.solicit }} Days
+        </div>
+      </div>
+
+      <!-- Owner Occupied Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Owner Occupied Real Estate</h1>
+          <label>Office:</label>
+          {{ owner_occupy.office }}
+          <label>Warehouse:</label>
+          {{ owner_occupy.warehouse }}
+          <label>Manufacturing:</label>
+          {{ owner_occupy.manufacturing }}
+          <label>Medical:</label>
+          {{ owner_occupy.medical }}
+          <label>Mixed Use:</label>
+          {{ owner_occupy.mixed_use }}
+          <label>Other:</label>
+          {{ owner_occupy.other }}
+        </div>
+      </div>
+
+      <!-- Investment Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Investment Real Estate</h1>
+          <label>Office:</label>
+          {{ invest.office }}
+          <label>Warehouse:</label>
+          {{ invest.warehouse }}
+          <label>Manufacturing:</label>
+          {{ invest.manufacturing }}
+          <label>Medical:</label>
+          {{ invest.medical }}
+          <label>Mixed Use:</label>
+          {{ invest.mixed_use }}
+          <label>Other:</label>
+          {{ invest.other }}
+        </div>
+      </div>
+
+      <!-- Multifamily Table -->
+      <div class="formContainer">
+        <div class="grid2c">
+          <h1 class="formHeader">Multifamily Loan</h1>
+          <label>2 to 4 Units:</label>
+          {{ multi.mf_2to4 }}
+          <label>More than 4 Units:</label>
+          {{ multi.mf_gt4 }}
+        </div>
+      </div>
+
+      <!-- Construction Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Construction Loan</h1>
+          <label>Renovation:</label>
+          {{ const.renovation }}
+          <label>Ground Up Spec:</label>
+          {{ const.ground_up_spec }}
+          <label>Commercial:</label>
+          {{ const.commercial }}
+          <label>Residential:</label>
+          {{ const.residential }}
+          <label>Investment with Land:</label>
+          {{ const.inv_with_land }}
+          <label>Owner Occ with Land:</label>
+          {{ const.oo_with_land }}
+        </div>
+      </div>
+
+      <!-- SBA Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">SBA Loan</h1>
+          <label>7a:</label>
+          {{ sba.sba_7a }}
+          <label>504:</label>
+          {{ sba.sba_504 }}
+          <label>CAPline:</label>
+          {{ sba.CAPline }}
+          <label>Microloan:</label>
+          {{ sba.micro }}
+          <label>Other:</label>
+          {{ sba.other }}
+        </div>
+      </div>
+
+      <!-- https://stackoverflow.com/questions/7326505/django-form-how-to-check-out-checkbox-state-in-template -->
+      <!-- HELOC Table -->
+      <div class="formContainer">
+        <div class="grid2c">
+          <h1 class="formHeader">HELOC Loans</h1>
+          <label>1st Position:</label>
+          {{ heloc.pos_1 }}
+          <label>2nd Position:</label>
+          {{ heloc.pos_2 }}
+        </div>
+      </div>
+
+      <!-- BLOC Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">BLOC Loans</h1>
+          <label>Residential Property:</label>
+          {{ bloc.resid_prop }}
+          <label>Investment Property:</label>
+          {{ bloc.inv_prop }}
+          <label>Savings:</label>
+          {{ bloc.savings }}
+          <label>Stocks:</label>
+          {{ bloc.stocks }}
+          <label>1st Position:</label>
+          {{ bloc.pos_1 }}
+          <label>2nd Position:</label>
+          {{ bloc.pos_2 }}
+        </div>
+      </div>
+
+      <!-- Bridge Table -->
+      <div class="formContainer">
+        <div class="grid2c">
+          <h1 class="formHeader">Bridge Loans</h1>
+          <label>Bridge:</label>
+          {{ bridge.bridge }}
+        </div>
+      </div>
+
+      <!-- Qualifiers -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Qualifiers</h1>
+          <label>Pays Brokers Fees:</label>
+          {{ lender_data.qual_pays_fees }}
+          <label>Outside CA:</label>
+          {{ lender_data.qual_outside_ca }}
+          <label>1031 Exchange:</label>
+          {{ lender_data.qual_1031_exchange }}
+          <label>Less than 500K:</label>
+          {{ lender_data.qual_lt_500K }}
+          <label>Less than 1M:</label>
+          {{ lender_data.qual_lt_1M }}
+          <label>Equipment:</label>
+          {{ lender_data.qual_equip }}
+          <label>Non-Conforming Property:</label>
+          {{ lender_data.qual_non_conform }}
+          <label>Ground Lease:</label>
+          {{ lender_data.qual_ground_lease }}
+          <label>Relationship:</label>
+          {{ lender_data.qual_relationship }}
+          <label>Cannabis:</label>
+          {{ lender_data.qual_cannabis }}
+          <label>Interest Only:</label>
+          {{ lender_data.qual_io }}
+          <label>Revocable Trust:</label>
+          {{ lender_data.qual_rev_trust }}
+          <label>Irrevocable Trust:</label>
+          {{ lender_data.qual_irrev_trust }}
+          <label>Foreclosure:</label>
+          {{ lender_data.qual_foreclosure }}
+          <label>Single Tenant:</label>
+          {{ lender_data.qual_single_tenant }}
+          <label>Bankruptcy:</label>
+          {{ lender_data.qual_bk }}
+          <label>Entitlements:</label>
+          {{ lender_data.qual_entitlements }}
+          <label>Non Profit:</label>
+          {{ lender_data.qual_non_profit }}
+          <label>Cash Out Refi:</label>
+          {{ lender_data.qual_cashout_refi }}
+          <label>Non Recourse:</label>
+          {{ lender_data.qual_non_recourse }}
+          <label>Real Estate Collateral:</label>
+          {{ lender_data.qual_re_collateral }}
+          <label>Cross Collateral:</label>
+          {{ lender_data.qual_cross_collateral }}
+          <label>Business Acquisitions:</label>
+          {{ lender_data.qual_biz_acq }}
+        </div>
+      </div>
+
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Property Types</h1>
+          <label>Automotive:</label>
+          {{ lender_data.prop_automotive }}
+          <label>Car Wash:</label>
+          {{ lender_data.prop_carwash }}
+          <label>Entertainment:</label>
+          {{ lender_data.prop_entertainment }}
+          <label>Farm:</label>
+          {{ lender_data.prop_farm }}
+          <label>Gas Station:</label>
+          {{ lender_data.prop_gas_station }}
+          <label>Hospital:</label>
+          {{ lender_data.prop_hospital }}
+          <label>Hotel (Flag):</label>
+          {{ lender_data.prop_hotel_flag }}
+          <label>Hotel (Non-Flag):</label>
+          {{ lender_data.prop_hotel_nonflag }}
+          <label>Industrial:</label>
+          {{ lender_data.prop_industrial }}
+          <label>Marina:</label>
+          {{ lender_data.prop_marina }}
+          <label>Medical:</label>
+          {{ lender_data.prop_medical }}
+          <label>Mobile Home:</label>
+          {{ lender_data.prop_mobile_home }}
+          <label>Motel (Flag):</label>
+          {{ lender_data.prop_motel_flag }}
+          <label>Motel (Non-Flag):</label>
+          {{ lender_data.prop_motel_nonflag }}
+          <label>Multifamily:</label>
+          {{ lender_data.prop_multifamily }}
+          <label>Office:</label>
+          {{ lender_data.prop_office }}
+          <label>Restaurant:</label>
+          {{ lender_data.prop_restaurant }}
+          <label>Retail:</label>
+          {{ lender_data.prop_retail }}
+          <label>Senior Housing:</label>
+          {{ lender_data.prop_senior_housing }}
+          <label>Storage:</label>
+          {{ lender_data.prop_storage }}
+          <label>Student Housing:</label>
+          {{ lender_data.prop_student_housing }}
+        </div>
+      </div>
+      <center>
+        <button>Edit</button>
+      </center>
+    </form>
+{% endblock %}
