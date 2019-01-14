@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.db import models
 from django.core.validators import RegexValidator
-from django.contrib.auth.models import AbstractUser
 
 #NOTE: Meta options: https://docs.djangoproject.com/en/dev/ref/models/options/
 
@@ -119,15 +118,15 @@ class Client(models.Model):
 
 
 class Lender(models.Model):
-    user           = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    company        = models.CharField(max_length=100, default=None, null=True, blank=True)
-    qualifiers     = models.ManyToManyField(Qualifier)
-    propertytypes  = models.ManyToManyField(PropertyType)
-    solicit        = models.PositiveSmallIntegerField()
+    user          = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    company       = models.CharField(max_length=100, default=None, null=True, blank=True)
+    qualifiers    = models.ManyToManyField(Qualifier)
+    propertytypes = models.ManyToManyField(PropertyType)
+    solicit       = models.PositiveSmallIntegerField()
 
 
 class Broker(models.Model):
-    user     = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
 class ClientBLOCLoan(models.Model):
@@ -182,28 +181,28 @@ class ClientRetailLoan(models.Model):
 
 class LenderBLOCLoan(models.Model):
     lender     = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
-    resid_prop = models.BooleanField()
-    stocks     = models.BooleanField()
-    savings    = models.BooleanField()
-    inv_prop   = models.BooleanField()
-    pos1       = models.BooleanField()
-    pos2       = models.BooleanField()
+    resid_prop = models.BooleanField(default=False)
+    stocks     = models.BooleanField(default=False)
+    savings    = models.BooleanField(default=False)
+    inv_prop   = models.BooleanField(default=False)
+    pos1       = models.BooleanField(default=False)
+    pos2       = models.BooleanField(default=False)
 
 
 class LenderConstructionLoan(models.Model):
     lender         = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
-    renovation     = models.BooleanField()
-    ground_up_spec = models.BooleanField()
-    commercial     = models.BooleanField()
-    residential    = models.BooleanField()
-    inv_w_land     = models.BooleanField()
-    oo_w_land      = models.BooleanField()
+    renovation     = models.BooleanField(default=False)
+    ground_up_spec = models.BooleanField(default=False)
+    commercial     = models.BooleanField(default=False)
+    residential    = models.BooleanField(default=False)
+    inv_w_land     = models.BooleanField(default=False)
+    oo_w_land      = models.BooleanField(default=False)
 
 
 class LenderHELOCLoan(models.Model):
     lender = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
-    pos_1  = models.BooleanField()
-    pos_2  = models.BooleanField()
+    pos_1  = models.BooleanField(default=False)
+    pos_2  = models.BooleanField(default=False)
 
 
 class LenderMixedUseLoan(models.Model):
@@ -211,9 +210,9 @@ class LenderMixedUseLoan(models.Model):
 
 
 class LenderMultiFamilyLoan(models.Model):
-    lender   = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
-    mf_2to4 = models.BooleanField()
-    mf_gt4  = models.BooleanField()
+    lender  = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
+    mf_2to4 = models.BooleanField(default=False)
+    mf_gt4  = models.BooleanField(default=False)
 
 
 class LenderRetailLoan(models.Model):
@@ -222,34 +221,34 @@ class LenderRetailLoan(models.Model):
 
 class LenderSBALoan(models.Model):
     lender  = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
-    sba_7a  = models.BooleanField()
-    sba_504 = models.BooleanField()
-    CAPline = models.BooleanField()
-    micro   = models.BooleanField()
-    other   = models.BooleanField()
+    sba_7a  = models.BooleanField(default=False)
+    sba_504 = models.BooleanField(default=False)
+    CAPline = models.BooleanField(default=False)
+    micro   = models.BooleanField(default=False)
+    other   = models.BooleanField(default=False)
 
 
 class LenderBridgeLoan(models.Model):
     lender = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
-    bridge = models.BooleanField()
+    bridge = models.BooleanField(default=False)
 
 
 class LenderOwnerOccupiedRE(models.Model):
     lender = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
-    office        = models.BooleanField()
-    warehouse     = models.BooleanField()
-    manufacturing = models.BooleanField()
-    medical       = models.BooleanField()
-    mixed_use     = models.BooleanField()
-    other         = models.BooleanField()
+    office        = models.BooleanField(default=False)
+    warehouse     = models.BooleanField(default=False)
+    manufacturing = models.BooleanField(default=False)
+    medical       = models.BooleanField(default=False)
+    mixed_use     = models.BooleanField(default=False)
+    other         = models.BooleanField(default=False)
 
 
 class LenderInvestmentRE(models.Model):
     lender = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
-    office        = models.BooleanField()
-    warehouse     = models.BooleanField()
-    manufacturing = models.BooleanField()
-    medical       = models.BooleanField()
-    mixed_use     = models.BooleanField()
-    other         = models.BooleanField()
+    office        = models.BooleanField(default=False)
+    warehouse     = models.BooleanField(default=False)
+    manufacturing = models.BooleanField(default=False)
+    medical       = models.BooleanField(default=False)
+    mixed_use     = models.BooleanField(default=False)
+    other         = models.BooleanField(default=False)
 

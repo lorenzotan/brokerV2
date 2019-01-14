@@ -21,9 +21,10 @@
           </thead>
           {% for lender in lenders %}
           <tr class="row-link" data-href="/loans/lender_form/{{ lender.id }}">
-            <td>{{ lender.lender_first_name }}</td>
-            <td>{{ lender.lender_last_name }}</td>
-            <td>{{ lender.lender_company }}</td>
+            <!-- https://codereview.stackexchange.com/questions/194906/cleanest-way-to-get-list-of-django-objects-that-have-same-foreign-key-and-displa -->
+            <td>{{ lender.user.first_name }}</td>
+            <td>{{ lender.user.last_name }}</td>
+            <td>{{ lender.company }}</td>
           </tr>
           {% empty %}
           <tr>
