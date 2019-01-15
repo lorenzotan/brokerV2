@@ -55,6 +55,7 @@ def lender_form(req):
 
             lenderForm.save_m2m()
 
+            # TODO needs to be more efficient
             oo = lenderOwnerOccupiedREForm.save(commit=False)
             oo.lender = lender_id
             oo.save()
@@ -147,6 +148,8 @@ def lender_list(req):
 def lender_detail(req, pk):
     templ = loader.get_template('lender/detail.html')
     lender = get_object_or_404(Lender.objects.select_related('user'), id=pk)
+
+    # TODO this needs to be more efficient
     # https://stackoverflow.com/questions/4353147/whats-the-best-way-to-handle-djangos-objects-get
     try:
         oo = LenderOwnerOccupiedRE.objects.get(lender=pk)
@@ -188,6 +191,11 @@ def lender_detail(req, pk):
     except LenderBridgeLoan.DoesNotExist:
         bridge = None
 
+    # https://hackernoon.com/all-you-need-to-know-about-prefetching-in-django-f9068ebe1e60
+    # https://docs.djangoproject.com/en/2.0/topics/db/examples/many_to_many/
+    quals = lender.qualifiers.all()
+    props = lender.propertytypes.all()
+
     context = {
         'lender_data': lender,
         'owner_occupy': oo,
@@ -198,6 +206,8 @@ def lender_detail(req, pk):
         'heloc': heloc,
         'bloc': bloc,
         'bridge': bridge,
+        'quals': quals,
+        'props': props,
     }
 
     return HttpResponse(templ.render(context, req))

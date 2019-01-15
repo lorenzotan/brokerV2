@@ -94,9 +94,9 @@
           <label>Residential:</label>
           {{ const.residential }}
           <label>Investment with Land:</label>
-          {{ const.inv_with_land }}
+          {{ const.inv_w_land }}
           <label>Owner Occ with Land:</label>
-          {{ const.oo_with_land }}
+          {{ const.oo_w_land }}
         </div>
       </div>
 
@@ -142,9 +142,9 @@
           <label>Stocks:</label>
           {{ bloc.stocks }}
           <label>1st Position:</label>
-          {{ bloc.pos_1 }}
+          {{ bloc.pos1 }}
           <label>2nd Position:</label>
-          {{ bloc.pos_2 }}
+          {{ bloc.pos2 }}
         </div>
       </div>
 
@@ -161,104 +161,22 @@
       <div class="formContainer">
         <div class="grid3c">
           <h1 class="formHeader">Qualifiers</h1>
-          <label>Pays Brokers Fees:</label>
-          {{ lender_data.qual_pays_fees }}
-          <label>Outside CA:</label>
-          {{ lender_data.qual_outside_ca }}
-          <label>1031 Exchange:</label>
-          {{ lender_data.qual_1031_exchange }}
-          <label>Less than 500K:</label>
-          {{ lender_data.qual_lt_500K }}
-          <label>Less than 1M:</label>
-          {{ lender_data.qual_lt_1M }}
-          <label>Equipment:</label>
-          {{ lender_data.qual_equip }}
-          <label>Non-Conforming Property:</label>
-          {{ lender_data.qual_non_conform }}
-          <label>Ground Lease:</label>
-          {{ lender_data.qual_ground_lease }}
-          <label>Relationship:</label>
-          {{ lender_data.qual_relationship }}
-          <label>Cannabis:</label>
-          {{ lender_data.qual_cannabis }}
-          <label>Interest Only:</label>
-          {{ lender_data.qual_io }}
-          <label>Revocable Trust:</label>
-          {{ lender_data.qual_rev_trust }}
-          <label>Irrevocable Trust:</label>
-          {{ lender_data.qual_irrev_trust }}
-          <label>Foreclosure:</label>
-          {{ lender_data.qual_foreclosure }}
-          <label>Single Tenant:</label>
-          {{ lender_data.qual_single_tenant }}
-          <label>Bankruptcy:</label>
-          {{ lender_data.qual_bk }}
-          <label>Entitlements:</label>
-          {{ lender_data.qual_entitlements }}
-          <label>Non Profit:</label>
-          {{ lender_data.qual_non_profit }}
-          <label>Cash Out Refi:</label>
-          {{ lender_data.qual_cashout_refi }}
-          <label>Non Recourse:</label>
-          {{ lender_data.qual_non_recourse }}
-          <label>Real Estate Collateral:</label>
-          {{ lender_data.qual_re_collateral }}
-          <label>Cross Collateral:</label>
-          {{ lender_data.qual_cross_collateral }}
-          <label>Business Acquisitions:</label>
-          {{ lender_data.qual_biz_acq }}
+          {% for qual in quals %}
+          <label>{{ qual }}</label>
+          {% endfor %}
         </div>
       </div>
 
       <div class="formContainer">
         <div class="grid3c">
           <h1 class="formHeader">Property Types</h1>
-          <label>Automotive:</label>
-          {{ lender_data.prop_automotive }}
-          <label>Car Wash:</label>
-          {{ lender_data.prop_carwash }}
-          <label>Entertainment:</label>
-          {{ lender_data.prop_entertainment }}
-          <label>Farm:</label>
-          {{ lender_data.prop_farm }}
-          <label>Gas Station:</label>
-          {{ lender_data.prop_gas_station }}
-          <label>Hospital:</label>
-          {{ lender_data.prop_hospital }}
-          <label>Hotel (Flag):</label>
-          {{ lender_data.prop_hotel_flag }}
-          <label>Hotel (Non-Flag):</label>
-          {{ lender_data.prop_hotel_nonflag }}
-          <label>Industrial:</label>
-          {{ lender_data.prop_industrial }}
-          <label>Marina:</label>
-          {{ lender_data.prop_marina }}
-          <label>Medical:</label>
-          {{ lender_data.prop_medical }}
-          <label>Mobile Home:</label>
-          {{ lender_data.prop_mobile_home }}
-          <label>Motel (Flag):</label>
-          {{ lender_data.prop_motel_flag }}
-          <label>Motel (Non-Flag):</label>
-          {{ lender_data.prop_motel_nonflag }}
-          <label>Multifamily:</label>
-          {{ lender_data.prop_multifamily }}
-          <label>Office:</label>
-          {{ lender_data.prop_office }}
-          <label>Restaurant:</label>
-          {{ lender_data.prop_restaurant }}
-          <label>Retail:</label>
-          {{ lender_data.prop_retail }}
-          <label>Senior Housing:</label>
-          {{ lender_data.prop_senior_housing }}
-          <label>Storage:</label>
-          {{ lender_data.prop_storage }}
-          <label>Student Housing:</label>
-          {{ lender_data.prop_student_housing }}
+          {% for prop in props %}
+          <label>{{ prop }}</label>
+          {% endfor %}
         </div>
       </div>
-      <center>
+      <!--center>
         <button>Edit</button>
-      </center>
+      </center-->
     </form>
 {% endblock %}
