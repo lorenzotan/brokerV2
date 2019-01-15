@@ -1,29 +1,29 @@
-# brokerV2
+# Broker App V2
 improved version of streamline-broker
 
-# setup instructions
-# download repo
-$ git clone https://github.com/lorenzotan/brokerV2.git
+# Setup Instructions
+
+#### Download Repo
+1. $ git clone https://github.com/lorenzotan/brokerV2.git
 
 
-# create database
-$ cd brokerV2/broker/
-$ python manage.py makemigrations accounts loans
-$ python manage.py migrate
+#### Create Database
+2. $ cd brokerV2/broker/
+3. $ python manage.py makemigrations accounts loans
+4. $ python manage.py migrate
 
 
-# preload tables with (qualifiers, property types, loan types, needs list) data
-$ python manage.py loaddata loans/fixtures/init_*
+#### Preload Tables with (qualifiers, property types, loan types, needs list) data
+5. $ python manage.py loaddata loans/fixtures/init_*
 
 
-# create super user
-# you will be prompted for a username, email, password
-$ python manage.py createsuperuser
+#### Create super user (you will be prompted for a username, email, password)
+6. $ python manage.py createsuperuser
 
 
-# run webapp
-$ python manage.py runserver
+#### Run App
+7. $ python manage.py runserver
 
 
-# from here, you can log into the admin page with your super user account
-# http://127.0.0.1:8000/admin/
+#### from here, you can log into the admin page with your super user account
+8. http://127.0.0.1:8000/admin/
