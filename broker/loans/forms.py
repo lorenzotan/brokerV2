@@ -18,7 +18,11 @@ class UserForm(forms.ModelForm):
             'state',
             'zip_code',
             'email',
-            'phone',
+            'email_x',
+            'phone_w',
+            'phone_m',
+            'phone_f',
+            'phone_o',
         )
 
 
