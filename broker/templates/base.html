@@ -39,8 +39,14 @@
           <li class="active"><a href="#">Brokers</a></li>
           <li class="active"><a href="#">Tools</a></li>
           <li class="active"><a href="#">Graphs</a></li>
-          <li class="active"><a href="/accounts/login/">Log In</a></li>
-          <li class="active"><a href="/accounts/logout/">Log Out</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          {% if user.is_authenticated %}
+          <li><span class="navbar-text">Welcome {{ user.first_name }}!</span></li>
+          <li><a href="/accounts/logout/"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+          {% else %}
+          <li><a href="/accounts/login/"><span class="glyphicon glyphicon-log-in"></span> Log In</a></li>
+          {% endif %}
         </ul>
       </div>
     </nav>
