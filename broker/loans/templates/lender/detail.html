@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load format_data %}
 {% block content %}
     <h1>Lender Form</h1>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -23,11 +24,19 @@
           {{ lender_data.user.state }}
           <label>Zip:</label>
           {{ lender_data.user.zip_code }}
-          <label>Email:</label>
+          <label>Primary Email:</label>
           {{ lender_data.user.email }}
-          <label>Phone:</label>
-          {{ lender_data.user.phone }}
-          <label>Solicitation:</label>
+          <label>Secondary Email:</label>
+          {{ lender_data.user.email_x }}
+          <label>Work Phone:</label>
+          {{ lender_data.user.phone_w|format_phone }}
+          <label>Mobile Phone:</label>
+          {{ lender_data.user.phone_m|format_phone }}
+          <label>Fax Phone:</label>
+          {{ lender_data.user.phone_f|format_phone }}
+          <label>Other Phone:</label>
+          {{ lender_data.user.phone_o|format_phone }}
+          <label>Solicitation Period:</label>
           {{ lender_data.solicit }} Days
         </div>
       </div>
@@ -74,9 +83,9 @@
       <div class="formContainer">
         <div class="grid2c">
           <h1 class="formHeader">Multifamily Loan</h1>
-          <label>2 to 4 Units:</label>
+          <label>2-4 Units:</label>
           {{ multi.mf_2to4 }}
-          <label>More than 4 Units:</label>
+          <label>4+ Units:</label>
           {{ multi.mf_gt4 }}
         </div>
       </div>
@@ -93,9 +102,9 @@
           {{ const.commercial }}
           <label>Residential:</label>
           {{ const.residential }}
-          <label>Investment with Land:</label>
+          <label>Investment w/ Land:</label>
           {{ const.inv_w_land }}
-          <label>Owner Occ with Land:</label>
+          <label>Owner Occupied w/ Land:</label>
           {{ const.oo_w_land }}
         </div>
       </div>
@@ -110,7 +119,7 @@
           {{ sba.sba_504 }}
           <label>CAPline:</label>
           {{ sba.CAPline }}
-          <label>Microloan:</label>
+          <label>Micro Loan:</label>
           {{ sba.micro }}
           <label>Other:</label>
           {{ sba.other }}
