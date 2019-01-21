@@ -1,14 +1,20 @@
 from django.contrib import admin
-from .models import Lender, Client
+from .models import Lender, Client, Qualifier, PropertyType
+from django.forms.models import model_to_dict
 from django.http import HttpResponse
+import csv
+from django.utils.encoding import smart_str
+
+bools = {
+    True: 'Yes',
+    False: 'No'
+}
 
 # http://books.agiliq.com/projects/django-admin-cookbook/en/latest/export.html
-# ... export functions will go here ...
+# ... export functions will go here ..
 def export_client_csv(modeladmin, request, queryset):
-    import csv
-    from django.utils.encoding import smart_str
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=mymodel.csv'
+    response['Content-Disposition'] = 'attachment; filename=client_export.csv'
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
     writer.writerow([
@@ -18,10 +24,12 @@ def export_client_csv(modeladmin, request, queryset):
         smart_str(u"Client City"),
         smart_str(u"Client State"),
         smart_str(u"Client Zip Code"),
-        smart_str(u"Client Work Email"),
-        smart_str(u"Client Personal Email"),
+        smart_str(u"Client Primary Email"),
+        smart_str(u"Client Secondary Email"),
         smart_str(u"Client Work Phone"),
         smart_str(u"Client Cell Phone"),
+        smart_str(u"Client Fax Phone"),
+        smart_str(u"Client Other Phone"),
         smart_str(u"Client Using POC"),
 
         smart_str(u"POC Name"),
@@ -115,7 +123,7 @@ def export_client_csv(modeladmin, request, queryset):
 
         ])
     return response
-export_client_csv.short_description = u"Export Client CSV"
+export_client_csv.short_description = u"Client Export CSV"
 
 class ClientAdmin(admin.ModelAdmin):
     actions = [export_client_csv]
@@ -123,14 +131,21 @@ class ClientAdmin(admin.ModelAdmin):
 # NOTE disable till fields are fixed
 #admin.site.register(Client, ClientAdmin)
 
+
 def export_lender_csv(modeladmin, request, queryset):
-    import csv
-    from django.utils.encoding import smart_str
+
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=mymodel.csv'
+    response['Content-Disposition'] = 'attachment; filename=lender_export.csv'
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
-    writer.writerow([
+
+    qualifiers = {}
+    propertytypes = {}
+
+    q_obj = Qualifier.objects.all()
+    pt_obj = PropertyType.objects.all()
+
+    header = [
         smart_str(u"Lender First Name"),
         smart_str(u"Lender Last Name"),
         smart_str(u"Lender Company"),
@@ -138,10 +153,12 @@ def export_lender_csv(modeladmin, request, queryset):
         smart_str(u"Lender City"),
         smart_str(u"Lender State"),
         smart_str(u"Lender Zip Code"),
-        smart_str(u"Lender Work Email"),
-        smart_str(u"Lender Personal Email"),
+        smart_str(u"Lender Primary Email"),
+        smart_str(u"Lender Secondary Email"),
         smart_str(u"Lender Work Phone"),
-        smart_str(u"Lender Cell Phone"),
+        smart_str(u"Lender Mobile Phone"),
+        smart_str(u"Lender Fax Phone"),
+        smart_str(u"Lender Other Phone"),
         smart_str(u"Lender Solicitation?"),
 
         smart_str(u"Owner Occ. Office?"),
@@ -174,202 +191,164 @@ def export_lender_csv(modeladmin, request, queryset):
         smart_str(u"SBA Microloan?"),
         smart_str(u"SBA Other?"),
 
-        smart_str(u"HELOC?"),
-        smart_str(u"BLOC?"),
+        smart_str(u"HELOC 1st Position"),
+        smart_str(u"HELOC 2nd Position"),
+
+        smart_str(u"BLOC Residential Property"),
+        smart_str(u"BLOC Stocks"),
+        smart_str(u"BLOC Savings"),
+        smart_str(u"BLOC Investment Property"),
+        smart_str(u"BLOC 1st Position"),
+        smart_str(u"BLOC 2nd Position"),
+
         smart_str(u"Bridge?"),
+    ]
 
-        smart_str(u"Pays Brokers fees?"),
-        smart_str(u"Outside CA?"),
-        smart_str(u"1031 Exchange"),
-        smart_str(u"Less than 500K"),
-        smart_str(u"Less than 1M"),
-        smart_str(u"Equipment Purchase"),
-        smart_str(u"Nonconforming Property"),
-        smart_str(u"Ground Lease"),
-        smart_str(u"Cannabis"),
-        smart_str(u"Interest Only"),
-        smart_str(u"Revocable Trust"),
-        smart_str(u"Irrevocable Trust"),
-        smart_str(u"Foreclosure"),
-        smart_str(u"Single Tenant"),
-        smart_str(u"Bankruptcy"),
-        smart_str(u"Entitlements"),
-        smart_str(u"Nonprofit"),
-        smart_str(u"Cash out Refi"),
-        smart_str(u"Non recourse"),
-        smart_str(u"Real Estate Collateral"),
-        smart_str(u"Cross Collateral"),
-        smart_str(u"Business Acquisitions"),
+    for q in q_obj:
+        qualifiers[q.id] = q.name
 
-        smart_str(u"Automotive"),
-        smart_str(u"Carwash"),
-        smart_str(u"Entertainment"),
-        smart_str(u"Farm / Agr,"),
-        smart_str(u"Gas Station"),
-        smart_str(u"Hospital"),
-        smart_str(u"Hotel (Flag)"),
-        smart_str(u"Hotel (Non-flag)"),
-        smart_str(u"Industrial"),
-        smart_str(u"Marina"),
-        smart_str(u"Medical"),
-        smart_str(u"Mobile Home"),
-        smart_str(u"Motel (Flag)"),
-        smart_str(u"Motel (Non-flag)"),
-        smart_str(u"Office"),
-        smart_str(u"Restaurant"),
-        smart_str(u"Retail"),
-        smart_str(u"Senior Housing"),
-        smart_str(u"Storage"),
-        smart_str(u"Student Housing"),
+    for q_id in sorted(qualifiers):
+        header.append(smart_str(qualifiers[q_id]))
 
-    ])
+    for p in pt_obj:
+        propertytypes[p.id] = p.name
 
-    # TODO catch exceptions for tables that do not have related data to lender
-    bools = {
-        True: 'Yes',
-        False: 'No'
-    }
+    for pt_id in sorted(propertytypes):
+        header.append(smart_str(propertytypes[pt_id]))
 
-    recs = queryset.select_related(
-    'lenderowneroccupiedre',
-    'lenderinvestmentre',
-    'lendermultifamilyloan',
-    'lenderconstructionloan',
-    'lendersbaloan',
-    'lenderhelocloan',
-    'lenderblocloan',
-    'lenderbridgeloan')
+    writer.writerow(
+        header
+    )
+
+    lender411 = queryset.select_related(
+             'lenderowneroccupiedre',
+             'lenderinvestmentre',
+             'lendermultifamilyloan',
+             'lenderconstructionloan',
+             'lendersbaloan',
+             'lenderhelocloan',
+             'lenderblocloan',
+             'lenderbridgeloan')
 
 # https://stackoverflow.com/questions/37652520/django-select-related-in-reverse/37792783
-    for rec in recs:
+    for lender in lender411:
         fields = [
-            smart_str(rec.user.first_name),
-            smart_str(rec.user.last_name),
-            smart_str(rec.company),
-            smart_str(rec.user.address),
-            smart_str(rec.user.city),
-            smart_str(rec.user.state),
-            smart_str(rec.user.zip_code),
-            smart_str(rec.user.email),
-            '',
-            smart_str(rec.user.phone),
-            '',
-            smart_str(rec.solicit),
+            smart_str(lender.user.first_name),
+            smart_str(lender.user.last_name),
+            smart_str(lender.company),
+            smart_str(lender.user.address),
+            smart_str(lender.user.city),
+            smart_str(lender.user.state),
+            smart_str(lender.user.zip_code),
+            smart_str(lender.user.email),
+            smart_str(lender.user.email_x),
+            smart_str(lender.user.phone_w),
+            smart_str(lender.user.phone_m),
+            smart_str(lender.user.phone_f),
+            smart_str(lender.user.phone_o),
+            smart_str(lender.solicit),
         ]
 
         # https://stackoverflow.com/questions/10487278/how-to-declare-and-add-items-to-an-array-in-python
-        #https://stackoverflow.com/questions/27064206/django-check-if-a-related-object-exists-error-relatedobjectdoesnotexist
-        if hasattr(rec, 'lenderowneroccupiedre'):
+        # https://stackoverflow.com/questions/27064206/django-check-if-a-related-object-exists-error-relatedobjectdoesnotexist
+        if hasattr(lender, 'lenderowneroccupiedre'):
             fields.extend([
-                smart_str(bools[rec.lenderowneroccupiedre.office]),
-                smart_str(bools[rec.lenderowneroccupiedre.warehouse]),
-                smart_str(bools[rec.lenderowneroccupiedre.manufacturing]),
-                smart_str(bools[rec.lenderowneroccupiedre.medical]),
-                smart_str(bools[rec.lenderowneroccupiedre.mixed_use]),
-                smart_str(bools[rec.lenderowneroccupiedre.other]),
+                smart_str(bools[lender.lenderowneroccupiedre.office]),
+                smart_str(bools[lender.lenderowneroccupiedre.warehouse]),
+                smart_str(bools[lender.lenderowneroccupiedre.manufacturing]),
+                smart_str(bools[lender.lenderowneroccupiedre.medical]),
+                smart_str(bools[lender.lenderowneroccupiedre.mixed_use]),
+                smart_str(bools[lender.lenderowneroccupiedre.other]),
             ])
 
-        if hasattr(rec, 'lenderinvestmentre'):
+        if hasattr(lender, 'lenderinvestmentre'):
             fields.extend([
-                smart_str(bools[rec.lenderinvestmentre.office]),
-                smart_str(bools[rec.lenderinvestmentre.warehouse]),
-                smart_str(bools[rec.lenderinvestmentre.manufacturing]),
-                smart_str(bools[rec.lenderinvestmentre.medical]),
-                smart_str(bools[rec.lenderinvestmentre.mixed_use]),
-                smart_str(bools[rec.lenderinvestmentre.other]),
+                smart_str(bools[lender.lenderinvestmentre.office]),
+                smart_str(bools[lender.lenderinvestmentre.warehouse]),
+                smart_str(bools[lender.lenderinvestmentre.manufacturing]),
+                smart_str(bools[lender.lenderinvestmentre.medical]),
+                smart_str(bools[lender.lenderinvestmentre.mixed_use]),
+                smart_str(bools[lender.lenderinvestmentre.other]),
             ])
 
-        if hasattr(rec, 'lendermultifamilyloan'):
+        if hasattr(lender, 'lendermultifamilyloan'):
             fields.extend([
-                smart_str(bools[rec.lendermultifamilyloan.mf_2to4]),
-                smart_str(bools[rec.lendermultifamilyloan.mf_gt4]),
+                smart_str(bools[lender.lendermultifamilyloan.mf_2to4]),
+                smart_str(bools[lender.lendermultifamilyloan.mf_gt4]),
             ])
 
-        if hasattr(rec, 'lenderconstructionloan'):
+        if hasattr(lender, 'lenderconstructionloan'):
             fields.extend([
-                smart_str(bools[rec.lenderconstructionloan.renovation]),
-                smart_str(bools[rec.lenderconstructionloan.ground_up_spec]),
-                smart_str(bools[rec.lenderconstructionloan.commercial]),
-                smart_str(bools[rec.lenderconstructionloan.residential]),
-                smart_str(bools[rec.lenderconstructionloan.inv_w_land]),
-                smart_str(bools[rec.lenderconstructionloan.oo_w_land]),
+                smart_str(bools[lender.lenderconstructionloan.renovation]),
+                smart_str(bools[lender.lenderconstructionloan.ground_up_spec]),
+                smart_str(bools[lender.lenderconstructionloan.commercial]),
+                smart_str(bools[lender.lenderconstructionloan.residential]),
+                smart_str(bools[lender.lenderconstructionloan.inv_w_land]),
+                smart_str(bools[lender.lenderconstructionloan.oo_w_land]),
             ])
 
-        if hasattr(rec, 'lendersbaloan'):
+        if hasattr(lender, 'lendersbaloan'):
             fields.extend([
-                smart_str(bools[rec.lendersbaloan.sba_7a]),
-                smart_str(bools[rec.lendersbaloan.sba_504]),
-                smart_str(bools[rec.lendersbaloan.CAPline]),
-                smart_str(bools[rec.lendersbaloan.micro]),
-                smart_str(bools[rec.lendersbaloan.other]),
+                smart_str(bools[lender.lendersbaloan.sba_7a]),
+                smart_str(bools[lender.lendersbaloan.sba_504]),
+                smart_str(bools[lender.lendersbaloan.CAPline]),
+                smart_str(bools[lender.lendersbaloan.micro]),
+                smart_str(bools[lender.lendersbaloan.other]),
             ])
 
-        if hasattr(rec, 'lenderhelocloan'):
+        if hasattr(lender, 'lenderhelocloan'):
             fields.extend([
-                smart_str(bools[rec.lenderhelocloan.pos_1]),
-                smart_str(bools[rec.lenderhelocloan.pos_2]),
-                smart_str(bools[rec.lenderblocloan.resid_prop]),
-                smart_str(bools[rec.lenderblocloan.stocks]),
-                smart_str(bools[rec.lenderblocloan.savings]),
-                smart_str(bools[rec.lenderblocloan.inv_prop]),
-                smart_str(bools[rec.lenderblocloan.pos1]),
-                smart_str(bools[rec.lenderblocloan.pos2]),
-                smart_str(bools[rec.lenderbridgeloan.bridge]),
+                smart_str(bools[lender.lenderhelocloan.pos_1]),
+                smart_str(bools[lender.lenderhelocloan.pos_2]),
             ])
 
-# to get qualifiers and property types
-# need to map quals with the headers (id to name)
-# if lender has id then YES for that field
+        if hasattr(lender, 'lenderblocloan'):
+            fields.extend([
+                smart_str(bools[lender.lenderblocloan.resid_prop]),
+                smart_str(bools[lender.lenderblocloan.stocks]),
+                smart_str(bools[lender.lenderblocloan.savings]),
+                smart_str(bools[lender.lenderblocloan.inv_prop]),
+                smart_str(bools[lender.lenderblocloan.pos1]),
+                smart_str(bools[lender.lenderblocloan.pos2]),
+            ])
 
-        writer.writerow(
-            fields
-            #smart_str(rec.qual_pays_fees),
-            #smart_str(rec.qual_outside_ca),
-            #smart_str(rec.qual_1031_exchange),
-            #smart_str(rec.qual_lt_500K),
-            #smart_str(rec.qual_lt_1M),
-            #smart_str(rec.qual_equip),
-            #smart_str(rec.qual_non_conform),
-            #smart_str(rec.qual_ground_lease),
-            #smart_str(rec.qual_relationship),
-            #smart_str(rec.qual_cannabis),
-            #smart_str(rec.qual_io),
-            #smart_str(rec.qual_rev_trust),
-            #smart_str(rec.qual_irrev_trust),
-            #smart_str(rec.qual_foreclosure),
-            #smart_str(rec.qual_single_tenant),
-            #smart_str(rec.qual_bk),
-            #smart_str(rec.qual_entitlements),
-            #smart_str(rec.qual_non_profit),
-            #smart_str(rec.qual_cashout_refi),
-            #smart_str(rec.qual_non_recourse),
-            #smart_str(rec.qual_re_collateral),
-            #smart_str(rec.qual_cross_collateral),
-            #smart_str(rec.qual_biz_acq),
+        if hasattr(lender, 'lenderbridgeloan'):
+            fields.extend([
+                smart_str(bools[lender.lenderbridgeloan.bridge]),
+            ])
 
-            #smart_str(rec.prop_automotive),
-            #smart_str(rec.prop_carwash),
-            #smart_str(rec.prop_entertainment),
-            #smart_str(rec.prop_farm),
-            #smart_str(rec.prop_gas_station),
-            #smart_str(rec.prop_hospital),
-            #smart_str(rec.prop_hotel_flag),
-            #smart_str(rec.prop_hotel_nonflag),
-            #smart_str(rec.prop_industrial),
-            #smart_str(rec.prop_marina),
-            #smart_str(rec.prop_medical),
-            #smart_str(rec.prop_mobile_home),
-            #smart_str(rec.prop_motel_flag),
-            #smart_str(rec.prop_motel_nonflag),
-            #smart_str(rec.prop_office),
-            #smart_str(rec.prop_restaurant),
-            #smart_str(rec.prop_retail),
-            #smart_str(rec.prop_senior_housing),
-            #smart_str(rec.prop_storage),
-            #smart_str(rec.prop_student_housing),
-        )
+
+        # XXX could use a refactor here
+        lender_qualifiers = []
+
+        for q in lender.qualifiers.through.objects.all():
+            lender_qualifiers.append(q.qualifier_id)
+
+        for q_id in sorted(qualifiers):
+            if q_id in lender_qualifiers:
+                fields.append('Yes')
+            else:
+                fields.append('No')
+
+
+        lender_propertytypes = []
+
+        for pt in lender.propertytypes.through.objects.all():
+            lender_propertytypes.append(pt.propertytype_id)
+
+        for pt_id in sorted(propertytypes):
+            if pt_id in lender_propertytypes:
+                fields.append('Yes')
+            else:
+                fields.append('No')
+
+        writer.writerow(fields)
+    # end for
+
     return response
-export_lender_csv.short_description = u"Export Lender CSV"
+# end def 
+
+export_lender_csv.short_description = u"Lender CSV Export"
 
 class LenderAdmin(admin.ModelAdmin):
     actions = [export_lender_csv]

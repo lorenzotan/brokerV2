@@ -14,11 +14,6 @@ def lender_form(req):
     property_types = PropertyType.objects.order_by('name')
 
     if req.method == 'POST':
-        lenderForm = LenderForm(req.POST)
-        #lenderForm.save()
-
-        qualifierForm = QualifierForm(req.POST)
-        #qualifierForm.save()
         userForm                   = UserForm(req.POST, instance=req.user)
         lenderForm                 = LenderForm(req.POST)
         lenderOwnerOccupiedREForm  = LenderOwnerOccupiedREForm(req.POST)
@@ -45,7 +40,41 @@ def lender_form(req):
 
             lender = lenderForm.save(commit=False)
             lender.user = user
-            lender_id = lender.save()
+            lender.save()
+
+
+            # TODO needs to be more efficient
+            oo = lenderOwnerOccupiedREForm.save(commit=False)
+            oo.lender = lender
+            oo.save()
+
+            inv = lenderInvestmentREForm.save(commit=False)
+            inv.lender = lender
+            inv.save()
+
+            multi  = lenderMultiFamilyLoanForm.save(commit=False)
+            multi.lender = lender
+            multi.save()
+
+            const  = lenderConstructionLoanForm.save(commit=False)
+            const.lender = lender
+            const.save()
+
+            sba    = lenderSBALoanForm.save(commit=False)
+            sba.lender = lender
+            sba.save()
+
+            heloc  = lenderHELOCLoanForm.save(commit=False)
+            heloc.lender = lender
+            heloc.save()
+
+            bloc   = lenderBLOCLoanForm.save(commit=False)
+            bloc.lender = lender
+            bloc.save()
+
+            bridge = lenderBridgeLoanForm.save(commit=False)
+            bridge.lender = lender
+            bridge.save()
 
             for q in req.POST.getlist('qualifier'):
                 lender.qualifiers.add(q)
@@ -54,39 +83,6 @@ def lender_form(req):
                 lender.propertytypes.add(p)
 
             lenderForm.save_m2m()
-
-            # TODO needs to be more efficient
-            oo = lenderOwnerOccupiedREForm.save(commit=False)
-            oo.lender = lender_id
-            oo.save()
-
-            inv = lenderInvestmentREForm.save(commit=False)
-            inv.lender = lender_id
-            inv.save()
-
-            multi  = lenderMultiFamilyLoanForm.save(commit=False)
-            multi.lender = lender_id
-            multi.save()
-
-            const  = lenderConstructionLoanForm.save(commit=False)
-            const.lender = lender_id
-            const.save()
-
-            sba    = lenderSBALoanForm.save(commit=False)
-            sba.lender = lender_id
-            sba.save()
-
-            heloc  = lenderHELOCLoanForm.save(commit=False)
-            heloc.lender = lender_id
-            heloc.save()
-
-            bloc   = lenderBLOCLoanForm.save(commit=False)
-            bloc.lender = lender_id
-            bloc.save()
-
-            bridge = lenderBridgeLoanForm.save(commit=False)
-            bridge.lender = lender_id
-            bridge.save()
 
             return redirect('loans:lenders')
 

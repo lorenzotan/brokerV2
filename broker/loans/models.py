@@ -234,7 +234,7 @@ class LenderBridgeLoan(models.Model):
 
 
 class LenderOwnerOccupiedRE(models.Model):
-    lender = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
+    lender        = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
     office        = models.BooleanField(default=False)
     warehouse     = models.BooleanField(default=False)
     manufacturing = models.BooleanField(default=False)
@@ -244,7 +244,7 @@ class LenderOwnerOccupiedRE(models.Model):
 
 
 class LenderInvestmentRE(models.Model):
-    lender = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
+    lender        = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
     office        = models.BooleanField(default=False)
     warehouse     = models.BooleanField(default=False)
     manufacturing = models.BooleanField(default=False)
