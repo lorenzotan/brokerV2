@@ -321,7 +321,7 @@ def export_lender_csv(modeladmin, request, queryset):
         # XXX could use a refactor here
         lender_qualifiers = []
 
-        for q in lender.qualifiers.through.objects.all():
+        for q in lender.qualifiers.through.objects.filter(lender_id = lender.id):
             lender_qualifiers.append(q.qualifier_id)
 
         for q_id in sorted(qualifiers):
@@ -333,7 +333,7 @@ def export_lender_csv(modeladmin, request, queryset):
 
         lender_propertytypes = []
 
-        for pt in lender.propertytypes.through.objects.all():
+        for pt in lender.propertytypes.through.objects.filter(lender_id = lender.id):
             lender_propertytypes.append(pt.propertytype_id)
 
         for pt_id in sorted(propertytypes):
