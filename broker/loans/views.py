@@ -13,6 +13,11 @@ def lender_form(req):
     qualifiers     = Qualifier.objects.order_by('name')
     property_types = PropertyType.objects.order_by('name')
 
+    # user
+    # req.user
+    # lender
+    # Lender.objects.get(user_id = req.user.id).exists()
+
     if req.method == 'POST':
         userForm                   = UserForm(req.POST, instance=req.user)
         lenderForm                 = LenderForm(req.POST)
@@ -87,6 +92,7 @@ def lender_form(req):
             return redirect('loans:lenders')
 
     else:
+    # TODO check if lender info exists and prepopulate everything 
         user = { 'first_name': req.user.first_name, 'last_name': req.user.last_name, 'email': req.user.email }
         userForm                   = UserForm(user)
         lenderForm                 = LenderForm()
@@ -99,6 +105,7 @@ def lender_form(req):
         lenderBLOCLoanForm         = LenderBLOCLoanForm()
         lenderBridgeLoanForm       = LenderBridgeLoanForm()
         #qualifierForm = QualifierForm()
+        # XXX how to init preexisting qual and property types???
 
     #print ()
     #print ("DEBUG: {}".format(qualifierForm))
