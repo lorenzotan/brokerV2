@@ -13,11 +13,6 @@ def lender_form(req):
     qualifiers     = Qualifier.objects.order_by('name')
     property_types = PropertyType.objects.order_by('name')
 
-    # user
-    # req.user
-    # lender
-    # Lender.objects.get(user_id = req.user.id).exists()
-
     if req.method == 'POST':
         userForm                   = UserForm(req.POST, instance=req.user)
         lenderForm                 = LenderForm(req.POST)
