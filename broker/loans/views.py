@@ -99,8 +99,6 @@ def lender_form(req):
         lenderHELOCLoanForm        = LenderHELOCLoanForm()
         lenderBLOCLoanForm         = LenderBLOCLoanForm()
         lenderBridgeLoanForm       = LenderBridgeLoanForm()
-        #qualifierForm = QualifierForm()
-        # XXX how to init preexisting qual and property types???
 
     #print ()
     #print ("DEBUG: {}".format(qualifierForm))
@@ -125,7 +123,170 @@ def lender_form(req):
     #return render(req, 'loans/lender_form.html', context)
     #return render(req, 'loans/lender_form.html', {'form': form})
     return HttpResponse(tmpl.render(context, req))
+# END def lender_form
 
+
+
+@login_required
+@user_passes_test(lambda u: u.groups.filter(name='client').count() == 0, login_url='/denied/')
+def edit_lender_form(req, pk):
+    tmpl           = loader.get_template('lender/form.html')
+    qualifiers     = Qualifier.objects.order_by('name')
+    property_types = PropertyType.objects.order_by('name')
+    submit         = 'Update'
+
+    user   = get_object_or_404(User, id=req.user.id)
+    lender = get_object_or_404(Lender, id=pk)
+
+    print ("user id: " + str(req.user.id))
+
+    # TODO refactor (create function that returns dictionary of objects)
+    try:
+        oore = LenderOwnerOccupiedRE.objects.get(lender=pk)
+    except LenderOwnerOccupiedRE.DoesNotExist:
+        oore = None
+
+    try:
+        invre = LenderInvestmentRE.objects.get(lender=pk)
+    except LenderInvestmentRE.DoesNotExist:
+        invre = None
+
+    try:
+        multifam = LenderMultiFamilyLoan.objects.get(lender=pk)
+    except LenderMultiFamilyLoan.DoesNotExist:
+        multifam = None
+
+    try:
+        const = LenderConstructionLoan.objects.get(lender=pk)
+    except LenderConstructionLoan.DoesNotExist:
+        const = None
+
+    try:
+        sba = LenderSBALoan.objects.get(lender=pk)
+    except LenderSBALoan.DoesNotExist:
+        sba = None
+
+    try:
+        heloc = LenderHELOCLoan.objects.get(lender=pk)
+    except LenderHELOCLoan.DoesNotExist:
+        heloc = None
+
+    try:
+        bloc = LenderBLOCLoan.objects.get(lender=pk)
+    except LenderBLOCLoan.DoesNotExist:
+        bloc = None
+
+    try:
+        bridge = LenderBridgeLoan.objects.get(lender=pk)
+    except LenderBridgeLoan.DoesNotExist:
+        bridge = None
+
+    if req.method == 'POST':
+        userForm                   = UserForm(req.POST, instance=user)
+        lenderForm                 = LenderForm(req.POST, instance=lender)
+        lenderOwnerOccupiedREForm  = LenderOwnerOccupiedREForm(req.POST, instance=oore)
+        lenderInvestmentREForm     = LenderInvestmentREForm(req.POST, instance=invre)
+        lenderMultiFamilyLoanForm  = LenderMultiFamilyLoanForm(req.POST, instance=multifam)
+        lenderConstructionLoanForm = LenderConstructionLoanForm(req.POST, instance=const)
+        lenderSBALoanForm          = LenderSBALoanForm(req.POST, instance=sba)
+        lenderHELOCLoanForm        = LenderHELOCLoanForm(req.POST, instance=heloc)
+        lenderBLOCLoanForm         = LenderBLOCLoanForm(req.POST, instance=bloc)
+        lenderBridgeLoanForm       = LenderBridgeLoanForm(req.POST, instance=bridge)
+
+        # TODO refactor: create function to check all necessary forms
+        if userForm.is_valid() and \
+           lenderForm.is_valid() and \
+           lenderOwnerOccupiedREForm.is_valid() and \
+           lenderInvestmentREForm.is_valid() and \
+           lenderMultiFamilyLoanForm.is_valid() and \
+           lenderConstructionLoanForm.is_valid() and \
+           lenderSBALoanForm.is_valid() and \
+           lenderHELOCLoanForm.is_valid() and \
+           lenderBLOCLoanForm.is_valid() and \
+           lenderBridgeLoanForm.is_valid():
+
+            # XXX UNIQUE constraint failed: loans_lender.user_id
+            user = userForm.save()
+
+            lender = lenderForm.save()
+            lender.user = user
+            lender.save()
+
+
+            # TODO needs to be more efficient
+            oo = lenderOwnerOccupiedREForm.save(commit=False)
+            oo.lender = lender
+            oo.save()
+
+            inv = lenderInvestmentREForm.save(commit=False)
+            inv.lender = lender
+            inv.save()
+
+            multi = lenderMultiFamilyLoanForm.save(commit=False)
+            multi.lender = lender
+            multi.save()
+
+            const = lenderConstructionLoanForm.save(commit=False)
+            const.lender = lender
+            const.save()
+
+            sba = lenderSBALoanForm.save(commit=False)
+            sba.lender = lender
+            sba.save()
+
+            heloc = lenderHELOCLoanForm.save(commit=False)
+            heloc.lender = lender
+            heloc.save()
+
+            bloc = lenderBLOCLoanForm.save(commit=False)
+            bloc.lender = lender
+            bloc.save()
+
+            bridge = lenderBridgeLoanForm.save(commit=False)
+            bridge.lender = lender
+            bridge.save()
+
+            for q in req.POST.getlist('qualifier'):
+                lender.qualifiers.add(q)
+
+            for p in req.POST.getlist('property_type'):
+                lender.propertytypes.add(p)
+
+            lenderForm.save_m2m()
+
+            return redirect('loans:lender_detail', pk=lender.id)
+
+    else:
+        userForm                   = UserForm(instance=user)
+        lenderForm                 = LenderForm(instance=lender)
+        lenderOwnerOccupiedREForm  = LenderOwnerOccupiedREForm(instance=oore)
+        lenderInvestmentREForm     = LenderInvestmentREForm(instance=invre)
+        lenderMultiFamilyLoanForm  = LenderMultiFamilyLoanForm(instance=multifam)
+        lenderConstructionLoanForm = LenderConstructionLoanForm(instance=const)
+        lenderSBALoanForm          = LenderSBALoanForm(instance=sba)
+        lenderHELOCLoanForm        = LenderHELOCLoanForm(instance=heloc)
+        lenderBLOCLoanForm         = LenderBLOCLoanForm(instance=bloc)
+        lenderBridgeLoanForm       = LenderBridgeLoanForm(instance=bridge)
+        # XXX how to init preexisting qual and property types???
+
+    context = {
+        'userForm': userForm,
+        'lenderForm': lenderForm,
+        'lenderOwnerOccupiedREForm': lenderOwnerOccupiedREForm,
+        'lenderInvestmentREForm': lenderInvestmentREForm,
+        'lenderMultiFamilyLoanForm': lenderMultiFamilyLoanForm,
+        'lenderConstructionLoanForm': lenderConstructionLoanForm,
+        'lenderSBALoanForm': lenderSBALoanForm,
+        'lenderHELOCLoanForm': lenderHELOCLoanForm,
+        'lenderBLOCLoanForm': lenderBLOCLoanForm,
+        'lenderBridgeLoanForm': lenderBridgeLoanForm,
+        'qualifiers': qualifiers,
+        'property_types': property_types,
+        'submit': submit,
+    }
+
+    return HttpResponse(tmpl.render(context, req))
+# END def edit_lender_form
 
 
 @login_required

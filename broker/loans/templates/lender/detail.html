@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Lender Form</h1>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    <form name="form" action="" method="GET">
+    <form name="form" action="{% url 'loans:edit_lender_form' pk=lender_data.id %}" method="GET">
     {% csrf_token %}
 
       <!-- Name Table -->
@@ -184,8 +184,8 @@
           {% endfor %}
         </div>
       </div>
-      <!--center>
+      <center>
         <button>Edit</button>
-      </center-->
+      </center>
     </form>
 {% endblock %}
