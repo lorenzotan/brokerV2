@@ -2,7 +2,11 @@
 {% block content %}
     <h1>Lender Form</h1>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% if lender.id %}
+    <form name="form" class="foo" action="{% url 'loans:edit_lender_form' pk=lender.id %}" method="POST">
+    {% else %}
     <form name="form" action="{% url 'loans:lender_form' %}" method="POST">
+    {% endif %}
     {% csrf_token %}
 
       <!-- Name Table -->

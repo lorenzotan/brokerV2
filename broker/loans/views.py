@@ -138,8 +138,6 @@ def edit_lender_form(req, pk):
     user   = get_object_or_404(User, id=req.user.id)
     lender = get_object_or_404(Lender, id=pk)
 
-    print ("user id: " + str(req.user.id))
-
     # TODO refactor (create function that returns dictionary of objects)
     try:
         oore = LenderOwnerOccupiedRE.objects.get(lender=pk)
@@ -208,7 +206,7 @@ def edit_lender_form(req, pk):
             # XXX UNIQUE constraint failed: loans_lender.user_id
             user = userForm.save()
 
-            lender = lenderForm.save()
+            lender = lenderForm.save(commit=False)
             lender.user = user
             lender.save()
 
@@ -270,6 +268,7 @@ def edit_lender_form(req, pk):
         # XXX how to init preexisting qual and property types???
 
     context = {
+        'lender': lender,
         'userForm': userForm,
         'lenderForm': lenderForm,
         'lenderOwnerOccupiedREForm': lenderOwnerOccupiedREForm,
