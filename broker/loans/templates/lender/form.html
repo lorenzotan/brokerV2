@@ -119,7 +119,11 @@
           <h1 class="formHeader">Qualifiers</h1>
           {% for q in qualifiers %}
             <label>{{ q }}</label>
+            {% if q.id in selected_qualifiers %}
+            <label><input type="checkbox" value="{{ q.id | striptags }}" name="qualifier" checked></label>
+            {% else %}
             <label><input type="checkbox" value="{{ q.id | striptags }}" name="qualifier"></label>
+            {% endif %}
           {% endfor %}
         </div>
       </div>
@@ -130,7 +134,11 @@
           <h1 class="formHeader">Property Types</h1>
           {% for p in property_types %}
             <label>{{ p }}</label>
+            {% if p.id in selected_propertytypes %}
+            <label><input type="checkbox" value="{{ p.id | striptags }}" name="property_type" checked></label>
+            {% else %}
             <label><input type="checkbox" value="{{ p.id | striptags }}" name="property_type"></label>
+            {% endif %}
           {% endfor %}
         </div>
       </div>

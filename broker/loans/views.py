@@ -265,7 +265,9 @@ def edit_lender_form(req, pk):
         lenderHELOCLoanForm        = LenderHELOCLoanForm(instance=heloc)
         lenderBLOCLoanForm         = LenderBLOCLoanForm(instance=bloc)
         lenderBridgeLoanForm       = LenderBridgeLoanForm(instance=bridge)
-        # XXX how to init preexisting qual and property types???
+        selected_qualifiers        = Lender.objects.values_list('qualifiers__id', flat=True).filter(id=pk)
+        selected_propertytypes     = Lender.objects.values_list('propertytypes__id', flat=True).filter(id=pk)
+
 
     context = {
         'lender': lender,
@@ -281,6 +283,8 @@ def edit_lender_form(req, pk):
         'lenderBridgeLoanForm': lenderBridgeLoanForm,
         'qualifiers': qualifiers,
         'property_types': property_types,
+        'selected_qualifiers': selected_qualifiers,
+        'selected_propertytypes': selected_propertytypes,
         'submit': submit,
     }
 
