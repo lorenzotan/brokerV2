@@ -135,8 +135,8 @@ def edit_lender_form(req, pk):
     property_types = PropertyType.objects.order_by('name')
     submit         = 'Update'
 
-    user   = get_object_or_404(User, id=req.user.id)
     lender = get_object_or_404(Lender, id=pk)
+    user   = get_object_or_404(User, id=lender.user.id)
 
     # TODO refactor (create function that returns dictionary of objects)
     try:
@@ -244,9 +244,11 @@ def edit_lender_form(req, pk):
             bridge.lender = lender
             bridge.save()
 
+            lender.qualifiers.clear()
             for q in req.POST.getlist('qualifier'):
                 lender.qualifiers.add(q)
 
+            lender.propertytypes.clear()
             for p in req.POST.getlist('property_type'):
                 lender.propertytypes.add(p)
 
