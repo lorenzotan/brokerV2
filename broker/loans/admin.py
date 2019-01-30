@@ -10,6 +10,7 @@ bools = {
     False: 'No'
 }
 
+# https://docs.djangoproject.com/en/2.1/ref/contrib/admin/#django.contrib.admin.ModelAdmin.list_display
 # http://books.agiliq.com/projects/django-admin-cookbook/en/latest/export.html
 # ... export functions will go here ..
 def export_client_csv(modeladmin, request, queryset):
@@ -350,8 +351,32 @@ def export_lender_csv(modeladmin, request, queryset):
 
 export_lender_csv.short_description = u"Lender CSV Export"
 
+# get_name
+# https://stackoverflow.com/questions/163823/can-list-display-in-a-django-modeladmin-display-attributes-of-foreignkey-field
 class LenderAdmin(admin.ModelAdmin):
+    model = Lender
+    list_display = ['get_first_name', 'get_last_name']
     actions = [export_lender_csv]
+
+    #def get_name(self, obj):
+    #    return obj.user.first_name + ' ' + obj.user.last_name
+    #get_name.admin_order_field = Concat('user__first_name', Value(' '), 'user__last_name')
+
+    def get_first_name(self, obj):
+        return obj.user.first_name
+
+    get_first_name.short_description = 'First Name'
+    get_first_name.admin_order_field = 'user__first_name'
+
+    def get_last_name(self, obj):
+        return obj.user.last_name
+
+    get_last_name.short_description = 'Last Name'
+    get_last_name.admin_order_field = 'user__last_name'
+
+
+
+
 
 # NOTE disabling until fields are fixed
 admin.site.register(Lender, LenderAdmin)
