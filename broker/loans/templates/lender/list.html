@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load format_data %}
 {% block content %}
     <section class="container">
       <header>
@@ -18,7 +19,8 @@
               <th>Last Name</th>
               <th>Company</th>
               <th>Email</th>
-              <th>Phone</th>
+              <th>Work Phone</th>
+              <th>Mobile Phone</th>
             </tr>
           </thead>
           {% for lender in lenders %}
@@ -28,7 +30,8 @@
             <td>{{ lender.user.last_name }}</td>
             <td>{{ lender.company }}</td>
             <td>{{ lender.user.email }}</td>
-            <td>{{ lender.user.phone }}</td>
+            <td>{{ lender.user.phone_w|format_phone }}</td>
+            <td>{{ lender.user.phone_m|format_phone }}</td>
           </tr>
           {% empty %}
           <tr>
