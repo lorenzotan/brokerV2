@@ -159,5 +159,19 @@
         "fields": {
             "name": "Business Acquisitions"
         }
+    },
+    {
+        "model": "loans.Qualifier",
+        "pk": 24,
+        "fields": {
+            "name": "Projection Based"
+        }
+    },
+    {
+        "model": "loans.Qualifier",
+        "pk": 25,
+        "fields": {
+            "name": "Start Ups"
+        }
     }
 ]
