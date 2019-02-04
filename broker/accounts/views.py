@@ -30,7 +30,7 @@ def select_group(req):
             user = req.user
             user.groups.add(group)
 
-            group_form = 'loans:' + group.name + '_form'
+            group_form = 'loans:' + group.name.lower() + '_form'
 
             return redirect(group_form)
 
