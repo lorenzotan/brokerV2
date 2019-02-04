@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import ObjectDoesNotExist
 from .forms import *
 
 # Create your views here.
@@ -14,7 +15,20 @@ def lender_form(req):
     property_types = PropertyType.objects.order_by('name')
 
     if req.method == 'POST':
-        userForm                   = UserForm(req.POST, instance=req.user)
+        # if the req.user is a Lender
+        if req.user.groups.all()[0].name == 'Lender':
+            userForm = UserForm(req.POST, instance=req.user)
+        else:
+            default_password = 'changeM3!'
+            default_username = (req.POST['first_name'][0] + req.POST['last_name']).lower()
+            group = Group.objects.get(name='Lender')
+
+            # TODO check if username exists, if exists, append 01
+            new_user = User.objects.create_user(default_username, req.POST['email'], default_password)
+            new_user.groups.add(group)
+            new_user.save()
+            userForm = UserForm(req.POST, instance=new_user)
+
         lenderForm                 = LenderForm(req.POST)
         lenderOwnerOccupiedREForm  = LenderOwnerOccupiedREForm(req.POST)
         lenderInvestmentREForm     = LenderInvestmentREForm(req.POST)
@@ -40,6 +54,13 @@ def lender_form(req):
 
             lender = lenderForm.save(commit=False)
             lender.user = user
+
+            # if req.user is a Broker, set new lender to broker
+            try:
+                lender.broker = req.user.broker
+            except ObjectDoesNotExist:
+                lender.broker = None
+
             lender.save()
 
 
@@ -87,9 +108,19 @@ def lender_form(req):
             return redirect('loans:lenders')
 
     else:
-    # TODO check if lender info exists and prepopulate everything 
-        user = { 'first_name': req.user.first_name, 'last_name': req.user.last_name, 'email': req.user.email }
-        userForm                   = UserForm(user)
+        # Only Broker/Admin can create new lenders
+        if req.user.groups.all()[0].name == 'Admin' or req.user.groups.all()[0].name == 'Broker':
+            userForm = UserForm()
+        # new lenders (no lender id yet) will get name prepopulated in form
+        elif req.user.groups.all()[0].name == 'Lender':
+            try:
+                # existing lenders are redirected to edit form
+                lender_id = req.user.lender.id
+                return redirect('loans:edit_lender_form', pk=req.user.lender.id)
+            except AttributeError:
+                user = { 'first_name': req.user.first_name, 'last_name': req.user.last_name, 'email': req.user.email }
+                userForm                   = UserForm(user)
+
         lenderForm                 = LenderForm()
         lenderOwnerOccupiedREForm  = LenderOwnerOccupiedREForm()
         lenderInvestmentREForm     = LenderInvestmentREForm()

@@ -108,6 +108,10 @@ class ClientPropertyInfo(models.Model):
     value   = models.DecimalField(max_digits=17, decimal_places=2)
 
 
+class Broker(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+
 class Client(models.Model):
     user       = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     loantype   = models.ForeignKey(LoanType, on_delete=models.SET_NULL, blank=True, null=True)
@@ -115,6 +119,7 @@ class Client(models.Model):
     business   = models.ForeignKey(ClientBusinessInfo, on_delete=models.SET_NULL, blank=True, null=True)
     qualifiers = models.ManyToManyField(Qualifier)
     needslist  = models.ManyToManyField(NeedsList)
+    broker     = models.ForeignKey(Broker, models.SET_NULL, blank=True, null=True)
 
 
 class Lender(models.Model):
@@ -123,10 +128,7 @@ class Lender(models.Model):
     qualifiers    = models.ManyToManyField(Qualifier)
     propertytypes = models.ManyToManyField(PropertyType)
     solicit       = models.PositiveSmallIntegerField()
-
-
-class Broker(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    broker        = models.ForeignKey(Broker, models.SET_NULL, blank=True, null=True)
 
 
 class ClientBLOCLoan(models.Model):

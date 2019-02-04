@@ -9,9 +9,8 @@ class RegisterForm(forms.ModelForm):
 
 
 class GroupForm(forms.Form):
-# TODO uppercase group names
     user_groups = forms.ModelChoiceField(
-        queryset = Group.objects.exclude(name='admin'),
+        queryset = Group.objects.exclude(name='Admin'),
         empty_label = ('Select One'),
         to_field_name='id'
     )

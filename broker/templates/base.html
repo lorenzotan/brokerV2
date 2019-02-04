@@ -20,14 +20,25 @@
       <div class="container fluid">
         <ul class="nav navbar-nav">
           <li class="active"><a href="/">Home</a></li>
+
+        {% if request.user.groups.all.0.name == 'Admin' or request.user.groups.all.0.name == 'Broker' or request.user.groups.all.0.name == 'Lender' %}
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Lenders
               <span class="caret"></span></a>
             <ul class="dropdown-menu">
+            {% if request.user.lender.id.exists %}
+              <li><a href="/loans/lender/{{ request.user.lender.id }}">Form</a></li>
+            {% else %}
               <li><a href="/loans/lender_form/">Form</a></li>
+            {% endif %}
+            {% if request.user.groups.all.0.name == 'Admin' or request.user.groups.all.0.name == 'Broker' %}
               <li><a href="/loans/lender_list/">List</a></li>
+            {% endif %}
             </ul>
           </li>
+        {% endif %}
+
+        {% if request.user.groups.all.0.name == 'Admin' or request.user.groups.all.0.name == 'Broker' %}
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Brokers
               <span class="caret"></span></a>
@@ -35,6 +46,7 @@
               <li><a href="#">Form</a></li>
               <li><a href="#">List</a></li>
             </ul>
+          </li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Contacts
               <span class="caret"></span></a>
@@ -42,14 +54,22 @@
               <li><a href="#">Form</a></li>
               <li><a href="#">List</a></li>
             </ul>
+          </li>
+        {% endif %}
+
+        {% if request.user.groups.all.0.name == 'Admin' or request.user.groups.all.0.name == 'Broker' or request.user.groups.all.0.name == 'Client' %}
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Loans
               <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="#">Form</a></li>
+            {% if request.user.groups.all.0.name == 'Admin' or request.user.groups.all.0.name == 'Broker' %}
               <li><a href="#">List</a></li>
+            {% endif %}
             </ul>
           </li>
+        {% endif %}
+
           <li class="active"><a href="#">Tools</a></li>
           <li class="active"><a href="#">Graphs</a></li>
         </ul>
