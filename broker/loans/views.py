@@ -210,6 +210,7 @@ def edit_lender_form(req, pk):
     except LenderBridgeLoan.DoesNotExist:
         bridge = None
 
+
     if req.method == 'POST':
         userForm                   = UserForm(req.POST, instance=user)
         lenderForm                 = LenderForm(req.POST, instance=lender)

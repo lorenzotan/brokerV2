@@ -1,0 +1,51 @@
+[
+    {
+        "model": "loans.LenderType",
+        "pk": 1,
+        "fields": {
+            "name": "Bank"
+        }
+    },
+    {
+        "model": "loans.LenderType",
+        "pk": 2,
+        "fields": {
+            "name": "CDFI"
+        }
+    },
+    {
+        "model": "loans.LenderType",
+        "pk": 3,
+        "fields": {
+            "name": "Credit Union"
+        }
+    },
+    {
+        "model": "loans.LenderType",
+        "pk": 4,
+        "fields": {
+            "name": "Foreign Bank"
+        }
+    },
+    {
+        "model": "loans.LenderType",
+        "pk": 5,
+        "fields": {
+            "name": "Private Money"
+        }
+    },
+    {
+        "model": "loans.LenderType",
+        "pk": 6,
+        "fields": {
+            "name": "Real Estate Investment"
+        }
+    },
+    {
+        "model": "loans.LenderType",
+        "pk": 7,
+        "fields": {
+            "name": "Other"
+        }
+    }
+]

@@ -42,9 +42,11 @@ class LenderForm(forms.ModelForm):
         fields = (
             'company',
             'solicit',
+            'lendertype',
         )
         labels = {
             'solicit': gettext('Solicitation Period'),
+            'lendertype': gettext('Lender Type'),
         }
 
 

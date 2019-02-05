@@ -119,7 +119,17 @@ class Client(models.Model):
     business   = models.ForeignKey(ClientBusinessInfo, on_delete=models.SET_NULL, blank=True, null=True)
     qualifiers = models.ManyToManyField(Qualifier)
     needslist  = models.ManyToManyField(NeedsList)
-    broker     = models.ForeignKey(Broker, models.SET_NULL, blank=True, null=True)
+    broker     = models.ForeignKey(Broker, on_delete=models.SET_NULL, blank=True, null=True)
+
+
+class LenderType(models.Model):
+    name = models.CharField(max_length=50, default=None, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 class Lender(models.Model):
@@ -128,7 +138,8 @@ class Lender(models.Model):
     qualifiers    = models.ManyToManyField(Qualifier)
     propertytypes = models.ManyToManyField(PropertyType)
     solicit       = models.PositiveSmallIntegerField()
-    broker        = models.ForeignKey(Broker, models.SET_NULL, blank=True, null=True)
+    broker        = models.ForeignKey(Broker, on_delete=models.SET_NULL, blank=True, null=True)
+    lendertype    = models.ForeignKey(LenderType, on_delete=models.SET_NULL, blank=True, null=True)
 
 
 class ClientBLOCLoan(models.Model):
