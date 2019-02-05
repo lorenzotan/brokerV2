@@ -1,0 +1,44 @@
+[
+    {
+        "model": "loans.LoanAmount",
+        "pk": 1,
+        "fields": {
+            "name": "Less than 250K"
+        }
+    },
+    {
+        "model": "loans.LoanAmount",
+        "pk": 2,
+        "fields": {
+            "name": "Less than 500K"
+        }
+    },
+    {
+        "model": "loans.LoanAmount",
+        "pk": 3,
+        "fields": {
+            "name": "Less than 1M"
+        }
+    },
+    {
+        "model": "loans.LoanAmount",
+        "pk": 4,
+        "fields": {
+            "name": "Greater than 1M"
+        }
+    },
+    {
+        "model": "loans.LoanAmount",
+        "pk": 5,
+        "fields": {
+            "name": "Greater than 3M"
+        }
+    },
+    {
+        "model": "loans.LoanAmount",
+        "pk": 6,
+        "fields": {
+            "name": "Greater than 5M"
+        }
+    }
+]
