@@ -160,7 +160,14 @@ def export_lender_csv(modeladmin, request, queryset):
         smart_str(u"Lender Mobile Phone"),
         smart_str(u"Lender Fax Phone"),
         smart_str(u"Lender Other Phone"),
+        smart_str(u"Lender Type"),
+        smart_str(u"Loan Amount"),
+
         smart_str(u"Lender Solicitation?"),
+        smart_str(u"Pays Broker Fees?"),
+        smart_str(u"Pays Broker Rebate?"),
+        smart_str(u"Pays via 1099?"),
+        smart_str(u"Pays through Escrow?"),
 
         smart_str(u"Owner Occ. Office?"),
         smart_str(u"Owner Occ. Warehouse?"),
@@ -222,14 +229,15 @@ def export_lender_csv(modeladmin, request, queryset):
     )
 
     lender411 = queryset.select_related(
-             'lenderowneroccupiedre',
-             'lenderinvestmentre',
-             'lendermultifamilyloan',
-             'lenderconstructionloan',
-             'lendersbaloan',
-             'lenderhelocloan',
-             'lenderblocloan',
-             'lenderbridgeloan')
+                'lenderbrokerrelation',
+                'lenderowneroccupiedre',
+                'lenderinvestmentre',
+                'lendermultifamilyloan',
+                'lenderconstructionloan',
+                'lendersbaloan',
+                'lenderhelocloan',
+                'lenderblocloan',
+                'lenderbridgeloan')
 
 # https://stackoverflow.com/questions/37652520/django-select-related-in-reverse/37792783
     for lender in lender411:
@@ -247,11 +255,30 @@ def export_lender_csv(modeladmin, request, queryset):
             smart_str(lender.user.phone_m),
             smart_str(lender.user.phone_f),
             smart_str(lender.user.phone_o),
-            smart_str(lender.solicit),
+            smart_str(lender.lendertype),
+            smart_str(lender.loanamt),
         ]
 
         # https://stackoverflow.com/questions/10487278/how-to-declare-and-add-items-to-an-array-in-python
         # https://stackoverflow.com/questions/27064206/django-check-if-a-related-object-exists-error-relatedobjectdoesnotexist
+        # XXX didn't have to do else before
+        if hasattr(lender, 'lenderbrokerrelation'):
+            fields.extend([
+                smart_str(lender.lenderbrokerrelation.solicit),
+                smart_str(bools[lender.lenderbrokerrelation.pays_brkr_fees]),
+                smart_str(bools[lender.lenderbrokerrelation.pays_brkr_rebate]),
+                smart_str(bools[lender.lenderbrokerrelation.pays_1099]),
+                smart_str(bools[lender.lenderbrokerrelation.pays_escrow]),
+            ])
+        else:
+            fields.extend([
+                smart_str(''),
+                smart_str('No'),
+                smart_str('No'),
+                smart_str('No'),
+                smart_str('No'),
+            ])
+
         if hasattr(lender, 'lenderowneroccupiedre'):
             fields.extend([
                 smart_str(bools[lender.lenderowneroccupiedre.office]),
