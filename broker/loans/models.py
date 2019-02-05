@@ -15,6 +15,16 @@ class Qualifier(models.Model):
         ordering = ['name']
 
 
+class LenderType(models.Model):
+    name = models.CharField(max_length=50, default=None, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
+
 class LoanType(models.Model):
     name  = models.CharField(max_length=50, default=None, null=True, blank=True)
     client_model = models.CharField(max_length=50, default=None, null=True, blank=True)
@@ -57,6 +67,16 @@ class LoanPurpose(models.Model):
 
     class Meta:
         ordering = ['name']
+
+
+class LoanAmount(models.Model):
+    name = models.CharField(max_length=50, default=None)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['id']
 
 
 class PointOfContact(models.Model):
@@ -120,16 +140,6 @@ class Client(models.Model):
     qualifiers = models.ManyToManyField(Qualifier)
     needslist  = models.ManyToManyField(NeedsList)
     broker     = models.ForeignKey(Broker, on_delete=models.SET_NULL, blank=True, null=True)
-
-
-class LenderType(models.Model):
-    name = models.CharField(max_length=50, default=None, null=True, blank=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
 
 
 class Lender(models.Model):
