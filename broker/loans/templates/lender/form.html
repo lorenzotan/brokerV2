@@ -21,7 +21,17 @@
             {{ field.label_tag }}
             {{ field }}
           {% endfor %}
-          {{ form.lender_type }}
+        </div>
+      </div>
+
+      <!-- Broker Relationship Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Broker Relationship</h1>
+          {% for field in lenderBrokerRelationForm %}
+            {{ field.label_tag }}
+            {{ field }}
+          {% endfor %}
         </div>
       </div>
 

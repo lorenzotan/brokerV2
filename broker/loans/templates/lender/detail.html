@@ -36,10 +36,27 @@
           {{ lender_data.user.phone_f|format_phone }}
           <label>Other Phone:</label>
           {{ lender_data.user.phone_o|format_phone }}
-          <label>Solicitation Period:</label>
-          {{ lender_data.solicit }} Days
           <label>Lender Type:</label>
           {{ lender_data.lendertype }}
+          <label>Amount:</label>
+          {{ lender_data.loanamt }}
+        </div>
+      </div>
+
+      <!-- Broker Relationship Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Broker Relationship</h1>
+          <label>Solicitation Period:</label>
+          {{ broker_rel.solicit }} Days
+          <label>Pays Broker Fees:</label>
+          {{ broker_rel.pays_brkr_fees }}
+          <label>Pays Broker Rebate:</label>
+          {{ broker_rel.pays_brkr_rebate }}
+          <label>Pays via 1099:</label>
+          {{ broker_rel.pays_1099 }}
+          <label>Pays through Escrow:</label>
+          {{ broker_rel.pays_escrow }}
         </div>
       </div>
 

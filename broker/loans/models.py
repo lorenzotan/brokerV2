@@ -147,9 +147,9 @@ class Lender(models.Model):
     company       = models.CharField(max_length=100, default=None, null=True, blank=True)
     qualifiers    = models.ManyToManyField(Qualifier)
     propertytypes = models.ManyToManyField(PropertyType)
-    solicit       = models.PositiveSmallIntegerField()
     broker        = models.ForeignKey(Broker, on_delete=models.SET_NULL, blank=True, null=True)
     lendertype    = models.ForeignKey(LenderType, on_delete=models.SET_NULL, blank=True, null=True)
+    loanamt       = models.ForeignKey(LoanAmount, on_delete=models.SET_NULL, blank=True, null=True)
 
 
 class ClientBLOCLoan(models.Model):
@@ -200,6 +200,15 @@ class ClientRetailLoan(models.Model):
     annual_expense = models.IntegerField(blank=True, null=True)
     purpose        = models.OneToOneField(LoanPurpose, on_delete=models.CASCADE, null=True)
     cash_out       = models.NullBooleanField(default=None)
+
+
+class LenderBrokerRelation(models.Model):
+    lender           = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
+    solicit          = models.PositiveSmallIntegerField()
+    pays_brkr_fees   = models.BooleanField(default=False)
+    pays_brkr_rebate = models.BooleanField(default=False)
+    pays_1099        = models.BooleanField(default=False)
+    pays_escrow      = models.BooleanField(default=False)
 
 
 class LenderBLOCLoan(models.Model):

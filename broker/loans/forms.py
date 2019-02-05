@@ -37,16 +37,36 @@ class UserForm(forms.ModelForm):
 class LenderForm(forms.ModelForm):
     class Meta:
         model = Lender
-        solicit = forms.CharField(required=False, widget=forms.TextInput(attrs={'type':'number'}))
 
         fields = (
             'company',
-            'solicit',
             'lendertype',
+            'loanamt',
         )
         labels = {
-            'solicit': gettext('Solicitation Period'),
             'lendertype': gettext('Lender Type'),
+            'loanamt': gettext('Loan Amount'),
+        }
+
+
+class LenderBrokerRelationForm(forms.ModelForm):
+    class Meta:
+        model = LenderBrokerRelation
+        solicit = forms.CharField(required=False, widget=forms.TextInput(attrs={'type':'number'}))
+
+        fields  = (
+            'solicit',
+            'pays_brkr_fees',
+            'pays_brkr_rebate',
+            'pays_1099',
+            'pays_escrow',
+        )
+        labels = {
+            'solicit':          gettext('Solicitation Period'),
+            'pays_brkr_fees':   gettext('Pays Broker Fees'),
+            'pays_brkr_rebate': gettext('Pays Broker Rebate'),
+            'pays_1099':        gettext('Pays via 1099'),
+            'pays_escrow':      gettext('Pays through Escrow'),
         }
 
 

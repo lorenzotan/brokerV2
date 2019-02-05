@@ -18,6 +18,7 @@ def lender_form(req):
         # if the req.user is a Lender
         if req.user.groups.all()[0].name == 'Lender':
             userForm = UserForm(req.POST, instance=req.user)
+        # create new user if req.user is broker/admin
         else:
             default_password = 'changeM3!'
             default_username = (req.POST['first_name'][0] + req.POST['last_name']).lower()
@@ -29,7 +30,9 @@ def lender_form(req):
             new_user.save()
             userForm = UserForm(req.POST, instance=new_user)
 
+
         lenderForm                 = LenderForm(req.POST)
+        lenderBrokerRelationForm   = LenderBrokerRelationForm(req.POST)
         lenderOwnerOccupiedREForm  = LenderOwnerOccupiedREForm(req.POST)
         lenderInvestmentREForm     = LenderInvestmentREForm(req.POST)
         lenderMultiFamilyLoanForm  = LenderMultiFamilyLoanForm(req.POST)
@@ -41,6 +44,7 @@ def lender_form(req):
 
         if userForm.is_valid() and \
            lenderForm.is_valid() and \
+           lenderBrokerRelationForm.is_valid() and \
            lenderOwnerOccupiedREForm.is_valid() and \
            lenderInvestmentREForm.is_valid() and \
            lenderMultiFamilyLoanForm.is_valid() and \
@@ -65,6 +69,10 @@ def lender_form(req):
 
 
             # TODO needs to be more efficient
+            brkr_rel = lenderBrokerRelationForm.save(commit=False)
+            brkr_rel.lender = lender
+            brkr_rel.save()
+
             oo = lenderOwnerOccupiedREForm.save(commit=False)
             oo.lender = lender
             oo.save()
@@ -123,6 +131,7 @@ def lender_form(req):
                 userForm                   = UserForm(user)
 
         lenderForm                 = LenderForm()
+        lenderBrokerRelationForm   = LenderBrokerRelationForm()
         lenderOwnerOccupiedREForm  = LenderOwnerOccupiedREForm()
         lenderInvestmentREForm     = LenderInvestmentREForm()
         lenderMultiFamilyLoanForm  = LenderMultiFamilyLoanForm()
@@ -140,6 +149,7 @@ def lender_form(req):
     context = {
         'userForm': userForm,
         'lenderForm': lenderForm,
+        'lenderBrokerRelationForm': lenderBrokerRelationForm,
         'lenderOwnerOccupiedREForm': lenderOwnerOccupiedREForm,
         'lenderInvestmentREForm': lenderInvestmentREForm,
         'lenderMultiFamilyLoanForm': lenderMultiFamilyLoanForm,
@@ -170,6 +180,11 @@ def edit_lender_form(req, pk):
     user   = get_object_or_404(User, id=lender.user.id)
 
     # TODO refactor (create function that returns dictionary of objects)
+    try:
+        brkr_rel = LenderBrokerRelation.objects.get(lender=pk)
+    except LenderBrokerRelation.DoesNotExist:
+        brkr_rel = None
+
     try:
         oore = LenderOwnerOccupiedRE.objects.get(lender=pk)
     except LenderOwnerOccupiedRE.DoesNotExist:
@@ -214,6 +229,7 @@ def edit_lender_form(req, pk):
     if req.method == 'POST':
         userForm                   = UserForm(req.POST, instance=user)
         lenderForm                 = LenderForm(req.POST, instance=lender)
+        lenderBrokerRelationForm   = LenderBrokerRelationForm(req.POST, instance=brkr_rel)
         lenderOwnerOccupiedREForm  = LenderOwnerOccupiedREForm(req.POST, instance=oore)
         lenderInvestmentREForm     = LenderInvestmentREForm(req.POST, instance=invre)
         lenderMultiFamilyLoanForm  = LenderMultiFamilyLoanForm(req.POST, instance=multifam)
@@ -226,6 +242,7 @@ def edit_lender_form(req, pk):
         # TODO refactor: create function to check all necessary forms
         if userForm.is_valid() and \
            lenderForm.is_valid() and \
+           lenderBrokerRelationForm.is_valid() and \
            lenderOwnerOccupiedREForm.is_valid() and \
            lenderInvestmentREForm.is_valid() and \
            lenderMultiFamilyLoanForm.is_valid() and \
@@ -235,7 +252,6 @@ def edit_lender_form(req, pk):
            lenderBLOCLoanForm.is_valid() and \
            lenderBridgeLoanForm.is_valid():
 
-            # XXX UNIQUE constraint failed: loans_lender.user_id
             user = userForm.save()
 
             lender = lenderForm.save(commit=False)
@@ -243,7 +259,11 @@ def edit_lender_form(req, pk):
             lender.save()
 
 
-            # TODO needs to be more efficient
+            # TODO shorten
+            brk_rel = lenderBrokerRelationForm.save(commit=False)
+            brk_rel.lender = lender
+            brk_rel.save()
+
             oo = lenderOwnerOccupiedREForm.save(commit=False)
             oo.lender = lender
             oo.save()
@@ -292,6 +312,7 @@ def edit_lender_form(req, pk):
     else:
         userForm                   = UserForm(instance=user)
         lenderForm                 = LenderForm(instance=lender)
+        lenderBrokerRelationForm   = LenderBrokerRelationForm(instance=brkr_rel)
         lenderOwnerOccupiedREForm  = LenderOwnerOccupiedREForm(instance=oore)
         lenderInvestmentREForm     = LenderInvestmentREForm(instance=invre)
         lenderMultiFamilyLoanForm  = LenderMultiFamilyLoanForm(instance=multifam)
@@ -308,6 +329,7 @@ def edit_lender_form(req, pk):
         'lender': lender,
         'userForm': userForm,
         'lenderForm': lenderForm,
+        'lenderBrokerRelationForm': lenderBrokerRelationForm,
         'lenderOwnerOccupiedREForm': lenderOwnerOccupiedREForm,
         'lenderInvestmentREForm': lenderInvestmentREForm,
         'lenderMultiFamilyLoanForm': lenderMultiFamilyLoanForm,
@@ -347,8 +369,18 @@ def lender_detail(req, pk):
     templ = loader.get_template('lender/detail.html')
     lender = get_object_or_404(Lender.objects.select_related('user'), id=pk)
 
-    # TODO this needs to be more efficient
+    # TODO shorten
     # https://stackoverflow.com/questions/4353147/whats-the-best-way-to-handle-djangos-objects-get
+    try:
+        brkr_rel = LenderBrokerRelation.objects.get(lender=pk)
+    except LenderBrokerRelation.DoesNotExist:
+        brkr_rel = None
+
+    try:
+        oo = LenderOwnerOccupiedRE.objects.get(lender=pk)
+    except LenderOwnerOccupiedRE.DoesNotExist:
+        oo = None
+
     try:
         oo = LenderOwnerOccupiedRE.objects.get(lender=pk)
     except LenderOwnerOccupiedRE.DoesNotExist:
@@ -396,6 +428,7 @@ def lender_detail(req, pk):
 
     context = {
         'lender_data': lender,
+        'broker_rel': brkr_rel,
         'owner_occupy': oo,
         'invest': inv,
         'multi': multi,
