@@ -107,6 +107,7 @@ def lender_form(req):
 
             return redirect('loans:lenders')
 
+    # XXX BEWARE if form is invalid, it will break
     else:
         # Only Broker/Admin can create new lenders
         if req.user.groups.all()[0].name == 'Admin' or req.user.groups.all()[0].name == 'Broker':
@@ -151,8 +152,7 @@ def lender_form(req):
         'property_types': property_types,
         'submit': submit,
     }
-    #return render(req, 'loans/lender_form.html', context)
-    #return render(req, 'loans/lender_form.html', {'form': form})
+
     return HttpResponse(tmpl.render(context, req))
 # END def lender_form
 
@@ -288,6 +288,7 @@ def edit_lender_form(req, pk):
 
             return redirect('loans:lender_detail', pk=lender.id)
 
+    # XXX BEWARE if form is invalid, it will break
     else:
         userForm                   = UserForm(instance=user)
         lenderForm                 = LenderForm(instance=lender)
@@ -337,6 +338,7 @@ def lender_list(req):
     }
 
     return HttpResponse(templ.render(context, req))
+# END lender_list
 
 
 @login_required
@@ -407,6 +409,7 @@ def lender_detail(req, pk):
     }
 
     return HttpResponse(templ.render(context, req))
+# END lender_detail
 
 
 @login_required
@@ -419,6 +422,7 @@ def loan_form(req):
         form = LoanForm()
 
     return render(req, 'client/form.html', {'form': form})
+# END loan_form
 
 
 @login_required
@@ -431,3 +435,4 @@ def loan_list(req):
     }
 
     return HttpResponse(template.render(context, req))
+# END loan_list
