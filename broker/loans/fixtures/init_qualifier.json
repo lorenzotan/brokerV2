@@ -1,13 +1,6 @@
 [
     {
         "model": "loans.Qualifier",
-        "pk": 1,
-        "fields": {
-            "name": "Pays Broker Fees"
-        }
-    },
-    {
-        "model": "loans.Qualifier",
         "pk": 2,
         "fields": {
             "name": "Outside CA"
