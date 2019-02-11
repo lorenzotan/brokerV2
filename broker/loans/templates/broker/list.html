@@ -4,10 +4,10 @@
 {% block content %}
     <section class="container">
       <header>
-        <h2>Lender Information</h2>
+        <h2>Broker Information</h2>
         <!--button type="button" class="btn btn-broker btn-xs pull-right">
-          <a href="{% url 'loans:lender_form' %}">
-            <span class="glyphicon glyphicon-plus-sign"></span> Add Lender
+          <a href="{% url 'loans:broker_form' %}">
+            <span class="glyphicon glyphicon-plus-sign"></span> Add Broker
           </a>
         </button-->
       </header>
@@ -17,25 +17,23 @@
             <tr>
               <th>First Name</th>
               <th>Last Name</th>
-              <th>Company</th>
               <th>Email</th>
               <th>Work Phone</th>
               <th>Mobile Phone</th>
             </tr>
           </thead>
-          {% for lender in lenders %}
-          <tr class="row-link" data-href="/loans/lender/{{ lender.id }}">
+          {% for broker in brokers %}
+          <tr class="row-link" data-href="/loans/broker/{{ broker.id }}">
             <!-- https://codereview.stackexchange.com/questions/194906/cleanest-way-to-get-list-of-django-objects-that-have-same-foreign-key-and-displa -->
-            <td>{{ lender.user.first_name }}</td>
-            <td>{{ lender.user.last_name }}</td>
-            <td>{{ lender.company }}</td>
-            <td>{{ lender.user.email }}</td>
-            <td>{{ lender.user.phone_w|format_phone }}</td>
-            <td>{{ lender.user.phone_m|format_phone }}</td>
+            <td>{{ broker.user.first_name }}</td>
+            <td>{{ broker.user.last_name }}</td>
+            <td>{{ broker.user.email }}</td>
+            <td>{{ broker.user.phone_w|format_phone }}</td>
+            <td>{{ broker.user.phone_m|format_phone }}</td>
           </tr>
           {% empty %}
           <tr>
-            <td align="center" colspan="6">No Lenders to display</td>
+            <td align="center" colspan="5">No Brokers to display</td>
           </tr>
           {% endfor %}
         </table>

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load format_data %}
+{% block content %}
+    <h1>Broker Form</h1>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <form name="form" action="{% url 'loans:edit_broker_form' pk=broker_data.id %}" method="GET">
+    {% csrf_token %}
+
+      <!-- Name Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Broker Information</h1>
+          <label>First Name:</label>
+          {{ broker_data.user.first_name }}
+          <label>Last Name:</label>
+          {{ broker_data.user.last_name }}
+          <label>Address:</label>
+          {{ broker_data.user.address }}
+          <label>City:</label>
+          {{ broker_data.user.city }}
+          <label>State:</label>
+          {{ broker_data.user.state }}
+          <label>Zip:</label>
+          {{ broker_data.user.zip_code }}
+          <label>Primary Email:</label>
+          {{ broker_data.user.email }}
+          <label>Secondary Email:</label>
+          {{ broker_data.user.email_x }}
+          <label>Work Phone:</label>
+          {{ broker_data.user.phone_w|format_phone }}
+          <label>Mobile Phone:</label>
+          {{ broker_data.user.phone_m|format_phone }}
+          <label>Fax Phone:</label>
+          {{ broker_data.user.phone_f|format_phone }}
+          <label>Other Phone:</label>
+          {{ broker_data.user.phone_o|format_phone }}
+        </div>
+      </div>
+
+      <center>
+        <button>Edit</button>
+      </center>
+    </form>
+{% endblock %}

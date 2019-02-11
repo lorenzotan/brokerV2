@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Broker Form</h1>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% if broker.id %}
+    <form name="form" class="foo" action="{% url 'loans:edit_broker_form' pk=broker.id %}" method="POST">
+    {% else %}
+    <form name="form" action="{% url 'loans:broker_form' %}" method="POST">
+    {% endif %}
+    {% csrf_token %}
+
+      <!-- Name Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Broker Information</h1>
+          {% for field in userForm %}
+            {{ field.label_tag }}
+            {{ field }}
+          {% endfor %}
+        </div>
+      </div>
+
+      <center>
+        <button>{{ submit }}</button>
+      </center>
+    </form>
+{% endblock %}
