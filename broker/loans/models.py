@@ -129,7 +129,8 @@ class ClientPropertyInfo(models.Model):
 
 
 class Broker(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user    = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    company = models.CharField(max_length=100, default=None, null=True, blank=True)
 
 
 class Client(models.Model):

@@ -2,12 +2,18 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import *
 
 # Create your views here.
+
+################################################################################
+# LENDER VIEWS
+################################################################################
+
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='client').count() == 0, login_url='/denied/')
+@user_passes_test(lambda u: u.groups.filter(name='Client').count() == 0, login_url='/denied/')
 def lender_form(req):
     tmpl = loader.get_template('lender/form.html')
     submit = 'Submit'
@@ -21,6 +27,7 @@ def lender_form(req):
         # create new user if req.user is broker/admin
         else:
             default_password = 'changeM3!'
+            # default user name is first initial, last name
             default_username = (req.POST['first_name'][0] + req.POST['last_name']).lower()
             group = Group.objects.get(name='Lender')
 
@@ -127,7 +134,9 @@ def lender_form(req):
                 lender_id = req.user.lender.id
                 return redirect('loans:edit_lender_form', pk=req.user.lender.id)
             except AttributeError:
-                user = { 'first_name': req.user.first_name, 'last_name': req.user.last_name, 'email': req.user.email }
+                user = { 'first_name': req.user.first_name, \
+                         'last_name': req.user.last_name, \
+                         'email': req.user.email }
                 userForm                   = UserForm(user)
 
         lenderForm                 = LenderForm()
@@ -169,7 +178,7 @@ def lender_form(req):
 
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='client').count() == 0, login_url='/denied/')
+@user_passes_test(lambda u: u.groups.filter(name='Client').count() == 0, login_url='/denied/')
 def edit_lender_form(req, pk):
     tmpl           = loader.get_template('lender/form.html')
     qualifiers     = Qualifier.objects.order_by('name')
@@ -350,7 +359,7 @@ def edit_lender_form(req, pk):
 
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='client').count() == 0, login_url='/denied/')
+@user_passes_test(lambda u: u.groups.filter(name='Client').count() == 0, login_url='/denied/')
 def lender_list(req):
     templ = loader.get_template('lender/list.html')
 
@@ -364,7 +373,7 @@ def lender_list(req):
 
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='client').count() == 0, login_url='/denied/')
+@user_passes_test(lambda u: u.groups.filter(name='Client').count() == 0, login_url='/denied/')
 def lender_detail(req, pk):
     templ = loader.get_template('lender/detail.html')
     lender = get_object_or_404(Lender.objects.select_related('user'), id=pk)
@@ -444,6 +453,158 @@ def lender_detail(req, pk):
     return HttpResponse(templ.render(context, req))
 # END lender_detail
 
+
+################################################################################
+# BROKER VIEWS
+################################################################################
+
+@login_required
+#@user_passes_test(lambda u: u.groups.filter(name='client').count() == 0, login_url='/denied/')
+def broker_form(req):
+    tmpl = loader.get_template('broker/form.html')
+    submit = 'Submit'
+
+    if req.method == 'POST':
+        # save user info if the req.user is a broker
+        if req.user.groups.all()[0].name == 'Broker':
+            userForm = UserForm(req.POST, instance=req.user)
+        # XXX consider using elif admin, else deny
+        # create new user if req.user is admin
+        else:
+            default_password = 'changeM3!'
+            # default user name is first initial, last name
+            default_username = (req.POST['first_name'][0] + req.POST['last_name']).lower()
+            group = Group.objects.get(name='Broker')
+
+            # TODO check if username exists, if exists, append 01
+            new_user = User.objects.create_user(default_username, req.POST['email'], default_password)
+            new_user.groups.add(group)
+            new_user.save()
+            userForm = UserForm(req.POST, instance=new_user)
+            brokerForm = BrokerForm(req.POST)
+
+        if userForm.is_valid() and \
+           brokerForm.is_valid():
+            user = userForm.save()
+
+            broker = brokerForm.save(commit=False)
+            broker.user = user
+            broker.save()
+
+            return redirect('loans:brokers')
+
+    # XXX BEWARE if form is invalid, it will break
+    else:
+        ## Only Admin can create new brokers
+        #if req.user.groups.all()[0].name == 'Admin':
+        userForm = UserForm()
+        brokerForm = BrokerForm()
+        ## new lenders (no lender id yet) will get name prepopulated in form
+        #elif req.user.groups.all()[0].name == 'Broker':
+        #    try:
+        #        # existing brokers are redirected to edit form
+        #        broker_id = req.user.broker.id
+        #        return redirect('loans:edit_broker_form', pk=req.user.broker.id)
+        #    except AttributeError:
+        #        user = { 'first_name': req.user.first_name,
+        #                 'last_name': req.user.last_name,
+        #                 'email': req.user.email }
+        #        userForm = UserForm(user)
+
+    context = {
+        'userForm': userForm,
+        'brokerForm': brokerForm,
+        'submit': submit,
+    }
+
+    return HttpResponse(tmpl.render(context, req))
+# END def broker_form
+
+
+
+@login_required
+#@user_passes_test(lambda u: u.groups.filter(name='Client').count() == 0, login_url='/denied/')
+def edit_broker_form(req, pk):
+    tmpl           = loader.get_template('broker/form.html')
+    submit         = 'Update'
+
+    lender = get_object_or_404(Broker, id=pk)
+    user   = get_object_or_404(User, id=lender.user.id)
+
+
+    if req.method == 'POST':
+        userForm                   = UserForm(req.POST, instance=user)
+
+        # TODO refactor: create function to check all necessary forms
+        if userForm.is_valid():
+
+            user = userForm.save()
+
+            lender = lenderForm.save(commit=False)
+            lender.user = user
+            lender.save()
+
+
+            lender.qualifiers.clear()
+            for q in req.POST.getlist('qualifier'):
+                lender.qualifiers.add(q)
+
+            lender.propertytypes.clear()
+            for p in req.POST.getlist('property_type'):
+                lender.propertytypes.add(p)
+
+            lenderForm.save_m2m()
+
+            return redirect('loans:lender_detail', pk=lender.id)
+
+    # XXX BEWARE if form is invalid, it will break
+    else:
+        userForm   = UserForm(instance=user)
+        lenderForm = LenderForm(instance=lender)
+
+
+    context = {
+        'lender': lender,
+        'userForm': userForm,
+        'lenderForm': lenderForm,
+        'submit': submit,
+    }
+
+    return HttpResponse(tmpl.render(context, req))
+# END def edit_broker_form
+
+
+@login_required
+#@user_passes_test(lambda u: u.groups.filter(name='client').count() == 0, login_url='/denied/')
+def broker_list(req):
+    templ = loader.get_template('broker/list.html')
+
+    broker_list = Broker.objects.all().select_related('user')
+    context = {
+        'brokers': broker_list,
+    }
+
+    return HttpResponse(templ.render(context, req))
+# END broker_list
+
+
+@login_required
+#@user_passes_test(lambda u: u.groups.filter(name='client').count() == 0, login_url='/denied/')
+def broker_detail(req, pk):
+    templ = loader.get_template('broker/detail.html')
+    broker = get_object_or_404(Broker.objects.select_related('user'), id=pk)
+
+    context = {
+        'broker_data': broker,
+    }
+
+    return HttpResponse(templ.render(context, req))
+# END lender_detail
+
+
+################################################################################
+# CLIENT VIEWS
+################################################################################
 
 @login_required
 @user_passes_test(lambda u: u.groups.filter(name='lender').count() == 0, login_url='/denied/')
