@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Lender, Client, Qualifier, PropertyType
+from .models import Broker, Lender, Client, Qualifier, PropertyType
 from django.forms.models import model_to_dict
 from django.http import HttpResponse
-import csv
 from django.utils.encoding import smart_str
+import csv
 
 bools = {
     True: 'Yes',
@@ -13,6 +13,11 @@ bools = {
 # https://docs.djangoproject.com/en/2.1/ref/contrib/admin/#django.contrib.admin.ModelAdmin.list_display
 # http://books.agiliq.com/projects/django-admin-cookbook/en/latest/export.html
 # ... export functions will go here ..
+
+
+################################################################################
+# CLIENT EXPORT
+################################################################################
 def export_client_csv(modeladmin, request, queryset):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=client_export.csv'
@@ -133,6 +138,9 @@ class ClientAdmin(admin.ModelAdmin):
 #admin.site.register(Client, ClientAdmin)
 
 
+################################################################################
+# LENDER EXPORT
+################################################################################
 def export_lender_csv(modeladmin, request, queryset):
 
     response = HttpResponse(content_type='text/csv')
@@ -401,9 +409,88 @@ class LenderAdmin(admin.ModelAdmin):
     get_last_name.short_description = 'Last Name'
     get_last_name.admin_order_field = 'user__last_name'
 
-
-
-
+# end LenderAdmin
 
 # NOTE disabling until fields are fixed
 admin.site.register(Lender, LenderAdmin)
+
+
+
+
+################################################################################
+# BROKER EXPORT
+################################################################################
+def export_broker_csv(modeladmin, request, queryset):
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=broker_export.csv'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
+
+    header = [
+        smart_str(u"Broker First Name"),
+        smart_str(u"Broker Last Name"),
+        smart_str(u"Broker Company"),
+        smart_str(u"Broker Street Address"),
+        smart_str(u"Broker City"),
+        smart_str(u"Broker State"),
+        smart_str(u"Broker Zip Code"),
+        smart_str(u"Broker Primary Email"),
+        smart_str(u"Broker Secondary Email"),
+        smart_str(u"Broker Work Phone"),
+        smart_str(u"Broker Mobile Phone"),
+        smart_str(u"Broker Fax Phone"),
+        smart_str(u"Broker Other Phone"),
+    ]
+
+    writer.writerow(
+        header
+    )
+
+# https://stackoverflow.com/questions/37652520/django-select-related-in-reverse/37792783
+    for broker in queryset:
+        fields = [
+            smart_str(broker.user.first_name),
+            smart_str(broker.user.last_name),
+            smart_str(broker.company),
+            smart_str(broker.user.address),
+            smart_str(broker.user.city),
+            smart_str(broker.user.state),
+            smart_str(broker.user.zip_code),
+            smart_str(broker.user.email),
+            smart_str(broker.user.email_x),
+            smart_str(broker.user.phone_w),
+            smart_str(broker.user.phone_m),
+            smart_str(broker.user.phone_f),
+            smart_str(broker.user.phone_o),
+        ]
+
+        writer.writerow(fields)
+    # end for
+
+    return response
+# end def export_broker_csv
+
+export_broker_csv.short_description = u"Broker CSV Export"
+
+# get_name
+# https://stackoverflow.com/questions/163823/can-list-display-in-a-django-modeladmin-display-attributes-of-foreignkey-field
+class BrokerAdmin(admin.ModelAdmin):
+    model = Broker
+    list_display = ['get_first_name', 'get_last_name']
+    actions = [export_broker_csv]
+
+    def get_first_name(self, obj):
+        return obj.user.first_name
+
+    get_first_name.short_description = 'First Name'
+    get_first_name.admin_order_field = 'user__first_name'
+
+    def get_last_name(self, obj):
+        return obj.user.last_name
+
+    get_last_name.short_description = 'Last Name'
+    get_last_name.admin_order_field = 'user__last_name'
+
+
+admin.site.register(Broker, BrokerAdmin)
