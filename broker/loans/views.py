@@ -137,7 +137,7 @@ def lender_form(req):
                 user = { 'first_name': req.user.first_name, \
                          'last_name': req.user.last_name, \
                          'email': req.user.email }
-                userForm                   = UserForm(user)
+                userForm = UserForm(user)
 
         lenderForm                 = LenderForm()
         lenderBrokerRelationForm   = LenderBrokerRelationForm()
@@ -483,6 +483,8 @@ def broker_form(req):
             userForm = UserForm(req.POST, instance=new_user)
             brokerForm = BrokerForm(req.POST)
 
+        brokerForm = BrokerForm(req.POST)
+
         if userForm.is_valid() and \
            brokerForm.is_valid():
             user = userForm.save()
@@ -496,20 +498,21 @@ def broker_form(req):
     # XXX BEWARE if form is invalid, it will break
     else:
         ## Only Admin can create new brokers
-        #if req.user.groups.all()[0].name == 'Admin':
-        userForm = UserForm()
-        brokerForm = BrokerForm()
-        ## new lenders (no lender id yet) will get name prepopulated in form
-        #elif req.user.groups.all()[0].name == 'Broker':
-        #    try:
-        #        # existing brokers are redirected to edit form
-        #        broker_id = req.user.broker.id
-        #        return redirect('loans:edit_broker_form', pk=req.user.broker.id)
-        #    except AttributeError:
-        #        user = { 'first_name': req.user.first_name,
-        #                 'last_name': req.user.last_name,
-        #                 'email': req.user.email }
-        #        userForm = UserForm(user)
+        if req.user.groups.all()[0].name == 'Admin':
+            userForm = UserForm()
+            brokerForm = BrokerForm()
+        # new lenders (no lender id yet) will get name prepopulated in form
+        elif req.user.groups.all()[0].name == 'Broker':
+            try:
+                # existing brokers are redirected to edit form
+                broker_id = req.user.broker.id
+                return redirect('loans:edit_broker_form', pk=req.user.broker.id)
+            except AttributeError:
+                user = { 'first_name': req.user.first_name,
+                         'last_name': req.user.last_name,
+                         'email': req.user.email }
+                userForm = UserForm(user)
+                brokerForm = BrokerForm(user)
 
     context = {
         'userForm': userForm,
@@ -525,48 +528,39 @@ def broker_form(req):
 @login_required
 #@user_passes_test(lambda u: u.groups.filter(name='Client').count() == 0, login_url='/denied/')
 def edit_broker_form(req, pk):
-    tmpl           = loader.get_template('broker/form.html')
-    submit         = 'Update'
+    tmpl   = loader.get_template('broker/form.html')
+    submit = 'Update'
 
-    lender = get_object_or_404(Broker, id=pk)
-    user   = get_object_or_404(User, id=lender.user.id)
+    broker = get_object_or_404(Broker, id=pk)
+    user   = get_object_or_404(User, id=broker.user.id)
 
 
     if req.method == 'POST':
-        userForm                   = UserForm(req.POST, instance=user)
+        userForm   = UserForm(req.POST, instance=user)
+        brokerForm = BrokerForm(req.POST, instance=broker)
 
         # TODO refactor: create function to check all necessary forms
-        if userForm.is_valid():
+        if userForm.is_valid() and \
+           brokerForm.is_valid():
 
             user = userForm.save()
 
-            lender = lenderForm.save(commit=False)
-            lender.user = user
-            lender.save()
+            broker = brokerForm.save(commit=False)
+            broker.user = user
+            broker.save()
 
-
-            lender.qualifiers.clear()
-            for q in req.POST.getlist('qualifier'):
-                lender.qualifiers.add(q)
-
-            lender.propertytypes.clear()
-            for p in req.POST.getlist('property_type'):
-                lender.propertytypes.add(p)
-
-            lenderForm.save_m2m()
-
-            return redirect('loans:lender_detail', pk=lender.id)
+            return redirect('loans:broker_detail', pk=broker.id)
 
     # XXX BEWARE if form is invalid, it will break
     else:
         userForm   = UserForm(instance=user)
-        lenderForm = LenderForm(instance=lender)
+        brokerForm = BrokerForm(instance=broker)
 
 
     context = {
-        'lender': lender,
+        'broker': broker,
         'userForm': userForm,
-        'lenderForm': lenderForm,
+        'brokerForm': brokerForm,
         'submit': submit,
     }
 
