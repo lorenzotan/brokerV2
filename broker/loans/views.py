@@ -376,7 +376,7 @@ def lender_list(req):
 @user_passes_test(lambda u: u.groups.filter(name='Client').count() == 0, login_url='/denied/')
 def lender_detail(req, pk):
     templ = loader.get_template('lender/detail.html')
-    lender = get_object_or_404(Lender.objects.select_related('user'), id=pk)
+    lender = get_object_or_404(Lender.objects.select_related('user', 'lendertype'), id=pk)
 
     # TODO shorten
     # https://stackoverflow.com/questions/4353147/whats-the-best-way-to-handle-djangos-objects-get
