@@ -145,5 +145,26 @@
         "fields": {
             "name": "Student Housing"
         }
+    },
+    {
+        "model": "loans.PropertyType",
+        "pk": 22,
+        "fields": {
+            "name": "Mixed Use"
+        }
+    },
+    {
+        "model": "loans.PropertyType",
+        "pk": 23,
+        "fields": {
+            "name": "Campground"
+        }
+    },
+    {
+        "model": "loans.PropertyType",
+        "pk": 24,
+        "fields": {
+            "name": "Racetrack"
+        }
     }
 ]
