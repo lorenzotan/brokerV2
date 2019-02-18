@@ -74,6 +74,8 @@
           {{ owner_occupy.medical }}
           <label>Mixed Use:</label>
           {{ owner_occupy.mixed_use }}
+          <label>Industrial:</label>
+          {{ owner_occupy.industrial }}
           <label>Other:</label>
           {{ owner_occupy.other }}
         </div>
@@ -93,6 +95,8 @@
           {{ invest.medical }}
           <label>Mixed Use:</label>
           {{ invest.mixed_use }}
+          <label>Industrial:</label>
+          {{ invest.industrial }}
           <label>Other:</label>
           {{ invest.other }}
         </div>
@@ -125,6 +129,8 @@
           {{ const.inv_w_land }}
           <label>Owner Occupied w/ Land:</label>
           {{ const.oo_w_land }}
+          <label>Investor:</label>
+          {{ const.investor }}
         </div>
       </div>
 
@@ -140,6 +146,10 @@
           {{ sba.CAPline }}
           <label>Micro Loan:</label>
           {{ sba.micro }}
+          <label>SBA Express:</label>
+          {{ sba.express }}
+          <label>ITL:</label>
+          {{ sba.itl }}
           <label>Other:</label>
           {{ sba.other }}
         </div>
@@ -154,6 +164,8 @@
           {{ heloc.pos_1 }}
           <label>2nd Position:</label>
           {{ heloc.pos_2 }}
+          <label>3rd Position:</label>
+          {{ heloc.pos_3 }}
         </div>
       </div>
 
@@ -173,15 +185,36 @@
           {{ bloc.pos1 }}
           <label>2nd Position:</label>
           {{ bloc.pos2 }}
+
+          <label>Equipment:</label>
+          {{ bloc.equipment }}
+          <label>Working Capital:</label>
+          {{ bloc.work_cap }}
+          <label>Interest Only:</label>
+          {{ bloc.int_only }}
+          <label>Secured by Accounts Receivable:</label>
+          {{ bloc.sec_accts_rec }}
+          <label>Secured by Inventory:</label>
+          {{ bloc.sec_inv }}
+          <label>RE Secured:</label>
+          {{ bloc.re_secure }}
+          <label>RE Unsecured:</label>
+          {{ bloc.re_unsecure }}
         </div>
       </div>
 
-      <!-- Bridge Table -->
+      <!-- Miscellaneous Table -->
       <div class="formContainer">
         <div class="grid2c">
           <h1 class="formHeader">Miscellaneous Loans</h1>
           <label>Bridge:</label>
           {{ bridge.bridge }}
+          <label>Commercial Term Loan:</label>
+          {{ bridge.comm_term }}
+          <label>USDA:</label>
+          {{ bridge.usda }}
+          <label>Stated Income:</label>
+          {{ bridge.stated_inc }}
         </div>
       </div>
 
