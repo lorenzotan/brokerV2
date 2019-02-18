@@ -38,7 +38,7 @@
         "model": "loans.Qualifier",
         "pk": 9,
         "fields": {
-            "name": "Relationship"
+            "name": "Relationship Pricing"
         }
     },
     {
@@ -151,6 +151,13 @@
         "pk": 25,
         "fields": {
             "name": "Start Ups"
+        }
+    },
+    {
+        "model": "loans.Qualifier",
+        "pk": 26,
+        "fields": {
+            "name": "Franchises"
         }
     }
 ]
