@@ -583,7 +583,7 @@ def broker_list(req):
 
 
 @login_required
-#@user_passes_test(lambda u: u.groups.filter(name='client').count() == 0, login_url='/denied/')
+#@user_passes_test(lambda u: u.groups.filter(name='Client').count() == 0, login_url='/denied/')
 def broker_detail(req, pk):
     templ = loader.get_template('broker/detail.html')
     broker = get_object_or_404(Broker.objects.select_related('user'), id=pk)
@@ -601,26 +601,134 @@ def broker_detail(req, pk):
 ################################################################################
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='lender').count() == 0, login_url='/denied/')
-def loan_form(req):
+@user_passes_test(lambda u: u.groups.filter(name='Lender').count() == 0, login_url='/denied/')
+def client_form(req):
+    tmpl   = loader.get_template('client/form.html')
+    submit = 'Submit'
     if req.method == 'POST':
-        form = LoanForm(req.POST)
-        form.save()
-    else:
-        form = LoanForm()
+        if req.user.groups.all()[0].name == 'Client':
+            userForm = UserForm(req.POST, instance=req.user)
+        else:
+            default_password = 'changeM3!'
+            # default user name is first initial, last name
+            default_username = (req.POST['first_name'][0] + req.POST['last_name']).lower()
+            group = Group.objects.get(name='Lender')
 
-    return render(req, 'client/form.html', {'form': form})
-# END loan_form
+            new_user = User.objects.create_user(default_username, req.POST['email'], default_password)
+            new_user.groups.add(group)
+            new_user.save()
+            userForm = UserForm(req.POST, instance=new_user)
+
+        clientForm = ClientForm(req.POST)
+
+        if userForm.is_valid() and \
+           clientForm.is_valid():
+
+            user = userForm.save()
+            client = clientForm.save(commit=False)
+            client.user = user
+
+            # if req.user is a Broker, set new lender to broker
+            try:
+                client.broker = req.user.broker
+            except ObjectDoesNotExist:
+                client.broker = None
+
+            client.save()
+
+            return redirect('loans:clients')
+
+    else:
+        if req.user.groups.all()[0].name == 'Admin' or req.user.groups.all()[0].name == 'Broker':
+            userForm = UserForm()
+        elif req.user.groups.all()[0].name == 'Client':
+            try:
+                client_id = req.user.client.id
+                return redirect('loans:edit_client_form', pk=req.user.client.id)
+            except AttributeError:
+                user = {
+                    'first_name': req.user.first_name,
+                    'last_name': req.user.last_name,
+                    'email': req.user.email,
+                }
+                userForm = UserForm(user)
+
+        clientForm = ClientForm()
+
+    context = {
+        'userForm': userForm,
+        'clientForm': clientForm,
+        'submit': submit,
+    }
+    return HttpResponse(tmpl.render(context, req))
+
+# END client_form
+
+
+@login_required
+@user_passes_test(lambda u: u.groups.filter(name='Lender').count() == 0, login_url='/denied/')
+def edit_client_form(req, pk):
+    tmpl   = loader.get_template('client/form.html')
+    submit = 'Update'
+
+    client = get_object_or_404(Client, id=pk)
+    user   = get_object_or_404(User, id=client.user.id)
+
+    if req.method == 'POST':
+        userForm   = UserForm(req.POST, instance=user)
+        clientForm = ClientForm(req.POST, instance=client)
+
+        # TODO refactor: create function to check all necessary forms
+        if userForm.is_valid() and \
+           clientForm.is_valid():
+
+            user = userForm.save()
+
+            client = clientForm.save(commit=False)
+            client.user = user
+            client.save()
+
+            return redirect('loans:client_detail', pk=client.id)
+
+    # XXX BEWARE if form is invalid, it will break
+    else:
+        userForm   = UserForm(instance=user)
+        clientForm = ClientForm(instance=client)
+
+
+    context = {
+        'client': client,
+        'userForm': userForm,
+        'clientForm': clientForm,
+        'submit': submit,
+    }
+
+    return HttpResponse(tmpl.render(context, req))
+# END def edit_client_form
 
 
 @login_required
 @user_passes_test(lambda u: u.groups.filter(name='lender').count() == 0, login_url='/denied/')
-def loan_list(req):
+def client_list(req):
     template = loader.get_template('client/list.html')
-    loan_list = Lender.objects.all()
+    clients = Client.objects.all()
     context = {
-        'loans': loan_list,
+        'clients': clients,
     }
 
     return HttpResponse(template.render(context, req))
-# END loan_list
+# END client_list
+
+
+@login_required
+#@user_passes_test(lambda u: u.groups.filter(name='client').count() == 0, login_url='/denied/')
+def client_detail(req, pk):
+    templ = loader.get_template('client/detail.html')
+    broker = get_object_or_404(Broker.objects.select_related('user'), id=pk)
+
+    context = {
+        'broker_data': broker,
+    }
+
+    return HttpResponse(templ.render(context, req))
+# END client_detail

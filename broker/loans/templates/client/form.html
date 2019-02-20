@@ -1,278 +1,46 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Loan Form</h1>
+    <h1>Client Form</h1>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    {% if loan_id %}
-    <form name="form" action="{% url 'loans:edit_loan_form' pk=loan_id %}" method="POST">
+    {% if client.id %}
+    <form name="form" class="foo" action="{% url 'loans:edit_client_form' pk=client.id %}" method="POST">
     {% else %}
-    <form name="form" action="{% url 'loans:loan_form' %}" method="POST">
+    <form name="form" action="{% url 'loans:client_form' %}" method="POST">
     {% endif %}
     {% csrf_token %}
 
-    <!-- Personal Information Table -->
-    <div class="formContainer">
-      <div class="grid3c">
-        <h1 class="formHeader">Personal Information</h1>
-        <label>First Name:</label>
-        {{ form.client_first_name }}
-        <label>Last Name:</label>
-        {{ form.client_last_name }}
-        <label>Email:</label>
-        {{ form.client_personal_email }}
-        <label>Work Email:</label>
-        {{ form.client_work_email }}
-        <label>Address:</label>
-        {{ form.client_street_address }}
-        <label>City:</label>
-        {{ form.client_city }}
-        <label>State:</label>
-        {{ form.client_state }}
-        <label>Zip:</label>
-        {{ form.client_zip_code }}
-        <label>Cell Phone:</label>
-        {{ form.client_cell_phone }}
-        <label>Work Phone:</label>
-        {{ form.client_work_phone }}
-        <label>Using POC:</label>
-        <label>
-        {% for choice in form.client_using_poc %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-        <label>Loan Type:</label>
-        {{ form.client_loan_type }}
-      </div>
-    </div>
-
-    <!-- space reserved for selected loan type -->
-    {% if loantype is not None and loantype != 'None' %}
-    <div id="loanTypeForm">
+      <!-- Name Table -->
       <div class="formContainer">
         <div class="grid3c">
-          <h1 class="formHeader">{{ loantype }}</h1>
-          {% for field in loantype_fields %}
-              {{ field.label_tag }}
-              {{ field }}
+          <h1 class="formHeader">Loan Information</h1>
+          {% for field in userForm %}
+            {{ field.label_tag }}
+            {{ field }}
+          {% endfor %}
+          {% for field in clientForm %}
+            {{ field.label_tag }}
+            {{ field }}
           {% endfor %}
         </div>
       </div>
-    </div>
-    {% else %}
-    <div id="loanTypeForm" style="display: none;">
-    </div>
-    {% endif %}
 
-<!-- POC Information Table -->
-    <div class="formContainer">
-      <div class="grid3c">
-        <h1 class="formHeader">Client POC Information</h1>
-        <label>POC Name:</label>
-        {{ form.POC_name }}
-        <label>POC Company:</label>
-        {{ form.POC_business }}
-        <label>POC Work Phone:</label>
-        {{ form.POC_work_phone }}
-        <label>POC Cell Phone:</label>
-        {{ form.POC_cell_phone }}
-        <label>POC Email:</label>
-        {{ form.POC_email }}
+      <!-- Property Types -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Property Types</h1>
+          {% for p in property_types %}
+            <label>{{ p }}</label>
+            {% if p.id in selected_propertytypes %}
+            <label><input type="checkbox" value="{{ p.id | striptags }}" name="property_type" checked></label>
+            {% else %}
+            <label><input type="checkbox" value="{{ p.id | striptags }}" name="property_type"></label>
+            {% endif %}
+          {% endfor %}
+        </div>
       </div>
-    </div>
 
-    <!-- Business Table -->
-    <div class="formContainer">
-      <div class="grid3c">
-        <h1 class="formHeader">Client Business Information</h1>
-        <label>Occupation:</label>
-        {{ form.client_occupation }}
-        <label>Company Name:</label>
-        {{ form.client_company_name }}
-        <label>Address:</label>
-        {{ form.client_company_street_address }}
-        <label>City:</label>
-        {{ form.client_company_city }}
-        <label>State:</label>
-        {{ form.client_company_state }}
-        <label>Zip:</label>
-        {{ form.client_company_zip }}
-      </div>
-    </div>
-
-    <!-- Loan Table -->
-    <div class="formContainer">
-      <div class="grid3c">
-        <h1 class="formHeader">Loan Information</h1>
-        <label>Loan Amount:</label>
-        {{ form.loan_amount }}
-        <label>Loan To Value:</label>
-        {{ form.loan_to_value }}
-        <label>Loan DSCR:</label>
-        {{ form.loan_dcsr }}
-        <label>Loan Description:</label>
-        {{ form.loan_desc }}
-      </div>
-    </div>
-
-    <!-- Financial Table -->
-    <div class="formContainer">
-      <div class="grid3c">
-        <h1 class="formHeader">Client Financial Information</h1>
-        <label>Salary:</label>
-        {{ form.fin_salary }}
-        <label>Years in Business:</label>
-        {{ form.fin_years_in_business }}
-        <label>Total Debt:</label>
-        {{ form.fin_total_debt }}
-        <label>Total Monthly Payments:</label>
-        {{ form.fin_monthly_payments }}
-        <label>FICO:</label>
-        {{ form.fin_fico }}
-        <label>Owns Home:</label>
-        <label>
-        {% for choice in form.fin_owns_home %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-        <label>Bankruptcy?:</label>
-        <label>
-        {% for choice in form.fin_bankruptcy %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-        <label>Short Sale:</label>
-        <label>
-        {% for choice in form.fin_short_sale %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-      </div>
-    </div>
-
-    <!-- Property Information -->
-    <div class="formContainer">
-      <div class="grid2c">
-        <h1 class="formHeader">Property Information (Obtained)</h1>
-        <label>Property Address:</label>
-        {{ form.property_address }}
-        <label>Property Value:</label>
-        {{ form.property_value }}
-      </div>
-    </div>
-
-    <!-- Needs List -->
-    <div class="formContainer">
-      <div class="grid3c">
-        <h1 class="formHeader">Needs List</h1>
-        <label>Executive Summary:</label>
-        <label>
-        {% for choice in form.docs_executive_summary %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-        <label>Credit Report:</label>
-        <label>
-        {% for choice in form.docs_credit_report %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-        <label>Personal Taxes:</label>
-        <label>
-        {% for choice in form.docs_personal_taxes %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-        <label>Business Taxes:</label>
-        <label>
-        {% for choice in form.docs_business_taxes %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-        <label>P & L:</label>
-        <label>
-        {% for choice in form.docs_P_and_L %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-        <label>Expense Report:</label>
-        <label>
-        {% for choice in form.docs_expense_report %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-        <label>Broker's Opinion:</label>
-        <label>
-        {% for choice in form.docs_brokers_opinion %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-        <label>Appraisal:</label>
-        <label>
-        {% for choice in form.docs_appraisal %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-        <label>Environmental:</label>
-        <label>
-        {% for choice in form.docs_environmental %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-        <label>Rent Roll:</label>
-        <label>
-        {% for choice in form.docs_rent_roll %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-        <label>Lease Agreements:</label>
-        <label>
-        {% for choice in form.docs_lease_agreements %}
-          <label>{{ choice }}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        {% endfor %}
-        </label>
-      </div>
-    </div>
-
-    <!-- Needs List -->
-    <div class="formContainer">
-      <div class="grid3c">
-        <h1 class="formHeader">Business Info</h1>
-        <label>Business Name:</label>
-        {{ form.business_name }}
-        <label>Business Main Phone:</label>
-        {{ form.business_main_phone }}
-        <label>Business Website:</label>
-        {{ form.business_website }}
-        <label>Business Type:</label>
-        {{ form.business_type }}
-        <label>Year Established:</label>
-        {{ form.business_year_established }}
-      </div>
-    </div>
-
-    <center>
-      <button>{{ submit }}</button>
-    </center>
+      <center>
+        <button>{{ submit }}</button>
+      </center>
     </form>
-    <script>
-    // TODO: put jquery in separate file
-    $('#id_client_loan_type').change(function() {
-        var choice = $('#id_client_loan_type').val();
-        if (choice == 'None') {
-            $("#loanTypeForm").slideUp();
-            $("#loanTypeForm").empty();
-        } else {
-            var url = "/inputs/ajax/load_loantype_form/";
-            $.ajax({
-                url: url,
-                data: {
-                    'loantype': choice
-                },
-                success: function (data) {
-                    $("#loanTypeForm").html(data);
-                    $("#loanTypeForm").slideDown();
-                }
-            });
-        }
-    });
-    </script>
 {% endblock %}

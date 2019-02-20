@@ -243,3 +243,19 @@ class BrokerForm(forms.ModelForm):
         fields = (
             'company',
         )
+
+
+################################################################################
+# CLIENT FORMS
+################################################################################
+class ClientForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ClientForm, self).__init__(*args, **kwargs)
+        self.fields['loantype'].empty_label = 'Select One'
+
+    class Meta:
+        model = Client
+        fields = (
+            'loantype',
+            'business',
+        )

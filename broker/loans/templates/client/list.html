@@ -5,7 +5,7 @@
       <header>
         Client Information
         <button type="button" class="btn btn-broker btn-xs pull-right">
-          <a href="{% url 'loans:loan_form' %}">
+          <a href="{% url 'loans:client_form' %}">
             <span class="glyphicon glyphicon-plus-sign"></span> Add Client
           </a>
         </button>
@@ -21,10 +21,10 @@
             </tr>
           </thead>
           {% for client in clients %}
-          <tr class="row-link" data-href="/loans/loan_form/{{ client.id }}/">
-            <td>{{ client.client_first_name }}</td>
-            <td>{{ client.client_last_name }}</td>
-            <td>{{ client.client_loan_type }}</td>
+          <tr class="row-link" data-href="/loans/client_form/{{ client.id }}/">
+            <td>{{ client.user.first_name }}</td>
+            <td>{{ client.user.last_name }}</td>
+            <td>{{ client.loantype }}</td>
             <td>{{ client.loan_amount }}</td>
           </tr>
           {% empty %}
