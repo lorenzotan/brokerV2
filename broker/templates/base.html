@@ -77,8 +77,22 @@
         {% endif %}
 
           <li class="active"><a href="#">Tools</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Links
+              <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="https://aaplonline.com/directory/">American Association of Private Lenders</a></li>
+              <li><a href="https://www.c-loans.com/">C-Loans</a></li>
+              <li><a href="https://www.investopedia.com/">Investopedia</a></li>
+              <li><a href="https://safeharborforbusiness.com/">Safe Harbor for Business</a></li>
+              <li><a href="https://www.scotsmanguide.com/">Scotsman Guide</a></li>
+              <li><a href="http://www.southbayequitylending.com/">South Bay Equity Lending</a></li>
+              <li><a href="https://www.usbanklocations.com/">US Bank Locations</a></li>
+            </ul>
+          </li>
           <li class="active"><a href="#">Graphs</a></li>
         </ul>
+
         <ul class="nav navbar-nav navbar-right">
           {% if user.is_authenticated %}
           <li><span class="navbar-text">Welcome {{ user.first_name }}!</span></li>
