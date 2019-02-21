@@ -173,5 +173,12 @@
         "fields": {
             "name": "Salon"
         }
+    },
+    {
+        "model": "loans.PropertyType",
+        "pk": 26,
+        "fields": {
+            "name": "Church"
+        }
     }
 ]
