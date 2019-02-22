@@ -308,6 +308,7 @@ def export_lender_csv(modeladmin, request, queryset):
         smart_str(u"Owner Occ. Manufacturing?"),
         smart_str(u"Owner Occ. Medical?"),
         smart_str(u"Owner Occ. Mixed Use?"),
+        smart_str(u"Owner Occ. Industrial?"),
         smart_str(u"Owner Occ. Other?"),
 
         smart_str(u"Investment Office?"),
@@ -315,6 +316,7 @@ def export_lender_csv(modeladmin, request, queryset):
         smart_str(u"Investment Manufacturing?"),
         smart_str(u"Investment Medical?"),
         smart_str(u"Investment Mixed Use?"),
+        smart_str(u"Investment Industrial?"),
         smart_str(u"Investment Other?"),
 
         smart_str(u"MultiFamily 2 to 4"),
@@ -326,15 +328,19 @@ def export_lender_csv(modeladmin, request, queryset):
         smart_str(u"Construction Residential"),
         smart_str(u"Construction Investment with Land"),
         smart_str(u"Construction Owner Occ with Land"),
+        smart_str(u"Construction Investor"),
 
         smart_str(u"SBA 7a?"),
         smart_str(u"SBA 504?"),
         smart_str(u"SBA CAPline?"),
         smart_str(u"SBA Microloan?"),
+        smart_str(u"SBA Express?"),
+        smart_str(u"SBA ITL?"),
         smart_str(u"SBA Other?"),
 
         smart_str(u"HELOC 1st Position"),
         smart_str(u"HELOC 2nd Position"),
+        smart_str(u"HELOC 3rd Position"),
 
         smart_str(u"BLOC Residential Property"),
         smart_str(u"BLOC Stocks"),
@@ -342,8 +348,18 @@ def export_lender_csv(modeladmin, request, queryset):
         smart_str(u"BLOC Investment Property"),
         smart_str(u"BLOC 1st Position"),
         smart_str(u"BLOC 2nd Position"),
+        smart_str(u"BLOC Equipment"),
+        smart_str(u"BLOC Working Capital"),
+        smart_str(u"BLOC Interest Only"),
+        smart_str(u"BLOC Secured by Accts Receivable"),
+        smart_str(u"BLOC Secured by Inventory"),
+        smart_str(u"BLOC RE Secured"),
+        smart_str(u"BLOC RE Unsecured"),
 
         smart_str(u"Bridge?"),
+        smart_str(u"Commercial Term?"),
+        smart_str(u"USDA?"),
+        smart_str(u"Stated Income?"),
     ]
 
     for q in q_obj:
@@ -393,7 +409,6 @@ def export_lender_csv(modeladmin, request, queryset):
 
         # https://stackoverflow.com/questions/10487278/how-to-declare-and-add-items-to-an-array-in-python
         # https://stackoverflow.com/questions/27064206/django-check-if-a-related-object-exists-error-relatedobjectdoesnotexist
-        # XXX didn't have to do else before
         if hasattr(lender, 'lenderbrokerrelation'):
             fields.extend([
                 smart_str(lender.lenderbrokerrelation.solicit),
@@ -418,6 +433,7 @@ def export_lender_csv(modeladmin, request, queryset):
                 smart_str(bools[lender.lenderowneroccupiedre.manufacturing]),
                 smart_str(bools[lender.lenderowneroccupiedre.medical]),
                 smart_str(bools[lender.lenderowneroccupiedre.mixed_use]),
+                smart_str(bools[lender.lenderowneroccupiedre.industrial]),
                 smart_str(bools[lender.lenderowneroccupiedre.other]),
             ])
 
@@ -428,6 +444,7 @@ def export_lender_csv(modeladmin, request, queryset):
                 smart_str(bools[lender.lenderinvestmentre.manufacturing]),
                 smart_str(bools[lender.lenderinvestmentre.medical]),
                 smart_str(bools[lender.lenderinvestmentre.mixed_use]),
+                smart_str(bools[lender.lenderinvestmentre.industrial]),
                 smart_str(bools[lender.lenderinvestmentre.other]),
             ])
 
@@ -445,6 +462,7 @@ def export_lender_csv(modeladmin, request, queryset):
                 smart_str(bools[lender.lenderconstructionloan.residential]),
                 smart_str(bools[lender.lenderconstructionloan.inv_w_land]),
                 smart_str(bools[lender.lenderconstructionloan.oo_w_land]),
+                smart_str(bools[lender.lenderconstructionloan.investor]),
             ])
 
         if hasattr(lender, 'lendersbaloan'):
@@ -453,6 +471,8 @@ def export_lender_csv(modeladmin, request, queryset):
                 smart_str(bools[lender.lendersbaloan.sba_504]),
                 smart_str(bools[lender.lendersbaloan.CAPline]),
                 smart_str(bools[lender.lendersbaloan.micro]),
+                smart_str(bools[lender.lendersbaloan.express]),
+                smart_str(bools[lender.lendersbaloan.itl]),
                 smart_str(bools[lender.lendersbaloan.other]),
             ])
 
@@ -460,6 +480,7 @@ def export_lender_csv(modeladmin, request, queryset):
             fields.extend([
                 smart_str(bools[lender.lenderhelocloan.pos_1]),
                 smart_str(bools[lender.lenderhelocloan.pos_2]),
+                smart_str(bools[lender.lenderhelocloan.pos_3]),
             ])
 
         if hasattr(lender, 'lenderblocloan'):
@@ -470,11 +491,21 @@ def export_lender_csv(modeladmin, request, queryset):
                 smart_str(bools[lender.lenderblocloan.inv_prop]),
                 smart_str(bools[lender.lenderblocloan.pos1]),
                 smart_str(bools[lender.lenderblocloan.pos2]),
+                smart_str(bools[lender.lenderblocloan.equipment]),
+                smart_str(bools[lender.lenderblocloan.work_cap]),
+                smart_str(bools[lender.lenderblocloan.int_only]),
+                smart_str(bools[lender.lenderblocloan.sec_accts_rec]),
+                smart_str(bools[lender.lenderblocloan.sec_inv]),
+                smart_str(bools[lender.lenderblocloan.re_secure]),
+                smart_str(bools[lender.lenderblocloan.re_unsecure]),
             ])
 
         if hasattr(lender, 'lenderbridgeloan'):
             fields.extend([
                 smart_str(bools[lender.lenderbridgeloan.bridge]),
+                smart_str(bools[lender.lenderbridgeloan.comm_term]),
+                smart_str(bools[lender.lenderbridgeloan.usda]),
+                smart_str(bools[lender.lenderbridgeloan.stated_inc]),
             ])
 
 
