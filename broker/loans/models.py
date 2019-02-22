@@ -79,6 +79,16 @@ class LoanAmount(models.Model):
         ordering = ['id']
 
 
+class ClientFinancialInfoAttr(models.Model):
+    name = models.CharField(max_length=50, default=None)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
+
 class PointOfContact(models.Model):
     first_name = models.CharField(max_length=50, default=None, null=True, blank=True)
     last_name  = models.CharField(max_length=50, default=None, null=True, blank=True)
@@ -140,9 +150,10 @@ class ClientFinancialInfo(models.Model):
     debt          = models.DecimalField(max_digits=17, decimal_places=2)
     mnthly_pymnts = models.DecimalField(max_digits=17, decimal_places=2)
     fico          = models.PositiveSmallIntegerField()
-    owns_home     = models.BooleanField()
-    bankruptcy    = models.BooleanField()
-    short_sale    = models.BooleanField()
+    attr          = models.ManyToManyField(ClientFinancialInfoAttr)
+    #owns_home     = models.BooleanField()
+    #bankruptcy    = models.BooleanField()
+    #short_sale    = models.BooleanField()
 
 
 class ClientPropertyInfo(models.Model):

@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import *
+from django.views import View
 
 # Create your views here.
 
@@ -606,6 +607,7 @@ def broker_detail(req, pk):
 def client_form(req):
     tmpl       = loader.get_template('client/form.html')
     submit     = 'Submit'
+    finance_attr = ClientFinancialInfoAttr.objects.order_by('name')
     qualifiers = Qualifier.objects.order_by('name')
     needs      = NeedsList.objects.order_by('name')
 
@@ -663,6 +665,12 @@ def client_form(req):
             financial.client = client
             financial.save()
 
+            for attr in req.POST.getlist('finance_attr'):
+                financial.attr.add(q)
+
+            clientFinancialForm.save_m2m()
+
+
             prop = clientPropertyForm.save(commit=False)
             prop.client = client
             prop.save()
@@ -709,6 +717,7 @@ def client_form(req):
         'clientEmploymentForm': clientEmploymentForm,
         'clientLoanForm': clientLoanForm,
         'clientFinancialForm': clientFinancialForm,
+        'finance_attr': finance_attr,
         'clientPropertyForm': clientPropertyForm,
         'clientBusinessForm': clientBusinessForm,
         'qualifiers': qualifiers,
@@ -725,6 +734,7 @@ def client_form(req):
 def edit_client_form(req, pk):
     tmpl       = loader.get_template('client/form.html')
     submit     = 'Update'
+    finance_attr = ClientFinancialInfoAttr.objects.order_by('name')
     qualifiers = Qualifier.objects.order_by('name')
     needs      = NeedsList.objects.order_by('name')
 
@@ -792,6 +802,11 @@ def edit_client_form(req, pk):
             financial.client = client
             financial.save()
 
+            for attr in req.POST.getlist('finance_attr'):
+                financial.attr.add(attr)
+
+            clientFinancialForm.save_m2m()
+
             prop = clientPropertyForm.save(commit=False)
             prop.client = client
             prop.save()
@@ -832,6 +847,7 @@ def edit_client_form(req, pk):
         'clientEmploymentForm': clientEmploymentForm,
         'clientLoanForm': clientLoanForm,
         'clientFinancialForm': clientFinancialForm,
+        'finance_attr': finance_attr,
         'clientPropertyForm': clientPropertyForm,
         'clientBusinessForm': clientBusinessForm,
         'qualifiers': qualifiers,
@@ -883,8 +899,10 @@ def client_detail(req, pk):
 
     try:
         financial = ClientFinancialInfo.objects.get(client=pk)
+        finance_attr = financial.attr.all()
     except ClientFinancialInfo.DoesNotExist:
         financial = None
+        finance_attr = None
 
     try:
         prop = ClientPropertyInfo.objects.get(client=pk)
@@ -900,6 +918,7 @@ def client_detail(req, pk):
         'business': business,
         'loan': loan,
         'financial': financial,
+        'finance_attr': finance_attr,
         'property': prop,
         'quals': quals,
         'needs': needs,

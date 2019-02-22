@@ -304,10 +304,6 @@ class ClientFinancialInfoForm(forms.ModelForm):
             'debt',
             'mnthly_pymnts',
             'fico',
-            # CHECKBOXES
-            'owns_home',
-            'bankruptcy',
-            'short_sale'
         )
 
         labels = {
@@ -315,10 +311,6 @@ class ClientFinancialInfoForm(forms.ModelForm):
             'debt': gettext('Total Debt'),
             'mnthly_pymnts': gettext('Total Monthly Payments'),
             'fico': gettext('FICO'),
-            # CHECKBOXES
-            #'owns_home': gettext(''),
-            #'bankruptcy': gettext(''),
-            #'short_sale': gettext(),
         }
 
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Broker, Lender, Client, Qualifier, PropertyType, NeedsList
+from .models import *
 from django.forms.models import model_to_dict
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
@@ -26,10 +26,22 @@ def export_client_csv(modeladmin, request, queryset):
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
 
+    finance_attr = {}
     qualifiers = {}
     needs = {}
-    q_obj = Qualifier.objects.all()
-    n_obj = NeedsList.objects.all()
+
+    finance_attr_obj = ClientFinancialInfoAttr.objects.all()
+    q_obj            = Qualifier.objects.all()
+    n_obj            = NeedsList.objects.all()
+
+    for a in finance_attr_obj:
+        finance_attr[a.id] = a.name
+
+    for q in q_obj:
+        qualifiers[q.id] = q.name
+
+    for n in n_obj:
+        needs[n.id] = n.name
 
     header = [
         smart_str(u"Client First Name"),
@@ -44,12 +56,6 @@ def export_client_csv(modeladmin, request, queryset):
         smart_str(u"Client Cell Phone"),
         smart_str(u"Client Fax Phone"),
         smart_str(u"Client Other Phone"),
-
-        #smart_str(u"POC Name"),
-        #smart_str(u"POC Company"),
-        #smart_str(u"POC Work Phone"),
-        #smart_str(u"POC Cell Phone"),
-        #smart_str(u"POC Email"),
 
         smart_str(u"Occupation"),
         smart_str(u"Company Name"),
@@ -68,10 +74,12 @@ def export_client_csv(modeladmin, request, queryset):
         smart_str(u"Debt"),
         smart_str(u"Monthly Payments"),
         smart_str(u"FICO"),
-        smart_str(u"Owns Home"),
-        smart_str(u"Bankruptcy"),
-        smart_str(u"Short Sale"),
+    ]
 
+    for finance_attr_id in sorted(finance_attr):
+        header.append(smart_str(finance_attr[finance_attr_id]))
+
+    header.extend([
         smart_str(u"Property Address"),
         smart_str(u"Property Value"),
 
@@ -80,17 +88,10 @@ def export_client_csv(modeladmin, request, queryset):
         smart_str(u"Business Website"),
         smart_str(u"Business Type"),
         smart_str(u"Year Business Established"),
-    ]
-
-    for q in q_obj:
-        qualifiers[q.id] = q.name
+    ])
 
     for q_id in sorted(qualifiers):
         header.append(smart_str(qualifiers[q_id]))
-
-
-    for n in n_obj:
-        needs[n.id] = n.name
 
     for n_id in sorted(needs):
         header.append(smart_str(needs[n_id]))
@@ -120,12 +121,6 @@ def export_client_csv(modeladmin, request, queryset):
             smart_str(client.user.phone_f),
             smart_str(client.user.phone_o),
         ]
-
-            #smart_str(obj.POC_name),
-            #smart_str(obj.POC_business),
-            #smart_str(obj.POC_work_phone),
-            #smart_str(obj.POC_cell_phone),
-            #smart_str(obj.POC_email),
 
         if hasattr(client, 'clientemploymentinfo'):
             fields.extend([
@@ -168,10 +163,24 @@ def export_client_csv(modeladmin, request, queryset):
                 smart_str(client.clientfinancialinfo.debt),
                 smart_str(client.clientfinancialinfo.mnthly_pymnts),
                 smart_str(client.clientfinancialinfo.fico),
-                smart_str(client.clientfinancialinfo.owns_home),
-                smart_str(client.clientfinancialinfo.bankruptcy),
-                smart_str(client.clientfinancialinfo.short_sale),
             ])
+
+            client_finance_attr = []
+
+            # need to get ClientFinancialInfo pk
+            f_obj = ClientFinancialInfo.objects.get(client_id=client.id)
+
+            for attr in client.clientfinancialinfo.attr.through.objects.filter(clientfinancialinfo_id = f_obj.id):
+                # clientfinancialinfoattr_id is the field name in the m2m table
+                client_finance_attr.append(attr.clientfinancialinfoattr_id)
+
+            for attr_id in sorted(finance_attr):
+                if attr_id in client_finance_attr:
+                    fields.append('Yes')
+                else:
+                    fields.append('No')
+
+
         else:
             fields.extend([
                 smart_str(''),
@@ -179,9 +188,6 @@ def export_client_csv(modeladmin, request, queryset):
                 smart_str(''),
                 smart_str(''),
                 smart_str(''),
-                smart_str(''),
-                smart_str('No'),
-                smart_str('No'),
             ])
 
         if hasattr(client, 'clientpropertyinfo'):

@@ -54,6 +54,14 @@
             {{ field.label_tag }}
             {{ field }}
           {% endfor %}
+          {% for attr in finance_attr %}
+            <label>{{ attr }}:</label>
+            {% if attr.id in select_financial_attr %}
+            <label><input type="checkbox" value="{{ attr.id | striptags }}" name="finance_attr" checked></label>
+            {% else %}
+            <label><input type="checkbox" value="{{ attr.id | striptags }}" name="finance_attr"></label>
+            {% endif %}
+          {% endfor %}
         </div>
       </div>
 

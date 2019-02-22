@@ -1,0 +1,23 @@
+[
+    {
+        "model": "loans.ClientFinancialInfoAttr",
+        "pk": 1,
+        "fields": {
+            "name": "Bankruptcy"
+        }
+    },
+    {
+        "model": "loans.ClientFinancialInfoAttr",
+        "pk": 2,
+        "fields": {
+            "name": "Owns Home"
+        }
+    },
+    {
+        "model": "loans.ClientFinancialInfoAttr",
+        "pk": 3,
+        "fields": {
+            "name": "Short Sale"
+        }
+    }
+]

@@ -81,13 +81,9 @@
           {{ financial.mnthly_pymnts }}
           <label>FICO:</label>
           {{ financial.fico }}
-        <!-- checkboxes -->
-          <label>Owns Home:</label>
-          {{ financial.owns_home }}
-          <label>Bankruptcy:</label>
-          {{ financial.bankruptcy }}
-          <label>Short Sale:</label>
-          {{ financial.short_sale }}
+          {% for attr in finance_attr %}
+          <label>{{ attr }}</label>
+          {% endfor %}
         </div>
       </div>
 
