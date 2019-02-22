@@ -112,15 +112,6 @@ class Lender(models.Model):
     loanamt       = models.ForeignKey(LoanAmount, on_delete=models.SET_NULL, blank=True, null=True)
 
 
-class ClientBusinessInfo(models.Model):
-    client = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
-    name   = models.CharField(max_length=50, default=None, null=True, blank=True)
-    phone  = models.CharField(max_length=50, default=None, null=True, blank=True)
-    btype  = models.CharField(max_length=50, default=None, null=True, blank=True)
-    est    = models.CharField(max_length=50, default=None, null=True, blank=True)
-    url    = models.CharField(max_length=100, default=None, null=True, blank=True)
-
-
 class ClientEmploymentInfo(models.Model):
     client       = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
     occupation   = models.CharField(max_length=50, default=None, null=True, blank=True)
@@ -158,6 +149,15 @@ class ClientPropertyInfo(models.Model):
     client  = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
     address = models.CharField(max_length=50, default=None, null=True, blank=True)
     value   = models.DecimalField(max_digits=17, decimal_places=2)
+
+
+class ClientBusinessInfo(models.Model):
+    client = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
+    name   = models.CharField(max_length=50, default=None, null=True, blank=True)
+    phone  = models.CharField(max_length=50, default=None, null=True, blank=True)
+    btype  = models.CharField(max_length=50, default=None, null=True, blank=True)
+    est    = models.CharField(max_length=50, default=None, null=True, blank=True)
+    url    = models.CharField(max_length=100, default=None, null=True, blank=True)
 
 
 class ClientBLOCLoan(models.Model):

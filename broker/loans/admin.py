@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Broker, Lender, Client, Qualifier, PropertyType
+from .models import Broker, Lender, Client, Qualifier, PropertyType, NeedsList
 from django.forms.models import model_to_dict
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
@@ -25,7 +25,13 @@ def export_client_csv(modeladmin, request, queryset):
     response['Content-Disposition'] = 'attachment; filename=client_export_' + str(date) + '.csv'
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
-    writer.writerow([
+
+    qualifiers = {}
+    needs = {}
+    q_obj = Qualifier.objects.all()
+    n_obj = NeedsList.objects.all()
+
+    header = [
         smart_str(u"Client First Name"),
         smart_str(u"Client Last Name"),
         smart_str(u"Client Street Address"),
@@ -38,13 +44,12 @@ def export_client_csv(modeladmin, request, queryset):
         smart_str(u"Client Cell Phone"),
         smart_str(u"Client Fax Phone"),
         smart_str(u"Client Other Phone"),
-        smart_str(u"Client Using POC"),
 
-        smart_str(u"POC Name"),
-        smart_str(u"POC Company"),
-        smart_str(u"POC Work Phone"),
-        smart_str(u"POC Cell Phone"),
-        smart_str(u"POC Email"),
+        #smart_str(u"POC Name"),
+        #smart_str(u"POC Company"),
+        #smart_str(u"POC Work Phone"),
+        #smart_str(u"POC Cell Phone"),
+        #smart_str(u"POC Email"),
 
         smart_str(u"Occupation"),
         smart_str(u"Company Name"),
@@ -58,86 +63,204 @@ def export_client_csv(modeladmin, request, queryset):
         smart_str(u"Loan DSCR"),
         smart_str(u"Loan Description"),
 
+        smart_str(u"Salary"),
+        smart_str(u"Years In Business"),
+        smart_str(u"Debt"),
+        smart_str(u"Monthly Payments"),
+        smart_str(u"FICO"),
+        smart_str(u"Owns Home"),
+        smart_str(u"Bankruptcy"),
+        smart_str(u"Short Sale"),
+
+        smart_str(u"Property Address"),
+        smart_str(u"Property Value"),
+
         smart_str(u"Business Name"),
         smart_str(u"Business Main Phone"),
         smart_str(u"Business Website"),
         smart_str(u"Business Type"),
         smart_str(u"Year Business Established"),
-    ])
+    ]
 
-    for obj in queryset:
-        writer.writerow([
-            smart_str(obj.client_first_name),
-            smart_str(obj.client_last_name),
-            smart_str(obj.client_street_address),
-            smart_str(obj.client_city),
-            smart_str(obj.client_state),
-            smart_str(obj.client_zip_code),
-            smart_str(obj.client_work_email),
-            smart_str(obj.client_personal_email),
-            smart_str(obj.client_work_phone),
-            smart_str(obj.client_cell_phone),
-            smart_str(obj.client_using_poc),
+    for q in q_obj:
+        qualifiers[q.id] = q.name
 
-            smart_str(obj.POC_name),
-            smart_str(obj.POC_business),
-            smart_str(obj.POC_work_phone),
-            smart_str(obj.POC_cell_phone),
-            smart_str(obj.POC_email),
-
-            smart_str(obj.client_occupation),
-            smart_str(obj.client_company_name),
-            smart_str(obj.client_company_street_address),
-            smart_str(obj.client_company_city),
-            smart_str(obj.client_company_state),
-            smart_str(obj.client_company_zip),
-
-            smart_str(obj.loan_amount),
-            smart_str(obj.loan_to_value),
-            smart_str(obj.loan_dcsr),
-            smart_str(obj.loan_desc),
-
-            smart_str(obj.fin_salary),
-            smart_str(obj.fin_years_in_business),
-            smart_str(obj.fin_total_debt),
-            smart_str(obj.fin_monthly_payments),
-            smart_str(obj.fin_fico),
-            smart_str(obj.fin_owns_home),
-            smart_str(obj.fin_bankruptcy),
-            smart_str(obj.fin_short_sale),
-
-            smart_str(obj.property_address),
-            smart_str(obj.property_value),
-
-            smart_str(obj.docs_executive_summary),
-            smart_str(obj.docs_credit_report),
-            smart_str(obj.docs_personal_taxes),
-            smart_str(obj.docs_business_taxes),
-            smart_str(obj.docs_P_and_L),
-            smart_str(obj.docs_expense_report),
-            smart_str(obj.docs_brokers_opinion),
-            smart_str(obj.docs_appraisal),
-            smart_str(obj.docs_environmental),
-            smart_str(obj.docs_rent_roll),
-            smart_str(obj.docs_lease_agreements),
-
-            smart_str(obj.business_name),
-            smart_str(obj.business_main_phone),
-            smart_str(obj.business_website),
-            smart_str(obj.business_type),
-            smart_str(obj.business_year_established),
+    for q_id in sorted(qualifiers):
+        header.append(smart_str(qualifiers[q_id]))
 
 
+    for n in n_obj:
+        needs[n.id] = n.name
 
-        ])
+    for n_id in sorted(needs):
+        header.append(smart_str(needs[n_id]))
+
+    writer.writerow(header)
+
+    client411 = queryset.select_related(
+        'clientemploymentinfo',
+        'clientloaninfo',
+        'clientfinancialinfo',
+        'clientpropertyinfo',
+        'clientbusinessinfo'
+    )
+
+    for client in client411:
+        fields = [
+            smart_str(client.user.first_name),
+            smart_str(client.user.last_name),
+            smart_str(client.user.address),
+            smart_str(client.user.city),
+            smart_str(client.user.state),
+            smart_str(client.user.zip_code),
+            smart_str(client.user.email),
+            smart_str(client.user.email_x),
+            smart_str(client.user.phone_w),
+            smart_str(client.user.phone_m),
+            smart_str(client.user.phone_f),
+            smart_str(client.user.phone_o),
+        ]
+
+            #smart_str(obj.POC_name),
+            #smart_str(obj.POC_business),
+            #smart_str(obj.POC_work_phone),
+            #smart_str(obj.POC_cell_phone),
+            #smart_str(obj.POC_email),
+
+        if hasattr(client, 'clientemploymentinfo'):
+            fields.extend([
+                smart_str(client.clientemploymentinfo.occupation),
+                smart_str(client.clientemploymentinfo.company_name),
+                smart_str(client.clientemploymentinfo.address),
+                smart_str(client.clientemploymentinfo.city),
+                smart_str(client.clientemploymentinfo.state),
+                smart_str(client.clientemploymentinfo.zip_code),
+            ])
+        else:
+            fields.extend([
+                smart_str(''),
+                smart_str(''),
+                smart_str(''),
+                smart_str(''),
+                smart_str(''),
+                smart_str(''),
+            ])
+
+        if hasattr(client, 'clientloaninfo'):
+            fields.extend([
+                smart_str(client.clientloaninfo.amount),
+                smart_str(client.clientloaninfo.loan2val),
+                smart_str(client.clientloaninfo.dscr),
+                smart_str(client.clientloaninfo.desc),
+            ])
+        else:
+            fields.extend([
+                smart_str(''),
+                smart_str(''),
+                smart_str(''),
+                smart_str(''),
+            ])
+
+        if hasattr(client, 'clientfinancialinfo'):
+            fields.extend([
+                smart_str(client.clientfinancialinfo.salary),
+                smart_str(client.clientfinancialinfo.yrs_in_biz),
+                smart_str(client.clientfinancialinfo.debt),
+                smart_str(client.clientfinancialinfo.mnthly_pymnts),
+                smart_str(client.clientfinancialinfo.fico),
+                smart_str(client.clientfinancialinfo.owns_home),
+                smart_str(client.clientfinancialinfo.bankruptcy),
+                smart_str(client.clientfinancialinfo.short_sale),
+            ])
+        else:
+            fields.extend([
+                smart_str(''),
+                smart_str(''),
+                smart_str(''),
+                smart_str(''),
+                smart_str(''),
+                smart_str(''),
+                smart_str('No'),
+                smart_str('No'),
+            ])
+
+        if hasattr(client, 'clientpropertyinfo'):
+            fields.extend([
+                smart_str(client.clientpropertyinfo.address),
+                smart_str(client.clientpropertyinfo.value),
+            ])
+        else:
+            fields.extend([
+                smart_str(''),
+                smart_str(''),
+            ])
+
+        if hasattr(client, 'clientbusinessinfo'):
+            fields.extend([
+                smart_str(client.clientbusinessinfo.name),
+                smart_str(client.clientbusinessinfo.phone),
+                smart_str(client.clientbusinessinfo.url),
+                smart_str(client.clientbusinessinfo.btype),
+                smart_str(client.clientbusinessinfo.est),
+            ])
+        else:
+            fields.extend([
+                smart_str(''),
+                smart_str(''),
+                smart_str(''),
+                smart_str(''),
+                smart_str(''),
+            ])
+
+        client_qualifiers = []
+
+        for q in client.qualifiers.through.objects.filter(client_id = client.id):
+            client_qualifiers.append(q.qualifier_id)
+
+        for q_id in sorted(qualifiers):
+            if q_id in client_qualifiers:
+                fields.append('Yes')
+            else:
+                fields.append('No')
+
+        client_needs = []
+
+        for n in client.needs.through.objects.filter(client_id = client.id):
+            client_needs.append(n.id)
+
+        for n_id in sorted(needs):
+            if n_id in client_needs:
+                fields.append('Yes')
+            else:
+                fields.append('No')
+
+        writer.writerow(fields)
+    # end for
+
     return response
 export_client_csv.short_description = u"Client Export CSV"
 
 class ClientAdmin(admin.ModelAdmin):
+    model = Client
+    list_display = ['get_first_name', 'get_last_name']
     actions = [export_client_csv]
 
+    def get_first_name(self, obj):
+        return obj.user.first_name
+
+    get_first_name.short_description = 'First Name'
+    get_first_name.admin_order_field = 'user__first_name'
+
+    def get_last_name(self, obj):
+        return obj.user.last_name
+
+    get_last_name.short_description = 'Last Name'
+    get_last_name.admin_order_field = 'user__last_name'
+
+# end ClientAdmin
+
 # NOTE disable till fields are fixed
-#admin.site.register(Client, ClientAdmin)
+admin.site.register(Client, ClientAdmin)
 
 
 ################################################################################
@@ -235,9 +358,7 @@ def export_lender_csv(modeladmin, request, queryset):
     for pt_id in sorted(propertytypes):
         header.append(smart_str(propertytypes[pt_id]))
 
-    writer.writerow(
-        header
-    )
+    writer.writerow(header)
 
     lender411 = queryset.select_related(
                 'lenderbrokerrelation',
