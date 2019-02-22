@@ -67,6 +67,7 @@ def lender_form(req):
             lender.user = user
 
             # if req.user is a Broker, set new lender to broker
+            # NOTE client has no broker if created by admin
             try:
                 lender.broker = req.user.broker
             except ObjectDoesNotExist:
@@ -363,9 +364,9 @@ def edit_lender_form(req, pk):
 def lender_list(req):
     templ = loader.get_template('lender/list.html')
 
-    lender_list = Lender.objects.all().select_related('user')
+    lenders = Lender.objects.all().select_related('user')
     context = {
-        'lenders': lender_list,
+        'lenders': lenders,
     }
 
     return HttpResponse(templ.render(context, req))
@@ -603,8 +604,11 @@ def broker_detail(req, pk):
 @login_required
 @user_passes_test(lambda u: u.groups.filter(name='Lender').count() == 0, login_url='/denied/')
 def client_form(req):
-    tmpl   = loader.get_template('client/form.html')
-    submit = 'Submit'
+    tmpl       = loader.get_template('client/form.html')
+    submit     = 'Submit'
+    qualifiers = Qualifier.objects.order_by('name')
+    needs      = NeedsList.objects.order_by('name')
+
     if req.method == 'POST':
         if req.user.groups.all()[0].name == 'Client':
             userForm = UserForm(req.POST, instance=req.user)
@@ -619,22 +623,61 @@ def client_form(req):
             new_user.save()
             userForm = UserForm(req.POST, instance=new_user)
 
-        clientForm = ClientForm(req.POST)
+        clientForm           = ClientForm(req.POST)
+        clientEmploymentForm = ClientEmploymentInfoForm(req.POST)
+        clientLoanForm       = ClientLoanInfoForm(req.POST)
+        clientFinancialForm  = ClientFinancialInfoForm(req.POST)
+        clientPropertyForm   = ClientPropertyInfoForm(req.POST)
+        clientBusinessForm   = ClientBusinessInfoForm(req.POST)
 
         if userForm.is_valid() and \
-           clientForm.is_valid():
+           clientForm.is_valid() and \
+           clientEmploymentForm.is_valid() and \
+           clientLoanForm.is_valid() and \
+           clientFinancialForm.is_valid() and \
+           clientPropertyForm.is_valid() and \
+           clientBusinessForm.is_valid():
 
             user = userForm.save()
             client = clientForm.save(commit=False)
             client.user = user
 
-            # if req.user is a Broker, set new lender to broker
+            # if req.user is a Broker, set new lender to brokero
+            # NOTE client has no broker if created by admin
             try:
                 client.broker = req.user.broker
             except ObjectDoesNotExist:
                 client.broker = None
 
             client.save()
+
+            employ = clientEmploymentForm.save(commit=False)
+            employ.client = client
+            employ.save()
+
+            loan = clientLoanForm.save(commit=False)
+            loan.client = client
+            loan.save()
+
+            financial = clientFinancialForm.save(commit=False)
+            financial.client = client
+            financial.save()
+
+            prop = clientPropertyForm.save(commit=False)
+            prop.client = client
+            prop.save()
+
+            business = clientBusinessForm.save(commit=False)
+            business.client = client
+            business.save()
+
+            for q in req.POST.getlist('qualifier'):
+                client.qualifiers.add(q)
+
+            for n in req.POST.getlist('need'):
+                client.needs.add(n)
+
+            clientForm.save_m2m()
 
             return redirect('loans:clients')
 
@@ -653,11 +696,23 @@ def client_form(req):
                 }
                 userForm = UserForm(user)
 
-        clientForm = ClientForm()
+        clientForm           = ClientForm()
+        clientEmploymentForm = ClientEmploymentInfoForm()
+        clientLoanForm       = ClientLoanInfoForm()
+        clientFinancialForm  = ClientFinancialInfoForm()
+        clientPropertyForm   = ClientPropertyInfoForm()
+        clientBusinessForm   = ClientBusinessInfoForm()
 
     context = {
         'userForm': userForm,
         'clientForm': clientForm,
+        'clientEmploymentForm': clientEmploymentForm,
+        'clientLoanForm': clientLoanForm,
+        'clientFinancialForm': clientFinancialForm,
+        'clientPropertyForm': clientPropertyForm,
+        'clientBusinessForm': clientBusinessForm,
+        'qualifiers': qualifiers,
+        'needs': needs,
         'submit': submit,
     }
     return HttpResponse(tmpl.render(context, req))
@@ -668,19 +723,56 @@ def client_form(req):
 @login_required
 @user_passes_test(lambda u: u.groups.filter(name='Lender').count() == 0, login_url='/denied/')
 def edit_client_form(req, pk):
-    tmpl   = loader.get_template('client/form.html')
-    submit = 'Update'
+    tmpl       = loader.get_template('client/form.html')
+    submit     = 'Update'
+    qualifiers = Qualifier.objects.order_by('name')
+    needs      = NeedsList.objects.order_by('name')
 
     client = get_object_or_404(Client, id=pk)
     user   = get_object_or_404(User, id=client.user.id)
 
+    try:
+        employment = ClientEmploymentInfo.objects.get(client=pk)
+    except ClientEmploymentInfo.DoesNotExist:
+        employment = None
+
+    try:
+        business = ClientBusinessInfo.objects.get(client=pk)
+    except ClientBusinessInfo.DoesNotExist:
+        business = None
+
+    try:
+        loan = ClientLoanInfo.objects.get(client=pk)
+    except ClientLoanInfo.DoesNotExist:
+        loan = None
+
+    try:
+        financial = ClientFinancialInfo.objects.get(client=pk)
+    except ClientFinancialInfo.DoesNotExist:
+        financial = None
+
+    try:
+        prop = ClientPropertyInfo.objects.get(client=pk)
+    except ClientPropertyInfo.DoesNotExist:
+        prop = None
+
     if req.method == 'POST':
-        userForm   = UserForm(req.POST, instance=user)
-        clientForm = ClientForm(req.POST, instance=client)
+        userForm             = UserForm(req.POST, instance=user)
+        clientForm           = ClientForm(req.POST, instance=client)
+        clientEmploymentForm = ClientEmploymentInfoForm(req.POST, instance=employment)
+        clientBusinessForm   = ClientBusinessInfoForm(req.POST, instance=business)
+        clientLoanForm       = ClientLoanInfoForm(req.POST, instance=loan)
+        clientFinancialForm  = ClientFinancialInfoForm(req.POST, instance=financial)
+        clientPropertyForm   = ClientPropertyInfoForm(req.POST, instance=prop)
 
         # TODO refactor: create function to check all necessary forms
         if userForm.is_valid() and \
-           clientForm.is_valid():
+           clientForm.is_valid() and \
+           clientEmploymentForm.is_valid() and \
+           clientLoanForm.is_valid() and \
+           clientFinancialForm.is_valid() and \
+           clientPropertyForm.is_valid() and \
+           clientBusinessForm.is_valid():
 
             user = userForm.save()
 
@@ -688,18 +780,64 @@ def edit_client_form(req, pk):
             client.user = user
             client.save()
 
+            employ = clientEmploymentForm.save(commit=False)
+            employ.client = client
+            employ.save()
+
+            loan = clientLoanForm.save(commit=False)
+            loan.client = client
+            loan.save()
+
+            financial = clientFinancialForm.save(commit=False)
+            financial.client = client
+            financial.save()
+
+            prop = clientPropertyForm.save(commit=False)
+            prop.client = client
+            prop.save()
+
+            business = clientBusinessForm.save(commit=False)
+            business.client = client
+            business.save()
+
+            client.qualifiers.clear()
+            for q in req.POST.getlist('qualifier'):
+                client.qualifiers.add(q)
+
+            client.needs.clear()
+            for n in req.POST.getlist('need'):
+                client.needs.add(n)
+
+            clientForm.save_m2m()
+
             return redirect('loans:client_detail', pk=client.id)
 
     # XXX BEWARE if form is invalid, it will break
     else:
-        userForm   = UserForm(instance=user)
-        clientForm = ClientForm(instance=client)
+        userForm             = UserForm(instance=user)
+        clientForm           = ClientForm(instance=client)
+        clientEmploymentForm = ClientEmploymentInfoForm(instance=employment)
+        clientLoanForm       = ClientLoanInfoForm(instance=loan)
+        clientFinancialForm  = ClientFinancialInfoForm(instance=financial)
+        clientPropertyForm   = ClientPropertyInfoForm(instance=prop)
+        clientBusinessForm   = ClientBusinessInfoForm(instance=business)
+        selected_qualifiers  = Client.objects.values_list('qualifiers__id', flat=True).filter(id=pk)
+        selected_needs       = Client.objects.values_list('needs__id', flat=True).filter(id=pk)
 
 
     context = {
         'client': client,
         'userForm': userForm,
         'clientForm': clientForm,
+        'clientEmploymentForm': clientEmploymentForm,
+        'clientLoanForm': clientLoanForm,
+        'clientFinancialForm': clientFinancialForm,
+        'clientPropertyForm': clientPropertyForm,
+        'clientBusinessForm': clientBusinessForm,
+        'qualifiers': qualifiers,
+        'needs': needs,
+        'selected_qualifiers': selected_qualifiers,
+        'selected_needs': selected_needs,
         'submit': submit,
     }
 
@@ -724,10 +862,47 @@ def client_list(req):
 #@user_passes_test(lambda u: u.groups.filter(name='client').count() == 0, login_url='/denied/')
 def client_detail(req, pk):
     templ = loader.get_template('client/detail.html')
-    broker = get_object_or_404(Broker.objects.select_related('user'), id=pk)
+    client = get_object_or_404(Client.objects.select_related('user'), id=pk)
+
+    try:
+        employment = ClientEmploymentInfo.objects.get(client=pk)
+    except ClientEmploymentInfo.DoesNotExist:
+        employment = None
+
+    print("DEBUG {}".format(employment))
+    print("DEBUG pk: {}".format(pk))
+    try:
+        business = ClientBusinessInfo.objects.get(client=pk)
+    except ClientBusinessInfo.DoesNotExist:
+        business = None
+
+    try:
+        loan = ClientLoanInfo.objects.get(client=pk)
+    except ClientLoanInfo.DoesNotExist:
+        loan = None
+
+    try:
+        financial = ClientFinancialInfo.objects.get(client=pk)
+    except ClientFinancialInfo.DoesNotExist:
+        financial = None
+
+    try:
+        prop = ClientPropertyInfo.objects.get(client=pk)
+    except ClientPropertyInfo.DoesNotExist:
+        prop = None
+
+    quals = client.qualifiers.all()
+    needs = client.needs.all()
 
     context = {
-        'broker_data': broker,
+        'client': client,
+        'employment': employment,
+        'business': business,
+        'loan': loan,
+        'financial': financial,
+        'property': prop,
+        'quals': quals,
+        'needs': needs,
     }
 
     return HttpResponse(templ.render(context, req))

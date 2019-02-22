@@ -80,7 +80,6 @@ class LoanAmount(models.Model):
 
 
 class PointOfContact(models.Model):
-    user       = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50, default=None, null=True, blank=True)
     last_name  = models.CharField(max_length=50, default=None, null=True, blank=True)
     company    = models.CharField(max_length=100, default=None, null=True, blank=True)
@@ -89,8 +88,41 @@ class PointOfContact(models.Model):
     w_phone    = models.CharField(max_length=10, blank=True)
 
 
+class Broker(models.Model):
+    user    = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    company = models.CharField(max_length=100, default=None, null=True, blank=True)
+
+
+class Client(models.Model):
+    user       = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    loantype   = models.ForeignKey(LoanType, on_delete=models.SET_NULL, blank=True, null=True)
+    poc        = models.ManyToManyField(PointOfContact)
+    qualifiers = models.ManyToManyField(Qualifier)
+    needs      = models.ManyToManyField(NeedsList)
+    broker     = models.ForeignKey(Broker, on_delete=models.SET_NULL, blank=True, null=True)
+
+
+class Lender(models.Model):
+    user          = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    company       = models.CharField(max_length=100, default=None, null=True, blank=True)
+    qualifiers    = models.ManyToManyField(Qualifier)
+    propertytypes = models.ManyToManyField(PropertyType)
+    broker        = models.ForeignKey(Broker, on_delete=models.SET_NULL, blank=True, null=True)
+    lendertype    = models.ForeignKey(LenderType, on_delete=models.SET_NULL, blank=True, null=True)
+    loanamt       = models.ForeignKey(LoanAmount, on_delete=models.SET_NULL, blank=True, null=True)
+
+
 class ClientBusinessInfo(models.Model):
-    user         = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    client = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
+    name   = models.CharField(max_length=50, default=None, null=True, blank=True)
+    phone  = models.CharField(max_length=50, default=None, null=True, blank=True)
+    btype  = models.CharField(max_length=50, default=None, null=True, blank=True)
+    est    = models.CharField(max_length=50, default=None, null=True, blank=True)
+    url    = models.CharField(max_length=100, default=None, null=True, blank=True)
+
+
+class ClientEmploymentInfo(models.Model):
+    client       = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
     occupation   = models.CharField(max_length=50, default=None, null=True, blank=True)
     company_name = models.CharField(max_length=50, default=None, null=True, blank=True)
     address      = models.CharField(max_length=50, default=None, null=True, blank=True)
@@ -103,7 +135,7 @@ class ClientLoanInfo(models.Model):
     # NOTE for currency
     # https://stackoverflow.com/questions/1139393/what-is-the-best-django-model-field-to-use-to-represent-a-us-dollar-amount
     # https://github.com/django-money/django-money
-    user     = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    client   = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
     amount   = models.DecimalField(max_digits=17, decimal_places=2)
     loan2val = models.DecimalField(max_digits=17, decimal_places=2)
     dscr     = models.DecimalField(max_digits=17, decimal_places=2)
@@ -111,7 +143,7 @@ class ClientLoanInfo(models.Model):
 
 
 class ClientFinancialInfo(models.Model):
-    user          = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    client        = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
     salary        = models.DecimalField(max_digits=17, decimal_places=2)
     yrs_in_biz    = models.PositiveSmallIntegerField()
     debt          = models.DecimalField(max_digits=17, decimal_places=2)
@@ -123,34 +155,9 @@ class ClientFinancialInfo(models.Model):
 
 
 class ClientPropertyInfo(models.Model):
-    user    = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    client  = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
     address = models.CharField(max_length=50, default=None, null=True, blank=True)
     value   = models.DecimalField(max_digits=17, decimal_places=2)
-
-
-class Broker(models.Model):
-    user    = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    company = models.CharField(max_length=100, default=None, null=True, blank=True)
-
-
-class Client(models.Model):
-    user       = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    loantype   = models.ForeignKey(LoanType, on_delete=models.SET_NULL, blank=True, null=True)
-    poc        = models.ManyToManyField(PointOfContact)
-    business   = models.ForeignKey(ClientBusinessInfo, on_delete=models.SET_NULL, blank=True, null=True)
-    qualifiers = models.ManyToManyField(Qualifier)
-    needslist  = models.ManyToManyField(NeedsList)
-    broker     = models.ForeignKey(Broker, on_delete=models.SET_NULL, blank=True, null=True)
-
-
-class Lender(models.Model):
-    user          = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    company       = models.CharField(max_length=100, default=None, null=True, blank=True)
-    qualifiers    = models.ManyToManyField(Qualifier)
-    propertytypes = models.ManyToManyField(PropertyType)
-    broker        = models.ForeignKey(Broker, on_delete=models.SET_NULL, blank=True, null=True)
-    lendertype    = models.ForeignKey(LenderType, on_delete=models.SET_NULL, blank=True, null=True)
-    loanamt       = models.ForeignKey(LoanAmount, on_delete=models.SET_NULL, blank=True, null=True)
 
 
 class ClientBLOCLoan(models.Model):
