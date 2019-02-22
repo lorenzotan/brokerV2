@@ -134,7 +134,7 @@ def lender_form(req):
             try:
                 # existing lenders are redirected to edit form
                 lender_id = req.user.lender.id
-                return redirect('loans:edit_lender_form', pk=req.user.lender.id)
+                return redirect('loans:edit_lender_form', pk=lender_id)
             except AttributeError:
                 user = { 'first_name': req.user.first_name, \
                          'last_name': req.user.last_name, \
@@ -508,7 +508,7 @@ def broker_form(req):
             try:
                 # existing brokers are redirected to edit form
                 broker_id = req.user.broker.id
-                return redirect('loans:edit_broker_form', pk=req.user.broker.id)
+                return redirect('loans:edit_broker_form', pk=broker_id)
             except AttributeError:
                 user = { 'first_name': req.user.first_name,
                          'last_name': req.user.last_name,
@@ -695,7 +695,7 @@ def client_form(req):
         elif req.user.groups.all()[0].name == 'Client':
             try:
                 client_id = req.user.client.id
-                return redirect('loans:edit_client_form', pk=req.user.client.id)
+                return redirect('loans:edit_client_form', pk=client_id)
             except AttributeError:
                 user = {
                     'first_name': req.user.first_name,

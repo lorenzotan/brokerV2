@@ -221,22 +221,6 @@ class LenderBridgeLoanForm(forms.ModelForm):
         }
 
 
-class QualifierForm(forms.Form):
-    qualifiers = forms.ModelMultipleChoiceField(
-        #queryset = Qualifiers.objects.order_by('name'),
-        widget = forms.CheckboxSelectMultiple,
-        queryset=None
-    )
-    #class Meta:
-    #    model = Qualifiers
-
-    #    fields = (
-    #    )
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['qualifiers'].queryset = Qualifier.objects.order_by('name')
-
-
 class BrokerForm(forms.ModelForm):
     class Meta:
         model = Broker
