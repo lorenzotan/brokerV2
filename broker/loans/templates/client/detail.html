@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load format_data %}
+{% block content %}
+    <h1>Loan Form</h1>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <form name="form" action="{% url 'loans:edit_client_form' pk=client.id %}" method="GET">
+    {% csrf_token %}
+
+      <!-- Name Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Client Information</h1>
+          <label>First Name:</label>
+          {{ client.user.first_name }}
+          <label>Last Name:</label>
+          {{ client.user.last_name }}
+          <label>Address:</label>
+          {{ client.user.address }}
+          <label>City:</label>
+          {{ client.user.city }}
+          <label>State:</label>
+          {{ client.user.state }}
+          <label>Zip:</label>
+          {{ client.user.zip_code }}
+          <label>Primary Email:</label>
+          {{ client.user.email }}
+          <label>Work Phone:</label>
+          {{ client.user.phone_w|format_phone }}
+          <label>Mobile Phone:</label>
+          {{ client.user.phone_m|format_phone }}
+          <label>Loan Type:</label>
+          {{ client.loantype }}
+        </div>
+      </div>
+
+      <!-- Employment Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Employment Info</h1>
+          <label>Occupation:</label>
+          {{ employment.occupation }}
+          <label>Company Name:</label>
+          {{ employment.company_name }}
+          <label>Address:</label>
+          {{ employment.address }}
+          <label>City:</label>
+          {{ employment.city }}
+          <label>State:</label>
+          {{ employment.state }}
+          <label>Zip Code:</label>
+          {{ employment.zip_code }}
+        </div>
+      </div>
+
+      <!-- Loan Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Loan Info</h1>
+          <label>Loan Amount:</label>
+          {{ loan.amount }}
+          <label>Loan To Value:</label>
+          {{ loan.loan2val }}
+          <label>DSCR:</label>
+          {{ loan.dscr }}
+          <label>Description:</label>
+          {{ loan.desc }}
+        </div>
+      </div>
+
+      <!-- Financial Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Financial Info</h1>
+          <label>Salary:</label>
+          {{ financial.salary }}
+          <label>Years In Business:</label>
+          {{ financial.yrs_in_biz }}
+          <label>Debt:</label>
+          {{ financial.debt }}
+          <label>Monthly Payments:</label>
+          {{ financial.mnthly_pymnts }}
+          <label>FICO:</label>
+          {{ financial.fico }}
+        <!-- checkboxes -->
+          <label>Owns Home:</label>
+          {{ financial.owns_home }}
+          <label>Bankruptcy:</label>
+          {{ financial.bankruptcy }}
+          <label>Short Sale:</label>
+          {{ financial.short_sale }}
+        </div>
+      </div>
+
+      <!-- Property Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Property Info (Obtained)</h1>
+          <label>Address:</label>
+          {{ property.address }}
+          <label>Value:</label>
+          {{ property.value }}
+        </div>
+      </div>
+
+      <!-- Business Table -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Business Info</h1>
+          <label>Name:</label>
+          {{ business.name }}
+          <label>Phone:</label>
+          {{ business.phone }}
+          <label>Business Type:</label>
+          {{ business.btype }}
+          <label>Year Established:</label>
+          {{ business.est }}
+          <label>Website:</label>
+          {{ business.url }}
+        </div>
+      </div>
+
+      <!-- Qualifiers -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Qualifiers</h1>
+          {% for qual in quals %}
+          <label>{{ qual }}</label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Needs List -->
+      <div class="formContainer">
+        <div class="grid3c">
+          <h1 class="formHeader">Needs List</h1>
+          {% for need in needs %}
+          <label>{{ need }}</label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <center>
+        <button>Edit</button>
+      </center>
+    </form>
+{% endblock %}

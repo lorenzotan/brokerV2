@@ -243,3 +243,109 @@ class BrokerForm(forms.ModelForm):
         fields = (
             'company',
         )
+
+
+################################################################################
+# CLIENT FORMS
+################################################################################
+class ClientForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ClientForm, self).__init__(*args, **kwargs)
+        self.fields['loantype'].empty_label = 'Select One'
+
+    class Meta:
+        model = Client
+        fields = (
+            'loantype',
+        )
+
+
+class ClientEmploymentInfoForm(forms.ModelForm):
+    class Meta:
+        model = ClientEmploymentInfo
+        fields = (
+            'occupation',
+            'company_name',
+            'address',
+            'city',
+            'state',
+            'zip_code',
+        )
+
+        labels = {
+            'company_name': gettext('Company Name'),
+            'zip_code': gettext('Zip Code'),
+        }
+
+
+class ClientLoanInfoForm(forms.ModelForm):
+    class Meta:
+        model = ClientLoanInfo
+        fields = (
+            'amount',
+            'loan2val',
+            'dscr',
+            'desc',
+        )
+
+        labels = {
+            'loan2val': gettext('Loan To Value'),
+            'dscr':     gettext('DSCR'),
+            'desc':     gettext('Description'),
+        }
+
+
+class ClientFinancialInfoForm(forms.ModelForm):
+    class Meta:
+        model = ClientFinancialInfo
+        fields = (
+            'salary',
+            'yrs_in_biz',
+            'debt',
+            'mnthly_pymnts',
+            'fico',
+            # CHECKBOXES
+            'owns_home',
+            'bankruptcy',
+            'short_sale'
+        )
+
+        labels = {
+            'yrs_in_biz': gettext('Years In Business'),
+            'debt': gettext('Total Debt'),
+            'mnthly_pymnts': gettext('Total Monthly Payments'),
+            'fico': gettext('FICO'),
+            # CHECKBOXES
+            #'owns_home': gettext(''),
+            #'bankruptcy': gettext(''),
+            #'short_sale': gettext(),
+        }
+
+
+class ClientPropertyInfoForm(forms.ModelForm):
+    class Meta:
+        model = ClientPropertyInfo
+        fields = (
+            'address',
+            'value',
+        )
+
+
+class ClientBusinessInfoForm(forms.ModelForm):
+    class Meta:
+        model = ClientBusinessInfo
+        fields = (
+            'name',
+            'phone',
+            'btype',
+            'est',
+            'url',
+        )
+
+        labels = {
+            'btype': gettext('Business Type'),
+            'est': gettext('Established'),
+            'url': gettext('Website'),
+        }
+
+
