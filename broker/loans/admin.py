@@ -4,6 +4,7 @@ from django.forms.models import model_to_dict
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
 import csv
+import datetime
 
 bools = {
     True: 'Yes',
@@ -19,8 +20,9 @@ bools = {
 # CLIENT EXPORT
 ################################################################################
 def export_client_csv(modeladmin, request, queryset):
+    date = datetime.datetime.now().date()
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=client_export.csv'
+    response['Content-Disposition'] = 'attachment; filename=client_export_' + str(date) + '.csv'
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
     writer.writerow([
@@ -143,8 +145,9 @@ class ClientAdmin(admin.ModelAdmin):
 ################################################################################
 def export_lender_csv(modeladmin, request, queryset):
 
+    date = datetime.datetime.now().date()
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=lender_export.csv'
+    response['Content-Disposition'] = 'attachment; filename=lender_export_' + str(date) + '.csv'
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
 
@@ -422,8 +425,9 @@ admin.site.register(Lender, LenderAdmin)
 ################################################################################
 def export_broker_csv(modeladmin, request, queryset):
 
+    date = datetime.datetime.now().date()
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=broker_export.csv'
+    response['Content-Disposition'] = 'attachment; filename=broker_export_' + str(date) + '.csv'
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
 
