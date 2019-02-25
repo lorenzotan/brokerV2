@@ -106,17 +106,17 @@ class Broker(models.Model):
 class Client(models.Model):
     user       = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     loantype   = models.ForeignKey(LoanType, on_delete=models.SET_NULL, blank=True, null=True)
-    poc        = models.ManyToManyField(PointOfContact)
-    qualifiers = models.ManyToManyField(Qualifier)
-    needs      = models.ManyToManyField(NeedsList)
+    poc        = models.ManyToManyField(PointOfContact, blank=True)
+    qualifiers = models.ManyToManyField(Qualifier, blank=True)
+    needs      = models.ManyToManyField(NeedsList, blank=True)
     broker     = models.ForeignKey(Broker, on_delete=models.SET_NULL, blank=True, null=True)
 
 
 class Lender(models.Model):
     user          = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     company       = models.CharField(max_length=100, default=None, null=True, blank=True)
-    qualifiers    = models.ManyToManyField(Qualifier)
-    propertytypes = models.ManyToManyField(PropertyType)
+    qualifiers    = models.ManyToManyField(Qualifier, blank=True)
+    propertytypes = models.ManyToManyField(PropertyType, blank=True)
     broker        = models.ForeignKey(Broker, on_delete=models.SET_NULL, blank=True, null=True)
     lendertype    = models.ForeignKey(LenderType, on_delete=models.SET_NULL, blank=True, null=True)
     loanamt       = models.ForeignKey(LoanAmount, on_delete=models.SET_NULL, blank=True, null=True)
@@ -137,29 +137,26 @@ class ClientLoanInfo(models.Model):
     # https://stackoverflow.com/questions/1139393/what-is-the-best-django-model-field-to-use-to-represent-a-us-dollar-amount
     # https://github.com/django-money/django-money
     client   = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
-    amount   = models.DecimalField(max_digits=17, decimal_places=2)
-    loan2val = models.DecimalField(max_digits=17, decimal_places=2)
-    dscr     = models.DecimalField(max_digits=17, decimal_places=2)
-    desc     = models.TextField()
+    amount   = models.DecimalField(max_digits=17, decimal_places=2, blank=True)
+    loan2val = models.DecimalField(max_digits=17, decimal_places=2, blank=True)
+    dscr     = models.DecimalField(max_digits=17, decimal_places=2, blank=True)
+    desc     = models.TextField(blank=True)
 
 
 class ClientFinancialInfo(models.Model):
     client        = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
-    salary        = models.DecimalField(max_digits=17, decimal_places=2)
-    yrs_in_biz    = models.PositiveSmallIntegerField()
-    debt          = models.DecimalField(max_digits=17, decimal_places=2)
-    mnthly_pymnts = models.DecimalField(max_digits=17, decimal_places=2)
-    fico          = models.PositiveSmallIntegerField()
-    attr          = models.ManyToManyField(ClientFinancialInfoAttr)
-    #owns_home     = models.BooleanField()
-    #bankruptcy    = models.BooleanField()
-    #short_sale    = models.BooleanField()
+    salary        = models.DecimalField(max_digits=17, decimal_places=2, blank=True)
+    yrs_in_biz    = models.PositiveSmallIntegerField(blank=True)
+    debt          = models.DecimalField(max_digits=17, decimal_places=2, blank=True)
+    mnthly_pymnts = models.DecimalField(max_digits=17, decimal_places=2, blank=True)
+    fico          = models.PositiveSmallIntegerField(blank=True)
+    attr          = models.ManyToManyField(ClientFinancialInfoAttr, blank=True)
 
 
 class ClientPropertyInfo(models.Model):
     client  = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
     address = models.CharField(max_length=50, default=None, null=True, blank=True)
-    value   = models.DecimalField(max_digits=17, decimal_places=2)
+    value   = models.DecimalField(max_digits=17, decimal_places=2, blank=True)
 
 
 class ClientBusinessInfo(models.Model):
@@ -175,9 +172,9 @@ class ClientBLOCLoan(models.Model):
     client         = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
     name           = models.CharField(max_length=50, default='', blank=True, null=True)
     address        = models.CharField(max_length=50, default='', blank=True, null=True)
-    annual_receipt = models.CharField(max_length=25, verbose_name="Business Name")
-    loan_amt       = models.IntegerField(verbose_name="Loan Amount")
-    term           = models.IntegerField(default='', verbose_name="Business Name")
+    annual_receipt = models.CharField(max_length=25, verbose_name="Business Name", blank=True)
+    loan_amt       = models.IntegerField(verbose_name="Loan Amount", blank=True)
+    term           = models.IntegerField(default='', verbose_name="Business Name", blank=True)
 
 
 class ClientConstructionLoan(models.Model):
@@ -186,8 +183,8 @@ class ClientConstructionLoan(models.Model):
     address       = models.CharField(max_length=50, default='', blank=True, null=True)
     architect     = models.CharField(max_length=50, default='', blank=True, null=True)
     contractor    = models.CharField(max_length=50, default='', blank=True, null=True)
-    bridge        = models.NullBooleanField(default=None)
-    land          = models.NullBooleanField(default=None)
+    bridge        = models.NullBooleanField(default=None, blank=True)
+    land          = models.NullBooleanField(default=None, blank=True)
 
 
 class ClientMixedUseLoan(models.Model):
@@ -196,18 +193,18 @@ class ClientMixedUseLoan(models.Model):
     business_list  = models.CharField(max_length=50, default='', blank=True, null=True)
     annual_rent    = models.IntegerField(blank=True, null=True)
     annual_expense = models.IntegerField(blank=True, null=True)
-    purpose        = models.OneToOneField(LoanPurpose, on_delete=models.CASCADE, null=True)
-    cash_out       = models.NullBooleanField(default=None)
+    purpose        = models.OneToOneField(LoanPurpose, on_delete=models.CASCADE, null=True, blank=True)
+    cash_out       = models.NullBooleanField(default=None, blank=True)
 
 
 class ClientMultiFamilyLoan(models.Model):
     client          = models.OneToOneField(Client, on_delete=models.CASCADE, null=True)
-    number_of_units = models.IntegerField()
-    year_built      = models.IntegerField()
+    number_of_units = models.IntegerField(blank=True)
+    year_built      = models.IntegerField(blank=True)
     annual_rent     = models.IntegerField(blank=True, null=True)
     annual_expense  = models.IntegerField(blank=True, null=True)
-    purpose         = models.OneToOneField(LoanPurpose, on_delete=models.CASCADE, null=True)
-    cash_out        = models.NullBooleanField(default=None)
+    purpose         = models.OneToOneField(LoanPurpose, on_delete=models.CASCADE, null=True, blank=True)
+    cash_out        = models.NullBooleanField(default=None, blank=True)
 
 
 class ClientRetailLoan(models.Model):
@@ -217,13 +214,13 @@ class ClientRetailLoan(models.Model):
     address        = models.CharField(max_length=25, default='', blank=True, null=True)
     annual_rent    = models.IntegerField(blank=True, null=True)
     annual_expense = models.IntegerField(blank=True, null=True)
-    purpose        = models.OneToOneField(LoanPurpose, on_delete=models.CASCADE, null=True)
-    cash_out       = models.NullBooleanField(default=None)
+    purpose        = models.OneToOneField(LoanPurpose, on_delete=models.CASCADE, null=True, blank=True)
+    cash_out       = models.NullBooleanField(default=None, blank=True)
 
 
 class LenderBrokerRelation(models.Model):
     lender           = models.OneToOneField(Lender, on_delete=models.CASCADE, null=True)
-    solicit          = models.PositiveSmallIntegerField()
+    solicit          = models.PositiveSmallIntegerField(blank=True)
     pays_brkr_fees   = models.BooleanField(default=False)
     pays_brkr_rebate = models.BooleanField(default=False)
     pays_1099        = models.BooleanField(default=False)
